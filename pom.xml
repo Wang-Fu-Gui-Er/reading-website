@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>reading-website-api</module>
+        <module>reading-website-biz</module>
     </modules>
 
 
