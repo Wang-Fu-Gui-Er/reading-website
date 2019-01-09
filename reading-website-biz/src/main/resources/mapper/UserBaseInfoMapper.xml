@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.reading.website.biz.mapper.UserBaseInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.reading.website.api.domain.UserBaseInfoDO" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+    <result column="isDeleted" property="isDeleted" jdbcType="BIT" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="mobileNum" property="mobileNum" jdbcType="VARCHAR" />
+    <result column="weChatId" property="weChatId" jdbcType="VARCHAR" />
+    <result column="weiboName" property="weiboName" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="headPicPath" property="headPicPath" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, created, updated, isDeleted, nickName, password, mobileNum, weChatId, weiboName,
+    email, headPicPath
+  </sql>
+
+  <!-- 增加 -->
+  <insert id="insertSelective" parameterType="com.reading.website.api.domain.UserBaseInfoDO" >
+    insert into UserBaseInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="updated != null" >
+        updated,
+      </if>
+      <if test="isDeleted != null" >
+        isDeleted,
+      </if>
+      <if test="nickName != null" >
+        nickName,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="mobileNum != null" >
+        mobileNum,
+      </if>
+      <if test="weChatId != null" >
+        weChatId,
+      </if>
+      <if test="weiboName != null" >
+        weiboName,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="headPicPath != null" >
+        headPicPath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNum != null" >
+        #{mobileNum,jdbcType=VARCHAR},
+      </if>
+      <if test="weChatId != null" >
+        #{weChatId,jdbcType=VARCHAR},
+      </if>
+      <if test="weiboName != null" >
+        #{weiboName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="headPicPath != null" >
+        #{headPicPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 根据id更新 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.reading.website.api.domain.UserBaseInfoDO" >
+    update UserBaseInfo
+    <set >
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        isDeleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="nickName != null" >
+        nickName = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNum != null" >
+        mobileNum = #{mobileNum,jdbcType=VARCHAR},
+      </if>
+      <if test="weChatId != null" >
+        weChatId = #{weChatId,jdbcType=VARCHAR},
+      </if>
+      <if test="weiboName != null" >
+        weiboName = #{weiboName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="headPicPath != null" >
+        headPicPath = #{headPicPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 条件查询 -->
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.UserBaseInfoDO" >
+    select
+    <include refid="Base_Column_List" />
+    from UserBaseInfo
+    <include refid="whereClause"/>
+  </select>
+
+  <sql id="whereClause" >
+    where isDeleted = 0
+    <if test="id != null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="nickName != null" >
+      and nickName = #{nickName,jdbcType=VARCHAR}
+    </if>
+    <if test="mobileNum != null" >
+      and mobileNum = #{mobileNum,jdbcType=VARCHAR}
+    </if>
+    <if test="weChatId != null" >
+      and weChatId = #{weChatId,jdbcType=VARCHAR}
+    </if>
+    <if test="weiboName != null" >
+      and weiboName = #{weiboName,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null" >
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="ids != null">
+      and id in
+      <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+  </sql>
+
+</mapper>
