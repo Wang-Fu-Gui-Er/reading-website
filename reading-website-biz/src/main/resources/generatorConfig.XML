@@ -36,8 +36,8 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="userBaseInfo" domainObjectName="UserBaseInfoDO" modelType="flat" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
-            <!-- 使用表中字段名作为实体属性名 -->
+        <table tableName="userBaseInfo" domainObjectName="UserBaseInfo" modelType="flat" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
+            <!-- 使用表中字段名作为实体属性名；若为false则表中字段带下划线，对应实体属性为驼峰命名 -->
             <property name="useActualColumnNames" value="true"/>
         </table>
 
