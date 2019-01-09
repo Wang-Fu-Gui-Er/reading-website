@@ -24,13 +24,14 @@ public class UserBaseInfoServiceTest extends BaseTest {
     @Test
     public void testInsertSelective() {
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
-        userBaseInfoDO.setNickName("test1");
+        userBaseInfoDO.setNickName("test006");
         userBaseInfoDO.setPassword("123456");
-        userBaseInfoDO.setMobileNum("9999");
+        userBaseInfoDO.setMobileNum("3452543");
         userBaseInfoDO.setWeiboName("杨兴哲");
-        userBaseInfoDO.setWeChatId("yx_8102");
+        userBaseInfoDO.setWeChatId("test001");
         userBaseInfoDO.setEmail("1912246570@qq.com");
         userBaseInfoDO.setHeadPicPath("user/yxhiu/4793100/dsafd.jpg");
+        userBaseInfoDO.setIsAdmin(false);
         BaseResult<Integer> res =  userBaseInfoService.insertSelective(userBaseInfoDO);
         System.out.println(res);
     }
@@ -39,7 +40,7 @@ public class UserBaseInfoServiceTest extends BaseTest {
     public void testUpdateByPrimaryKeySelective() {
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
         userBaseInfoDO.setPassword("xnuikh");
-        userBaseInfoDO.setId(9L);
+        userBaseInfoDO.setId(1L);
         BaseResult<Integer> res =  userBaseInfoService.updateByPrimaryKeySelective(userBaseInfoDO);
         System.out.println(res);
     }
@@ -54,6 +55,7 @@ public class UserBaseInfoServiceTest extends BaseTest {
         ids.add(1L);
         ids.add(2L);
         userBaseInfoDTO.setIds(ids);
+        userBaseInfoDTO.setIsAdmin(true);
         BaseResult<List<UserBaseInfoDO>> res =  userBaseInfoService.selectSelective(userBaseInfoDTO);
         System.out.println(res);
     }

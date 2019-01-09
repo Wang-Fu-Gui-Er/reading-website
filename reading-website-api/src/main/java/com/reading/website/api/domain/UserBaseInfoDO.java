@@ -77,6 +77,11 @@ public class UserBaseInfoDO implements Serializable {
      */
     private String headPicPath;
 
+    /**
+     * 是否是后台管理员
+     */
+    private Boolean isAdmin;
+
     public static UserBaseInfoDTO convert2DTO(UserBaseInfoDO userBaseInfoDO) {
         if (userBaseInfoDO == null) {
             return null;

@@ -23,16 +23,14 @@ public class UserBaseInfoMapperTest extends BaseTest {
     @Test
     public void testInsertSelective() {
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
-        userBaseInfoDO.setNickName("yx8102");
+        userBaseInfoDO.setNickName("test005");
         userBaseInfoDO.setPassword("123456");
-        userBaseInfoDO.setMobileNum("123457899999");
+        userBaseInfoDO.setMobileNum("4523545");
         userBaseInfoDO.setWeiboName("杨兴哲");
-        userBaseInfoDO.setWeChatId("yx_8102");
+        userBaseInfoDO.setWeChatId("test001");
         userBaseInfoDO.setEmail("1912246570@qq.com");
         userBaseInfoDO.setHeadPicPath("user/yxhiu/4793100/dsafd.jpg");
-        userBaseInfoDO.setIsDeleted(false);
-        userBaseInfoDO.setCreated(new Date());
-        userBaseInfoDO.setUpdated(new Date());
+        userBaseInfoDO.setIsAdmin(false);
         int res = userBaseInfoMapper.insertSelective(userBaseInfoDO);
         System.out.println(res);
     }
@@ -41,7 +39,7 @@ public class UserBaseInfoMapperTest extends BaseTest {
     public void testUpdateByPrimaryKeySelective() {
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
         userBaseInfoDO.setId(1L);
-        userBaseInfoDO.setIsDeleted(false);
+        userBaseInfoDO.setIsAdmin(true);
         int res = userBaseInfoMapper.updateByPrimaryKeySelective(userBaseInfoDO);
         System.out.println(res);
     }

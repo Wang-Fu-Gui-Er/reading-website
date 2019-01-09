@@ -51,6 +51,11 @@ public class UserBaseInfoDTO implements Serializable {
      */
     private String email;
 
+    /**
+     * 是否是后台管理员
+     */
+    private Boolean isAdmin;
+
     public static UserBaseInfoDO convert2DO(UserBaseInfoDTO userBaseInfoDTO) {
         if (userBaseInfoDTO == null) {
             return null;
