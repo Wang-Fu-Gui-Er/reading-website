@@ -2,7 +2,7 @@ package com.reading.website.biz.service;
 
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.domain.UserBaseInfoDO;
-import com.reading.website.api.domain.UserBaseInfoDTO;
+import com.reading.website.api.domain.UserBaseInfoQuery;
 import com.reading.website.api.service.UserBaseInfoService;
 import com.reading.website.biz.BaseTest;
 import org.junit.Test;
@@ -47,16 +47,16 @@ public class UserBaseInfoServiceTest extends BaseTest {
 
     @Test
     public void testSelectSelective() {
-        UserBaseInfoDTO userBaseInfoDTO = new UserBaseInfoDTO();
+        UserBaseInfoQuery query = new UserBaseInfoQuery();
         //userBaseInfoDTO.setId(2L);
         //userBaseInfoDTO.setNickName("yx8102");
         //userBaseInfoDTO.setMobileNum("8978687689");
         List<Long> ids = new ArrayList<>();
         ids.add(1L);
         ids.add(2L);
-        userBaseInfoDTO.setIds(ids);
-        userBaseInfoDTO.setIsAdmin(true);
-        BaseResult<List<UserBaseInfoDO>> res =  userBaseInfoService.selectSelective(userBaseInfoDTO);
+        query.setIds(ids);
+        query.setIsAdmin(true);
+        BaseResult<List<UserBaseInfoDO>> res =  userBaseInfoService.selectSelective(query);
         System.out.println(res);
     }
 }

@@ -3,6 +3,7 @@ package com.reading.website.biz.mapper;
 
 import com.reading.website.api.domain.UserBaseInfoDO;
 import com.reading.website.api.domain.UserBaseInfoDTO;
+import com.reading.website.api.domain.UserBaseInfoQuery;
 import com.reading.website.biz.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,15 +47,15 @@ public class UserBaseInfoMapperTest extends BaseTest {
 
     @Test
     public void testSelectSelective() {
-        UserBaseInfoDTO userBaseInfoDTO = new UserBaseInfoDTO();
+        UserBaseInfoQuery query = new UserBaseInfoQuery();
         //userBaseInfoDTO.setId(2L);
         //userBaseInfoDTO.setNickName("yx8102");
         //userBaseInfoDTO.setMobileNum("8978687689");
         List<Long> ids = new ArrayList<>();
         ids.add(1L);
         ids.add(2L);
-        userBaseInfoDTO.setIds(ids);
-        List<UserBaseInfoDO> res = userBaseInfoMapper.selectSelective(UserBaseInfoDTO.convert2DO(userBaseInfoDTO));
+        query.setIds(ids);
+        List<UserBaseInfoDO> res = userBaseInfoMapper.selectSelective(query);
         System.out.println(res);
     }
 }

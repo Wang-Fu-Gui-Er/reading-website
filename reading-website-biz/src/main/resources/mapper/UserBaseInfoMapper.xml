@@ -144,7 +144,7 @@
   </update>
 
   <!-- 条件查询 -->
-  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.UserBaseInfoDO" >
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.UserBaseInfoQuery" >
     select
     <include refid="Base_Column_List" />
     from UserBaseInfo
