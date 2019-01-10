@@ -106,7 +106,7 @@ public class UserController {
             log.warn("user login refused, password is error, user is {}", JSON.toJSON(userBaseInfoDO));
         }
         Map<String, Object> res = new HashMap<>();
-        res.put("userBaseInfo", userBaseInfoDO);
+        res.put("userBaseInfo", dbUser);
         res.put("token", token);
         return BaseResult.rightReturn(res);
     }
