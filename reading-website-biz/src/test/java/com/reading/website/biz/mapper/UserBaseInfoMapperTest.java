@@ -2,14 +2,12 @@ package com.reading.website.biz.mapper;
 
 
 import com.reading.website.api.domain.UserBaseInfoDO;
-import com.reading.website.api.domain.UserBaseInfoDTO;
 import com.reading.website.api.domain.UserBaseInfoQuery;
 import com.reading.website.biz.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

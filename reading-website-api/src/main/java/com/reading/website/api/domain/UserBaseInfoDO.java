@@ -81,27 +81,4 @@ public class UserBaseInfoDO implements Serializable {
      * 是否是后台管理员
      */
     private Boolean isAdmin;
-
-    public static UserBaseInfoDTO convert2DTO(UserBaseInfoDO userBaseInfoDO) {
-        if (userBaseInfoDO == null) {
-            return null;
-        }
-
-        UserBaseInfoDTO userBaseInfoDTO = new UserBaseInfoDTO();
-        BeanUtils.copyProperties(userBaseInfoDO, userBaseInfoDTO);
-        return userBaseInfoDTO;
-    }
-
-    public static List<UserBaseInfoDTO> convert2DTOs(List<UserBaseInfoDO> userBaseInfoDOs) {
-        List<UserBaseInfoDTO> dtoList = new ArrayList<>();
-        if (CollectionUtils.isEmpty(userBaseInfoDOs)) {
-            return dtoList;
-        }
-
-        userBaseInfoDOs.forEach(userBaseInfoDO -> {
-            dtoList.add(convert2DTO(userBaseInfoDO));
-        });
-
-        return dtoList;
-    }
 }

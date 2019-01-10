@@ -6,6 +6,7 @@ import com.reading.website.api.domain.UserBaseInfoDO;
 import com.reading.website.api.domain.UserBaseInfoQuery;
 import com.reading.website.api.service.UserBaseInfoService;
 import com.reading.website.api.base.StatusCodeEnum;
+import com.reading.website.biz.utils.EncryptUtil;
 import com.reading.website.biz.utils.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,19 +40,30 @@ public class UserController {
      */
     @PostMapping(value = "/register")
     public BaseResult<Boolean> register(@RequestBody UserBaseInfoDO userBaseInfoDO) {
-        if (userBaseInfoDO == null) {
-            log.warn("user register param user is null");
-            return BaseResult.errorReturn(false, StatusCodeEnum.PARAM_ERROR, "param user is null");
+        if (!checkParam(userBaseInfoDO)) {
+            log.warn("user register param user error");
+            return BaseResult.errorReturn(false, StatusCodeEnum.PARAM_ERROR, "param user error");
         }
-        if (!StringUtils.isEmpty(userBaseInfoDO.getPassword())) {
-            //todo password加密
-        }
+
+        // 前端使用MD5加密，后端使用SHA1加密
+        userBaseInfoDO.setPassword(EncryptUtil.getInstance().SHA1(userBaseInfoDO.getPassword()));
         BaseResult<Integer> serviceRes = userService.insertSelective(userBaseInfoDO);
         if (serviceRes != null && serviceRes.getSuccess()) {
             return BaseResult.rightReturn(true);
         }
 
         return BaseResult.errorReturn(false, StatusCodeEnum.SERVICE_ERROR, "inner service error");
+    }
+
+    /**
+     * 参数校验
+     * @param userBaseInfoDO
+     * @return
+     */
+    private boolean checkParam(UserBaseInfoDO userBaseInfoDO) {
+        return  !(userBaseInfoDO == null
+                || StringUtils.isEmpty(userBaseInfoDO.getNickName())
+                ||StringUtils.isEmpty(userBaseInfoDO.getPassword()));
     }
 
     /**
@@ -95,7 +107,8 @@ public class UserController {
 
         //验证密码是否正确
         UserBaseInfoDO dbUser = dbUserRes.getData().get(0);
-        if (!userBaseInfoDO.getPassword().equals(dbUser.getPassword())) {
+        String loginPassWord = EncryptUtil.getInstance().SHA1(userBaseInfoDO.getPassword());
+        if (!loginPassWord.equals(dbUser.getPassword())) {
             log.warn("user login refused, password is error, user is {}", JSON.toJSON(userBaseInfoDO));
             return BaseResult.errorReturn(null, StatusCodeEnum.PASSWORD_ERROR, "password error");
 
