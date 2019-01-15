@@ -8,6 +8,10 @@ import com.reading.website.api.service.UserBaseInfoService;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.biz.utils.EncryptUtil;
 import com.reading.website.biz.utils.JWTUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -26,6 +30,7 @@ import java.util.Map;
  *
  * @xyang010 2019/1/9
  */
+@Api(value = "用户相关接口", description = "UserController", tags = {"用户相关接口"})
 @RestController
 @Slf4j
 @RequestMapping("/user")
@@ -38,6 +43,7 @@ public class UserController {
      * @param userBaseInfoDO
      * @return
      */
+    @ApiOperation(value="用户注册操作", notes="注册")
     @PostMapping(value = "/register")
     public BaseResult<Boolean> register(@RequestBody UserBaseInfoDO userBaseInfoDO) {
         if (!checkParam(userBaseInfoDO)) {
@@ -71,6 +77,7 @@ public class UserController {
      * @param userBaseInfoDO
      * @return
      */
+    @ApiOperation(value="用户登录操作", notes="登录")
     @PostMapping("/login")
     public BaseResult<Map<String, Object>> login(@RequestBody UserBaseInfoDO userBaseInfoDO) {
         // 前后端两次验证，保障程序健壮性
