@@ -32,7 +32,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
     public BaseResult<Integer> insertSelective(UserBaseInfoDO record) {
         if (null == record) {
             log.warn("UserBaseInfoService insertSelective param user is null");
-            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR, "param user is null");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param user is null");
 
         }
 
@@ -40,7 +40,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
             return BaseResult.rightReturn(userBaseInfoMapper.insertSelective(record));
         } catch (Exception e) {
             log.error("UserBaseInfoService insertSelective error {}", e);
-            return BaseResult.errorReturn(null, StatusCodeEnum.MAPPER_ERROR, "mapper error");
+            return BaseResult.errorReturn(null, StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }
 
@@ -48,7 +48,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
     public BaseResult<Integer> updateByPrimaryKeySelective(UserBaseInfoDO record) {
         if (null == record) {
             log.warn("UserBaseInfoService insertSelective param user is null");
-            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR, "param user is null");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param user is null");
 
         }
 
@@ -56,7 +56,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
             return BaseResult.rightReturn(userBaseInfoMapper.updateByPrimaryKeySelective(record));
         } catch (Exception e) {
             log.error("UserBaseInfoService updateByPrimaryKeySelective error {}", e);
-            return BaseResult.errorReturn(null, StatusCodeEnum.MAPPER_ERROR, "mapper error");
+            return BaseResult.errorReturn(null, StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }
 
@@ -64,7 +64,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
     public BaseResult<List<UserBaseInfoDO>> selectSelective(UserBaseInfoQuery query) {
         if (null == query) {
             log.warn("UserBaseInfoService selectSelective param user is null");
-            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR, "param user is null");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param user is null");
 
         }
 
@@ -72,7 +72,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
             return BaseResult.rightReturn(userBaseInfoMapper.selectSelective(query));
         } catch (Exception e) {
             log.error("UserBaseInfoService selectSelective error {}", e);
-            return BaseResult.errorReturn(null, StatusCodeEnum.MAPPER_ERROR, "mapper error");
+            return BaseResult.errorReturn(null, StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }
 }

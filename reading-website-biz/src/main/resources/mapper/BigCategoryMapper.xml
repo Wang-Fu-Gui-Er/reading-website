@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reading.website.biz.mapper.BigCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.reading.website.api.domain.BigCategoryDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="isDeleted" jdbcType="BIT" property="isDeleted" />
+    <result column="cateName" jdbcType="VARCHAR" property="cateName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created, updated, isDeleted, cateName
+  </sql>
+
+  <!-- 查询所有大类 -->
+  <select id="listAll" resultMap="BaseResultMap">
+    select *
+    from BigCategory
+    where isDeleted = 0
+    order by id
+    limit 100
+  </select>
+
+  <!-- 增加 -->
+  <insert id="insertSelective" parameterType="com.reading.website.api.domain.BigCategoryDO">
+    insert into BigCategory
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="isDeleted != null">
+        isDeleted,
+      </if>
+      <if test="cateName != null">
+        cateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="cateName != null">
+        #{cateName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BigCategory
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from BigCategory
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.reading.website.api.domain.BigCategoryDO">
+    insert into BigCategory (id, created, updated, 
+      isDeleted, cateName)
+    values (#{id,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=BIT}, #{cateName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.reading.website.api.domain.BigCategoryDO">
+    update BigCategory
+    <set>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        isDeleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="cateName != null">
+        cateName = #{cateName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.reading.website.api.domain.BigCategoryDO">
+    update BigCategory
+    set created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
+      isDeleted = #{isDeleted,jdbcType=BIT},
+      cateName = #{cateName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

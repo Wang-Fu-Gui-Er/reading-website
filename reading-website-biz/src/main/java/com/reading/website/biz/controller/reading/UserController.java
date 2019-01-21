@@ -48,7 +48,7 @@ public class UserController {
     public BaseResult<Boolean> register(@RequestBody UserBaseInfoDO userBaseInfoDO) {
         if (!checkParam(userBaseInfoDO)) {
             log.warn("user register param user error");
-            return BaseResult.errorReturn(false, StatusCodeEnum.PARAM_ERROR, "param user error");
+            return BaseResult.errorReturn(false, StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
         }
 
         // 前端使用MD5加密，后端使用SHA1加密
@@ -58,7 +58,7 @@ public class UserController {
             return BaseResult.rightReturn(true);
         }
 
-        return BaseResult.errorReturn(false, StatusCodeEnum.SERVICE_ERROR, "inner service error");
+        return BaseResult.errorReturn(false, StatusCodeEnum.SERVICE_ERROR.getCode(), "inner service error");
     }
 
     /**
@@ -83,18 +83,18 @@ public class UserController {
         // 前后端两次验证，保障程序健壮性
         if (userBaseInfoDO == null) {
             log.warn("user login param user is null");
-            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR, "param user is null");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param user is null");
         }
 
         if (StringUtils.isEmpty(userBaseInfoDO.getNickName())) {
             log.warn("user login param nickName is null");
-            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR, "param nickName is null");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param nickName is null");
 
         }
 
         if (StringUtils.isEmpty(userBaseInfoDO.getPassword())) {
             log.warn("user login param password is null");
-            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR, "param password is null");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param password is null");
 
         }
 
@@ -104,12 +104,12 @@ public class UserController {
         BaseResult<List<UserBaseInfoDO>> dbUserRes = userService.selectSelective(query);
         if (!dbUserRes.getSuccess()) {
             log.warn("user login query user by nickName error, nickName is {}", query.getNickName());
-            return BaseResult.errorReturn(null, StatusCodeEnum.INNER_SERVICE_ERROR, "query user by nickName error");
+            return BaseResult.errorReturn(null, StatusCodeEnum.INNER_SERVICE_ERROR.getCode(), "query user by nickName error");
         }
 
         if (CollectionUtils.isEmpty(dbUserRes.getData())) {
             log.warn("user login query user by nickName, nickName {} not exist");
-            return BaseResult.errorReturn(null, StatusCodeEnum.NOT_FOUND, "user not found, please register!");
+            return BaseResult.errorReturn(null, StatusCodeEnum.NOT_FOUND.getCode(), "user not found, please register!");
         }
 
         //验证密码是否正确
@@ -117,7 +117,7 @@ public class UserController {
         String loginPassWord = EncryptUtil.getInstance().SHA1(userBaseInfoDO.getPassword());
         if (!loginPassWord.equals(dbUser.getPassword())) {
             log.warn("user login refused, password is error, user is {}", JSON.toJSON(userBaseInfoDO));
-            return BaseResult.errorReturn(null, StatusCodeEnum.PASSWORD_ERROR, "password error");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PASSWORD_ERROR.getCode(), "password error");
 
         }
         // 用户名，密码验证成功，
