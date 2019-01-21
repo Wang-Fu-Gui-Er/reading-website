@@ -1,6 +1,7 @@
 package com.reading.website.biz.mapper;
 
 import com.reading.website.api.domain.UserBaseInfoDO;
+import com.reading.website.api.domain.UserBaseInfoQuery;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,10 +30,9 @@ public interface UserBaseInfoMapper {
 
     /**
      * 条件查询
-     * @param record
-     * id,ids,nickName,mobileNum,weChatId,weiboName,email
+     * @param query
      * @return
      */
-    List<UserBaseInfoDO> selectSelective(UserBaseInfoDO record);
+    List<UserBaseInfoDO> selectSelective(UserBaseInfoQuery query);
 
 }

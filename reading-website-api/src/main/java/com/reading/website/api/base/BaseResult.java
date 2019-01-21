@@ -24,7 +24,7 @@ public class BaseResult<T> implements Serializable {
     /**
      * 状态码
      */
-    private String code;
+    private StatusCodeEnum code;
 
     /**
      * 信息
@@ -34,7 +34,7 @@ public class BaseResult<T> implements Serializable {
     public BaseResult() {
     }
 
-    private BaseResult(Boolean success, T data, String code, String message) {
+    private BaseResult(Boolean success, T data, StatusCodeEnum code, String message) {
         this.success = success;
         this.data = data;
         this.code = code;
@@ -42,13 +42,13 @@ public class BaseResult<T> implements Serializable {
     }
 
     public static <T> BaseResult<T> rightReturn (T data) {
-        return new BaseResult<T>(true, data, "", "");
+        return new BaseResult<T>(true, data, StatusCodeEnum.SUCCESS, "");
     }
-    public static <T> BaseResult<T> rightReturn (T data, String code, String message) {
+    public static <T> BaseResult<T> rightReturn (T data, StatusCodeEnum code, String message) {
         return new BaseResult<T>(true, data, code, message);
     }
 
-    public static <T> BaseResult<T> errorReturn (T data, String code, String message) {
+    public static <T> BaseResult<T> errorReturn (T data, StatusCodeEnum code, String message) {
         return new BaseResult<T>(false, data, code, message);
     }
 

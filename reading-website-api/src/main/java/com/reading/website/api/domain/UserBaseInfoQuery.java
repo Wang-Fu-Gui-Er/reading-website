@@ -1,55 +1,30 @@
 package com.reading.website.api.domain;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
- * 用户基础信息类
+ * 用户基本信息查询类
  *
- * @yx8102 2019/1/7
+ * @xyang010 2019/1/10
  */
-@ApiModel(value="用户对象")
 @Data
-public class UserBaseInfoDO implements Serializable {
-
+public class UserBaseInfoQuery {
     /**
      * 主键userId
      */
     private Long id;
 
     /**
-     * userId List
+     * userId列表
      */
     private List<Long> ids;
-
-    /**
-     * 创建时间
-     */
-    private Date created;
-
-    /**
-     * 修改时间
-     */
-    private Date updated;
-
-    /**
-     * 是否被删除
-     */
-    private Boolean isDeleted;
 
     /**
      * 用户昵称
      */
     private String nickName;
-
-    /**
-     * 登录密码
-     */
-    private String password;
 
     /**
      * 手机号码
@@ -72,13 +47,7 @@ public class UserBaseInfoDO implements Serializable {
     private String email;
 
     /**
-     * 头像地址
-     */
-    private String headPicPath;
-
-    /**
      * 是否是后台管理员
      */
     private Boolean isAdmin;
-
 }

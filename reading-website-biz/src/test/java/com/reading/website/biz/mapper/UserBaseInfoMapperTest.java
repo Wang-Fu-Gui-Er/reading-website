@@ -2,13 +2,12 @@ package com.reading.website.biz.mapper;
 
 
 import com.reading.website.api.domain.UserBaseInfoDO;
-import com.reading.website.api.domain.UserBaseInfoDTO;
+import com.reading.website.api.domain.UserBaseInfoQuery;
 import com.reading.website.biz.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,16 +22,14 @@ public class UserBaseInfoMapperTest extends BaseTest {
     @Test
     public void testInsertSelective() {
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
-        userBaseInfoDO.setNickName("yx8102");
+        userBaseInfoDO.setNickName("test005");
         userBaseInfoDO.setPassword("123456");
-        userBaseInfoDO.setMobileNum("123457899999");
+        userBaseInfoDO.setMobileNum("4523545");
         userBaseInfoDO.setWeiboName("杨兴哲");
-        userBaseInfoDO.setWeChatId("yx_8102");
+        userBaseInfoDO.setWeChatId("test001");
         userBaseInfoDO.setEmail("1912246570@qq.com");
         userBaseInfoDO.setHeadPicPath("user/yxhiu/4793100/dsafd.jpg");
-        userBaseInfoDO.setIsDeleted(false);
-        userBaseInfoDO.setCreated(new Date());
-        userBaseInfoDO.setUpdated(new Date());
+        userBaseInfoDO.setIsAdmin(false);
         int res = userBaseInfoMapper.insertSelective(userBaseInfoDO);
         System.out.println(res);
     }
@@ -41,22 +38,22 @@ public class UserBaseInfoMapperTest extends BaseTest {
     public void testUpdateByPrimaryKeySelective() {
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
         userBaseInfoDO.setId(1L);
-        userBaseInfoDO.setIsDeleted(false);
+        userBaseInfoDO.setIsAdmin(true);
         int res = userBaseInfoMapper.updateByPrimaryKeySelective(userBaseInfoDO);
         System.out.println(res);
     }
 
     @Test
     public void testSelectSelective() {
-        UserBaseInfoDTO userBaseInfoDTO = new UserBaseInfoDTO();
+        UserBaseInfoQuery query = new UserBaseInfoQuery();
         //userBaseInfoDTO.setId(2L);
         //userBaseInfoDTO.setNickName("yx8102");
         //userBaseInfoDTO.setMobileNum("8978687689");
         List<Long> ids = new ArrayList<>();
         ids.add(1L);
         ids.add(2L);
-        userBaseInfoDTO.setIds(ids);
-        List<UserBaseInfoDO> res = userBaseInfoMapper.selectSelective(UserBaseInfoDTO.convert2DO(userBaseInfoDTO));
+        query.setIds(ids);
+        List<UserBaseInfoDO> res = userBaseInfoMapper.selectSelective(query);
         System.out.println(res);
     }
 }

@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="475ea985-96a2-4381-8b73-d510b23bef5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/base/BaseResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/service/UserBaseInfoService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/MyBatisMapperScannerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/MyBatisModelConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/constants/ServiceCodeConstant.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/service/impl/UserBaseInfoServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/BaseTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/service/UserBaseInfoServiceTest.java" afterDir="false" />
+    <list default="true" id="475ea985-96a2-4381-8b73-d510b23bef5d" name="Default Changelist" comment="add EncryptUtil and handle password">
+      <change afterPath="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/Swagger2Config.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/reading-website-api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/reading-website-api/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reading-website-biz/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/reading-website-biz/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reading-website-biz/src/main/resources/generatorConfig.XML" beforeDir="false" afterPath="$PROJECT_DIR$/reading-website-biz/src/main/resources/generatorConfig.XML" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDO.java" beforeDir="false" afterPath="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reading-website-biz/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/reading-website-biz/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/controller/reading/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/controller/reading/UserController.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -45,102 +37,68 @@
     <session id="-74972543">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.open.time.2" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.closed" value="5" />
+          <entry key="project.open.time.1" value="3" />
+          <entry key="project.open.time.2" value="2" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="XML" value="1" />
+          <entry key="XML" value="2" />
+          <entry key="class" value="7" />
           <entry key="iml" value="1" />
-          <entry key="java" value="31" />
+          <entry key="java" value="66" />
           <entry key="pom" value="1" />
           <entry key="properties" value="1" />
-          <entry key="xml" value="10" />
+          <entry key="xml" value="19" />
           <entry key="yml" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key="CLASS" value="7" />
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="31" />
+          <entry key="JAVA" value="66" />
           <entry key="Properties" value="1" />
-          <entry key="XML" value="12" />
+          <entry key="XML" value="22" />
           <entry key="YAML" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="XML" value="109" />
-          <entry key="dummy" value="2" />
-          <entry key="java" value="39" />
-          <entry key="txt" value="42" />
-          <entry key="xml" value="144" />
+          <entry key="dummy" value="13" />
+          <entry key="java" value="3681" />
+          <entry key="txt" value="254" />
+          <entry key="xml" value="223" />
           <entry key="yml" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="39" />
-          <entry key="PLAIN_TEXT" value="44" />
-          <entry key="XML" value="253" />
+          <entry key="JAVA" value="3681" />
+          <entry key="PLAIN_TEXT" value="267" />
+          <entry key="SQL" value="4" />
+          <entry key="XML" value="328" />
           <entry key="YAML" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages">
+        <counts>
+          <entry key="git.branch.create.new" value="1" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDTO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="539">
-              <caret line="68" lean-forward="true" selection-start-line="68" selection-end-line="68" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/service/impl/UserBaseInfoServiceImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java">
+        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/controller/reading/UserController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="57" column="36" lean-forward="true" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/application.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="5" column="47" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/mapper/UserBaseInfoMapper.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="3" column="83" selection-start-line="3" selection-start-column="69" selection-end-line="3" selection-end-column="83" />
+            <state relative-caret-position="-1288">
+              <caret line="46" selection-start-line="46" selection-end-line="46" />
             </state>
           </provider>
         </entry>
@@ -148,10 +106,62 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+            <state relative-caret-position="111">
+              <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1362#1363#0" expanded="true" />
+                <element signature="e#1387#1388#0" expanded="true" />
+                <element signature="e#1421#1422#0" expanded="true" />
+                <element signature="e#1449#1450#0" expanded="true" />
+                <element signature="e#1483#1484#0" expanded="true" />
+                <element signature="e#1509#1510#0" expanded="true" />
+                <element signature="e#1551#1552#0" expanded="true" />
+                <element signature="e#1581#1582#0" expanded="true" />
+                <element signature="e#1613#1614#0" expanded="true" />
+                <element signature="e#1643#1644#0" expanded="true" />
+                <element signature="e#1687#1688#0" expanded="true" />
+                <element signature="e#1725#1726#0" expanded="true" />
+                <element signature="e#1757#1758#0" expanded="true" />
+                <element signature="e#1787#1788#0" expanded="true" />
+                <element signature="e#1831#1832#0" expanded="true" />
+                <element signature="e#1869#1870#0" expanded="true" />
+                <element signature="e#1904#1905#0" expanded="true" />
+                <element signature="e#1936#1937#0" expanded="true" />
+                <element signature="e#1983#1984#0" expanded="true" />
+                <element signature="e#2018#2019#0" expanded="true" />
+                <element signature="e#2053#2054#0" expanded="true" />
+                <element signature="e#2084#2085#0" expanded="true" />
+                <element signature="e#2132#2133#0" expanded="true" />
+                <element signature="e#2172#2173#0" expanded="true" />
+                <element signature="e#2207#2208#0" expanded="true" />
+                <element signature="e#2238#2239#0" expanded="true" />
+                <element signature="e#2286#2287#0" expanded="true" />
+                <element signature="e#2326#2327#0" expanded="true" />
+                <element signature="e#2362#2363#0" expanded="true" />
+                <element signature="e#2394#2395#0" expanded="true" />
+                <element signature="e#2444#2445#0" expanded="true" />
+                <element signature="e#2486#2487#0" expanded="true" />
+                <element signature="e#2521#2522#0" expanded="true" />
+                <element signature="e#2552#2553#0" expanded="true" />
+                <element signature="e#2600#2601#0" expanded="true" />
+                <element signature="e#2640#2641#0" expanded="true" />
+                <element signature="e#2676#2677#0" expanded="true" />
+                <element signature="e#2708#2709#0" expanded="true" />
+                <element signature="e#2758#2759#0" expanded="true" />
+                <element signature="e#2800#2801#0" expanded="true" />
+                <element signature="e#2832#2833#0" expanded="true" />
+                <element signature="e#2860#2861#0" expanded="true" />
+                <element signature="e#2902#2903#0" expanded="true" />
+                <element signature="e#2936#2937#0" expanded="true" />
+                <element signature="e#2974#2975#0" expanded="true" />
+                <element signature="e#3008#3009#0" expanded="true" />
+                <element signature="e#3062#3063#0" expanded="true" />
+                <element signature="e#3108#3109#0" expanded="true" />
+                <element signature="e#3141#3142#0" expanded="true" />
+                <element signature="e#3171#3172#0" expanded="true" />
+                <element signature="e#3214#3215#0" expanded="true" />
+                <element signature="e#3245#3246#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -160,8 +170,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/service/UserBaseInfoServiceTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1210">
-              <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+            <state relative-caret-position="84">
+              <caret line="25" column="48" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -170,28 +180,42 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/MyBatisModelConfig.java">
+        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/mapper/UserBaseInfoMapper.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="33" column="66" selection-start-line="33" selection-start-column="36" selection-end-line="33" selection-end-column="66" />
+            <state relative-caret-position="3894">
+              <caret line="177" column="16" selection-start-line="174" selection-start-column="6" selection-end-line="177" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/MyBatisMapperScannerConfig.java">
+        <entry file="file://$PROJECT_DIR$/reading-website-biz/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="19" column="51" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
+            <state relative-caret-position="1892">
+              <caret line="86" column="21" selection-start-line="76" selection-start-column="8" selection-end-line="86" selection-end-column="21" />
             </state>
           </provider>
+          <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/BaseTest.java">
+        <entry file="file://$PROJECT_DIR$/reading-website-api/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+            <state relative-caret-position="946">
+              <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+            </state>
+          </provider>
+          <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/Swagger2Config.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="230">
+              <caret line="19" column="13" lean-forward="true" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="20" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -215,34 +239,58 @@
       <find>java.ve</find>
       <find>java</find>
       <find>UserBaseInfoDO</find>
+      <find>selectSelective</find>
+      <find>ServiceCodeConstant</find>
+      <find>withClaim</find>
+      <find>&lt;for</find>
+      <find>A</find>
     </findStrings>
+    <replaceStrings>
+      <replace>StatusCodeEnum</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/reading-website-biz/pom.xml" />
         <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfo.java" />
         <option value="$PROJECT_DIR$/reading-website-biz/src/main/resources/generatorConfig.XML" />
-        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/constants/ServiceCodeConstant.java" />
         <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/base/BaseResult.java" />
-        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/base/BaseResult.java" />
         <option value="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/BaseTest.java" />
-        <option value="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/service/UserBaseInfoServiceTest.java" />
-        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/service/impl/UserBaseInfoServiceImpl.java" />
-        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDO.java" />
-        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/mapper/UserBaseInfoMapper.java" />
-        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/service/UserBaseInfoService.java" />
-        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDTO.java" />
-        <option value="$PROJECT_DIR$/reading-website-api/pom.xml" />
-        <option value="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java" />
         <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/MyBatisModelConfig.java" />
         <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/MyBatisMapperScannerConfig.java" />
         <option value="$PROJECT_DIR$/reading-website-biz/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDTO.java" />
+        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoQuery.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/mapper/UserBaseInfoMapper.java" />
         <option value="$PROJECT_DIR$/reading-website-biz/src/main/resources/mapper/UserBaseInfoMapper.xml" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/service/UserBaseInfoServiceTest.java" />
+        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/service/UserBaseInfoService.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/logic/UserLogic.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/constants/ServiceCodeConstant.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/enums/StatusCodeEnum.java" />
+        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/base/BaseResult.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/service/impl/UserBaseInfoServiceImpl.java" />
+        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/base/StatusCodeEnum.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/utils/JWTUtils.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/utils/JWTUtilTest.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/utils/JWTUtil.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/utils/EncryptUtil.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/utils/EncryptUtilTest.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/pom.xml" />
+        <option value="$PROJECT_DIR$/reading-website-api/pom.xml" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/Swagger2Config.java" />
+        <option value="$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDO.java" />
+        <option value="$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/controller/reading/UserController.java" />
       </list>
     </option>
   </component>
@@ -290,9 +338,30 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="900" />
+    <option name="height" value="824" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>Java</id>
+          </State>
+          <State>
+            <id>Probable bugsJava</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>IgnoreResultOfCall</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -301,8 +370,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -353,27 +421,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reading-website" type="462c0819:PsiDirectoryNode" />
-              <item name="reading-website-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="domain" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reading-website" type="462c0819:PsiDirectoryNode" />
-              <item name="reading-website-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
@@ -428,16 +476,6 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="biz" type="462c0819:PsiDirectoryNode" />
-              <item name="constants" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reading-website" type="462c0819:PsiDirectoryNode" />
-              <item name="reading-website-biz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="biz" type="462c0819:PsiDirectoryNode" />
               <item name="controller" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -448,17 +486,8 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="biz" type="462c0819:PsiDirectoryNode" />
-              <item name="mapper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reading-website" type="462c0819:PsiDirectoryNode" />
-              <item name="reading-website-biz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="biz" type="462c0819:PsiDirectoryNode" />
-              <item name="impl" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+              <item name="reading" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
@@ -476,56 +505,13 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="mapper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reading-website" type="462c0819:PsiDirectoryNode" />
-              <item name="reading-website-biz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reading-website" type="462c0819:PsiDirectoryNode" />
-              <item name="reading-website-biz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reading-website" type="462c0819:PsiDirectoryNode" />
-              <item name="reading-website-biz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="biz" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reading-website" type="462c0819:PsiDirectoryNode" />
-              <item name="reading-website-biz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="biz" type="462c0819:PsiDirectoryNode" />
-              <item name="mapper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reading-website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reading-website" type="462c0819:PsiDirectoryNode" />
-              <item name="reading-website-biz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="biz" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -538,7 +524,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547029568237" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547468177017" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -571,18 +557,50 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.UserBaseInfoMapperTest.testInsertSelective">
-    <configuration name="UserBaseInfoMapperTest.testInsertSelective" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Spring Boot.ReadingWebsiteBizApplication">
+    <configuration name="EncryptUtilTest.testSHA1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="reading-website-biz" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.reading.website.biz.mapper.*" />
+          <option name="PATTERN" value="com.reading.website.biz.utils.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.reading.website.biz.mapper" />
-      <option name="MAIN_CLASS_NAME" value="com.reading.website.biz.mapper.UserBaseInfoMapperTest" />
-      <option name="METHOD_NAME" value="testInsertSelective" />
+      <option name="PACKAGE_NAME" value="com.reading.website.biz.utils" />
+      <option name="MAIN_CLASS_NAME" value="com.reading.website.biz.utils.EncryptUtilTest" />
+      <option name="METHOD_NAME" value="testSHA1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JWTUtilTest.testSign" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="reading-website-biz" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.reading.website.biz.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.reading.website.biz.utils" />
+      <option name="MAIN_CLASS_NAME" value="com.reading.website.biz.utils.JWTUtilTest" />
+      <option name="METHOD_NAME" value="testSign" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JWTUtilTest.testVerify" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="reading-website-biz" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.reading.website.biz.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.reading.website.biz.utils" />
+      <option name="MAIN_CLASS_NAME" value="com.reading.website.biz.utils.JWTUtilTest" />
+      <option name="METHOD_NAME" value="testVerify" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -599,22 +617,6 @@
       <option name="PACKAGE_NAME" value="com.reading.website.biz.mapper" />
       <option name="MAIN_CLASS_NAME" value="com.reading.website.biz.mapper.UserBaseInfoMapperTest" />
       <option name="METHOD_NAME" value="testSelectSelective" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UserBaseInfoMapperTest.testUpdateByPrimaryKeySelective" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="reading-website-biz" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.reading.website.biz.mapper.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.reading.website.biz.mapper" />
-      <option name="MAIN_CLASS_NAME" value="com.reading.website.biz.mapper.UserBaseInfoMapperTest" />
-      <option name="METHOD_NAME" value="testUpdateByPrimaryKeySelective" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -645,17 +647,19 @@
     </configuration>
     <list>
       <item itemvalue="Spring Boot.ReadingWebsiteBizApplication" />
-      <item itemvalue="JUnit.UserBaseInfoServiceTest.testSelectSelective" />
       <item itemvalue="JUnit.UserBaseInfoMapperTest.testSelectSelective" />
-      <item itemvalue="JUnit.UserBaseInfoMapperTest.testUpdateByPrimaryKeySelective" />
-      <item itemvalue="JUnit.UserBaseInfoMapperTest.testInsertSelective" />
+      <item itemvalue="JUnit.UserBaseInfoServiceTest.testSelectSelective" />
+      <item itemvalue="JUnit.JWTUtilTest.testVerify" />
+      <item itemvalue="JUnit.JWTUtilTest.testSign" />
+      <item itemvalue="JUnit.EncryptUtilTest.testSHA1" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.UserBaseInfoMapperTest.testInsertSelective" />
-        <item itemvalue="JUnit.UserBaseInfoMapperTest.testUpdateByPrimaryKeySelective" />
-        <item itemvalue="JUnit.UserBaseInfoMapperTest.testSelectSelective" />
+        <item itemvalue="JUnit.EncryptUtilTest.testSHA1" />
+        <item itemvalue="JUnit.JWTUtilTest.testSign" />
+        <item itemvalue="JUnit.JWTUtilTest.testVerify" />
         <item itemvalue="JUnit.UserBaseInfoServiceTest.testSelectSelective" />
+        <item itemvalue="JUnit.UserBaseInfoMapperTest.testSelectSelective" />
       </list>
     </recent_temporary>
   </component>
@@ -670,6 +674,11 @@
       <option name="presentableId" value="Default" />
       <updated>1546932925250</updated>
       <workItem from="1546932927151" duration="1195000" />
+      <workItem from="1547107135365" duration="1659000" />
+      <workItem from="1547177468638" duration="304000" />
+      <workItem from="1547430984756" duration="25000" />
+      <workItem from="1547464148950" duration="2195000" />
+      <workItem from="1547548549524" duration="1041000" />
     </task>
     <task id="LOCAL-00001" summary="add mybatis auto created mapper and model">
       <created>1546942223647</created>
@@ -678,44 +687,96 @@
       <option name="project" value="LOCAL" />
       <updated>1546942223647</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add mybatis auto created mapper and model&#10;and config">
+      <created>1547029619779</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1547029619779</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add user mapper and mapper test">
+      <created>1547029701146</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1547029701146</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add user service and service test">
+      <created>1547029731723</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1547029731723</updated>
+    </task>
+    <task id="LOCAL-00005" summary="UserBaseInfo add is Admin">
+      <created>1547032342048</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1547032342048</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add register and login [token]">
+      <created>1547103782608</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1547103782608</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fix login result">
+      <created>1547104443931</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1547104443931</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add EncryptUtil and handle password">
+      <created>1547107567308</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1547107567308</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="UserBaseInfoServiceTest_testSelectSelective - 2019.01.09 at 18h 12m 48s.xml">
+    <history-entry file="UserBaseInfoServiceTest_testSelectSelective - 2019.01.10 at 09h 56m 40s.xml">
       <configuration name="UserBaseInfoServiceTest.testSelectSelective" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserBaseInfoServiceTest_testSelectSelective - 2019.01.09 at 18h 14m 04s.xml">
-      <configuration name="UserBaseInfoServiceTest.testSelectSelective" configurationId="JUnit" />
+    <history-entry file="JWTUtilTest_testVerify - 2019.01.10 at 13h 13m 43s.xml">
+      <configuration name="JWTUtilTest.testVerify" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserBaseInfoMapperTest_testSelectSelective - 2019.01.09 at 18h 15m 00s.xml">
-      <configuration name="UserBaseInfoMapperTest.testSelectSelective" configurationId="JUnit" />
+    <history-entry file="JWTUtilTest_testVerify - 2019.01.10 at 13h 14m 16s.xml">
+      <configuration name="JWTUtilTest.testVerify" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserBaseInfoMapperTest_testSelectSelective - 2019.01.09 at 18h 15m 34s.xml">
-      <configuration name="UserBaseInfoMapperTest.testSelectSelective" configurationId="JUnit" />
+    <history-entry file="JWTUtilTest_testSign - 2019.01.10 at 13h 16m 26s.xml">
+      <configuration name="JWTUtilTest.testSign" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserBaseInfoMapperTest_testSelectSelective - 2019.01.09 at 18h 16m 31s.xml">
-      <configuration name="UserBaseInfoMapperTest.testSelectSelective" configurationId="JUnit" />
+    <history-entry file="JWTUtilTest_testSign - 2019.01.10 at 13h 17m 59s.xml">
+      <configuration name="JWTUtilTest.testSign" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserBaseInfoMapperTest_testSelectSelective - 2019.01.09 at 18h 17m 44s.xml">
-      <configuration name="UserBaseInfoMapperTest.testSelectSelective" configurationId="JUnit" />
+    <history-entry file="JWTUtilTest_testSign - 2019.01.10 at 13h 22m 30s.xml">
+      <configuration name="JWTUtilTest.testSign" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserBaseInfoMapperTest_testSelectSelective - 2019.01.09 at 18h 20m 03s.xml">
-      <configuration name="UserBaseInfoMapperTest.testSelectSelective" configurationId="JUnit" />
+    <history-entry file="JWTUtilTest_testSign - 2019.01.10 at 13h 23m 17s.xml">
+      <configuration name="JWTUtilTest.testSign" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserBaseInfoMapperTest_testUpdateByPrimaryKeySelective - 2019.01.09 at 18h 21m 11s.xml">
-      <configuration name="UserBaseInfoMapperTest.testUpdateByPrimaryKeySelective" configurationId="JUnit" />
+    <history-entry file="JWTUtilTest_testSign - 2019.01.10 at 15h 04m 05s.xml">
+      <configuration name="JWTUtilTest.testSign" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserBaseInfoMapperTest_testInsertSelective - 2019.01.09 at 18h 21m 23s.xml">
-      <configuration name="UserBaseInfoMapperTest.testInsertSelective" configurationId="JUnit" />
+    <history-entry file="EncryptUtilTest_testSHA1 - 2019.01.10 at 15h 50m 14s.xml">
+      <configuration name="EncryptUtilTest.testSHA1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="EncryptUtilTest_testSHA1 - 2019.01.10 at 16h 04m 12s.xml">
+      <configuration name="EncryptUtilTest.testSHA1" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13222000" />
+    <option name="totallyTimeSpent" value="37196000" />
   </component>
-  <component name="TodoView" selected-index="4" />
+  <component name="TodoView" selected-index="3" />
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="6" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.35121602" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -727,7 +788,7 @@
       <window_info id="Image Layers" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" weight="0.32891566" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" weight="0.5819277" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.48795182" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -785,46 +846,77 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add mybatis auto created mapper and model" />
-    <option name="LAST_COMMIT_MESSAGE" value="add mybatis auto created mapper and model" />
+    <MESSAGE value="add mybatis auto created mapper and model&#10;and config" />
+    <MESSAGE value="add user mapper and mapper test" />
+    <MESSAGE value="add user service and service test" />
+    <MESSAGE value="UserBaseInfo add is Admin" />
+    <MESSAGE value="add register and login [token]" />
+    <MESSAGE value="fix login result" />
+    <MESSAGE value="add EncryptUtil and handle password" />
+    <option name="LAST_COMMIT_MESSAGE" value="add EncryptUtil and handle password" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/service/UserBaseInfoServiceTest.java</url>
-          <line>57</line>
+          <line>59</line>
           <properties />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java</url>
-          <line>59</line>
+          <line>56</line>
           <properties />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java</url>
-          <line>45</line>
+          <line>42</line>
           <properties />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java</url>
-          <line>36</line>
+          <line>33</line>
           <properties />
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/service/UserBaseInfoServiceTest.java</url>
+          <line>35</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java</url>
+          <line>32</line>
+          <properties />
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/utils/JWTUtilTest.java</url>
+          <line>28</line>
+          <properties />
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/utils/JWTUtilTest.java</url>
+          <line>20</line>
+          <properties />
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/utils/JWTUtilTest.java</url>
+          <line>22</line>
+          <properties />
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/mapper/verify/UserBaseInfoMapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/mapper/verify/UserBaseInfoMapper.xml" />
     <entry file="file://$PROJECT_DIR$/reading-website.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -836,12 +928,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
         </state>
       </provider>
+      <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
     </entry>
     <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/ReadingWebsiteBizApplication.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -850,127 +942,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/mapper/UserBaseInfoMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/controller/reading/A.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/mapper/UserBaseInfoDOMapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-147" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/mapper/UserBaseInfoDOMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/generatorConfig.XML">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
-          <caret line="38" column="70" selection-start-line="38" selection-start-column="70" selection-end-line="38" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/constants/ServiceCodeConstant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/base/BaseResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/base/BaseResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/service/UserBaseInfoService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="16" column="30" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/pom.xml">
-      <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="674">
-          <caret line="89" column="21" selection-start-line="82" selection-start-column="12" selection-end-line="89" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-api/pom.xml">
-      <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDTO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="539">
-          <caret line="68" lean-forward="true" selection-start-line="68" selection-end-line="68" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/controller/reading/A.java" />
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/mapper/UserBaseInfoDOMapper.xml" />
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/mapper/UserBaseInfoDOMapper.java" />
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/base/BaseResult.java" />
     <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/BaseTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
           <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/service/UserBaseInfoServiceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1210">
-          <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/service/impl/UserBaseInfoServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -995,20 +974,167 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/generatorConfig.XML">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="17" column="27" lean-forward="true" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/uiDesigner.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1757" />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../mavenRepository/junit/junit/4.12/junit-4.12.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../mavenRepository/junit/junit/4.12/junit-4.12.jar!/org/junit/runners/model/FrameworkMethod.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/mapper/UserBaseInfoMapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+        <state relative-caret-position="614">
+          <caret line="35" column="64" lean-forward="true" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDO.java">
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/logic/UserLogic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/constants/ServiceCodeConstant.java" />
+    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/service/UserBaseInfoService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="582">
+          <caret line="36" column="4" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/util/List.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="543" column="6" selection-start-line="543" selection-start-column="6" selection-end-line="543" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../mavenRepository/com/auth0/java-jwt/3.4.1/java-jwt-3.4.1.jar!/com/auth0/jwt/JWT.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="26" column="27" lean-forward="true" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../mavenRepository/com/auth0/java-jwt/3.4.1/java-jwt-3.4.1.jar!/com/auth0/jwt/JWTVerifier.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="40" column="21" selection-start-line="40" selection-start-column="11" selection-end-line="40" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../mavenRepository/com/auth0/java-jwt/3.4.1/java-jwt-3.4.1.jar!/com/auth0/jwt/interfaces/DecodedJWT.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../mavenRepository/com/auth0/java-jwt/3.4.1/java-jwt-3.4.1.jar!/com/auth0/jwt/JWTCreator.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="120" column="43" selection-start-line="120" selection-start-column="34" selection-end-line="120" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDTO.java" />
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/utils/EncryptUtilTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/utils/JWTUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/utils/JWTUtilTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="17" column="33" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/base/BaseResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="814">
+          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/base/StatusCodeEnum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="22" column="34" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/service/impl/UserBaseInfoServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1254">
+          <caret line="57" column="12" selection-start-line="57" selection-start-column="12" selection-end-line="57" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/security/MessageDigest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+          <caret line="408" column="18" selection-start-line="408" selection-start-column="18" selection-end-line="408" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/utils/EncryptUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="58" column="31" lean-forward="true" selection-start-line="58" selection-start-column="31" selection-end-line="58" selection-end-column="31" />
+          <folding>
+            <element signature="e#5561#5562#0" expanded="true" />
+            <element signature="e#5608#5609#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="12" column="30" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1017,18 +1143,113 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/resources/mapper/UserBaseInfoMapper.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="83" selection-start-line="3" selection-start-column="69" selection-end-line="3" selection-end-column="83" />
+        <state relative-caret-position="3894">
+          <caret line="177" column="16" selection-start-line="174" selection-start-column="6" selection-end-line="177" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/mapper/UserBaseInfoMapperTest.java">
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="57" column="36" lean-forward="true" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
+        <state relative-caret-position="1892">
+          <caret line="86" column="21" selection-start-line="76" selection-start-column="8" selection-end-line="86" selection-end-column="21" />
+        </state>
+      </provider>
+      <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-api/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="946">
+          <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+        </state>
+      </provider>
+      <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/test/java/com/reading/website/biz/service/UserBaseInfoServiceTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="25" column="48" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/configure/Swagger2Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="19" column="13" lean-forward="true" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-api/src/main/java/com/reading/website/api/domain/UserBaseInfoDO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1362#1363#0" expanded="true" />
+            <element signature="e#1387#1388#0" expanded="true" />
+            <element signature="e#1421#1422#0" expanded="true" />
+            <element signature="e#1449#1450#0" expanded="true" />
+            <element signature="e#1483#1484#0" expanded="true" />
+            <element signature="e#1509#1510#0" expanded="true" />
+            <element signature="e#1551#1552#0" expanded="true" />
+            <element signature="e#1581#1582#0" expanded="true" />
+            <element signature="e#1613#1614#0" expanded="true" />
+            <element signature="e#1643#1644#0" expanded="true" />
+            <element signature="e#1687#1688#0" expanded="true" />
+            <element signature="e#1725#1726#0" expanded="true" />
+            <element signature="e#1757#1758#0" expanded="true" />
+            <element signature="e#1787#1788#0" expanded="true" />
+            <element signature="e#1831#1832#0" expanded="true" />
+            <element signature="e#1869#1870#0" expanded="true" />
+            <element signature="e#1904#1905#0" expanded="true" />
+            <element signature="e#1936#1937#0" expanded="true" />
+            <element signature="e#1983#1984#0" expanded="true" />
+            <element signature="e#2018#2019#0" expanded="true" />
+            <element signature="e#2053#2054#0" expanded="true" />
+            <element signature="e#2084#2085#0" expanded="true" />
+            <element signature="e#2132#2133#0" expanded="true" />
+            <element signature="e#2172#2173#0" expanded="true" />
+            <element signature="e#2207#2208#0" expanded="true" />
+            <element signature="e#2238#2239#0" expanded="true" />
+            <element signature="e#2286#2287#0" expanded="true" />
+            <element signature="e#2326#2327#0" expanded="true" />
+            <element signature="e#2362#2363#0" expanded="true" />
+            <element signature="e#2394#2395#0" expanded="true" />
+            <element signature="e#2444#2445#0" expanded="true" />
+            <element signature="e#2486#2487#0" expanded="true" />
+            <element signature="e#2521#2522#0" expanded="true" />
+            <element signature="e#2552#2553#0" expanded="true" />
+            <element signature="e#2600#2601#0" expanded="true" />
+            <element signature="e#2640#2641#0" expanded="true" />
+            <element signature="e#2676#2677#0" expanded="true" />
+            <element signature="e#2708#2709#0" expanded="true" />
+            <element signature="e#2758#2759#0" expanded="true" />
+            <element signature="e#2800#2801#0" expanded="true" />
+            <element signature="e#2832#2833#0" expanded="true" />
+            <element signature="e#2860#2861#0" expanded="true" />
+            <element signature="e#2902#2903#0" expanded="true" />
+            <element signature="e#2936#2937#0" expanded="true" />
+            <element signature="e#2974#2975#0" expanded="true" />
+            <element signature="e#3008#3009#0" expanded="true" />
+            <element signature="e#3062#3063#0" expanded="true" />
+            <element signature="e#3108#3109#0" expanded="true" />
+            <element signature="e#3141#3142#0" expanded="true" />
+            <element signature="e#3171#3172#0" expanded="true" />
+            <element signature="e#3214#3215#0" expanded="true" />
+            <element signature="e#3245#3246#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reading-website-biz/src/main/java/com/reading/website/biz/controller/reading/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1288">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
         </state>
       </provider>
     </entry>

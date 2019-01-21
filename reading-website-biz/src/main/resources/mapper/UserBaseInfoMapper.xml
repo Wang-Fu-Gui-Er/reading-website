@@ -13,11 +13,12 @@
     <result column="weiboName" property="weiboName" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="headPicPath" property="headPicPath" jdbcType="VARCHAR" />
+    <result column="isAdmin" property="isAdmin" jdbcType="BIT" />
   </resultMap>
 
   <sql id="Base_Column_List" >
     id, created, updated, isDeleted, nickName, password, mobileNum, weChatId, weiboName,
-    email, headPicPath
+    email, headPicPath, isAdmin
   </sql>
 
   <!-- 增加 -->
@@ -57,6 +58,9 @@
       <if test="headPicPath != null" >
         headPicPath,
       </if>
+      <if test="isAdmin != null" >
+        isAdmin,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -91,6 +95,9 @@
       </if>
       <if test="headPicPath != null" >
         #{headPicPath,jdbcType=VARCHAR},
+      </if>
+      <if test="isAdmin != null">
+        #{isAdmin,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -129,12 +136,15 @@
       <if test="headPicPath != null" >
         headPicPath = #{headPicPath,jdbcType=VARCHAR},
       </if>
+      <if test="isAdmin != null">
+        isAdmin = #{isAdmin,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
 
   <!-- 条件查询 -->
-  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.UserBaseInfoDO" >
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.UserBaseInfoQuery" >
     select
     <include refid="Base_Column_List" />
     from UserBaseInfo
@@ -166,6 +176,9 @@
       <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
         #{item}
       </foreach>
+    </if>
+    <if test="isAdmin != null">
+      and isAdmin = #{isAdmin,jdbcType=BIT}
     </if>
   </sql>
 
