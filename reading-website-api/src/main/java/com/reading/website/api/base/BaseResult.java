@@ -31,6 +31,11 @@ public class BaseResult<T> implements Serializable {
      */
     private String message;
 
+    /**
+     * 分页信息
+     */
+    private Page page;
+
     public BaseResult() {
     }
 
@@ -41,9 +46,21 @@ public class BaseResult<T> implements Serializable {
         this.message = message;
     }
 
+    private BaseResult(Boolean success, T data, int code, String message, Page page) {
+        this.success = success;
+        this.data = data;
+        this.code = code;
+        this.message = message;
+        this.page = page;
+    }
     public static <T> BaseResult<T> rightReturn (T data) {
         return new BaseResult<T>(true, data, StatusCodeEnum.SUCCESS.getCode(), "");
     }
+
+    public static <T> BaseResult<T> rightReturn (T data, Page page) {
+        return new BaseResult<T>(true, data, StatusCodeEnum.SUCCESS.getCode(), "", page);
+    }
+
     public static <T> BaseResult<T> rightReturn (T data, int code, String message) {
         return new BaseResult<T>(true, data, code, message);
     }

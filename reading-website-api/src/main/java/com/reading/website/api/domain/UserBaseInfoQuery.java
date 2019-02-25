@@ -1,5 +1,6 @@
 package com.reading.website.api.domain;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  *
  * @xyang010 2019/1/10
  */
+@ApiModel(value="用户基本信息查询对象")
 @Data
 public class UserBaseInfoQuery {
     /**
