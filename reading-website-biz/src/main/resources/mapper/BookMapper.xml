@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reading.website.biz.mapper.BookMapper">
+  <resultMap id="BaseResultMap" type="com.reading.website.api.domain.BookDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="isDeleted" jdbcType="BIT" property="isDeleted" />
+    <result column="bookName" jdbcType="VARCHAR" property="bookName" />
+    <result column="bookPic" jdbcType="VARCHAR" property="bookPic" />
+    <result column="authorId" jdbcType="INTEGER" property="authorId" />
+    <result column="authorName" jdbcType="VARCHAR" property="authorName" />
+    <result column="isPublished" jdbcType="BIT" property="isPublished" />
+    <result column="isOver" jdbcType="BIT" property="isOver" />
+    <result column="smallCateId" jdbcType="INTEGER" property="smallCateId" />
+    <result column="bookPath" jdbcType="VARCHAR" property="bookPath" />
+    <result column="buyPath" jdbcType="VARCHAR" property="buyPath" />
+    <result column="postedTime" jdbcType="TIMESTAMP" property="postedTime" />
+    <result column="bookDesc" jdbcType="VARCHAR" property="bookDesc" />
+    <result column="ext" jdbcType="VARCHAR" property="ext" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created, updated, isDeleted, bookName, bookPic, authorId, authorName, isPublished, 
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext
+  </sql>
+  
+  <!-- 查询最新的书籍 -->
+  <select id="listNewlyBooks" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Book
+    where isDeleted = 0
+    order by postedTime desc
+    limit 50
+  </select>
+  
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.BookQuery">
+    select
+    <include refid="Base_Column_List" />
+    from Book
+    <include refid="whereClause"/>
+    limit #{offset},#{pageSize}
+  </select>
+  
+  <sql id="whereClause">
+    where isDeleted = 0
+    <if test="smallCateId != null">
+      and smallCateId = #{smallCateId}
+    </if>
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Book
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Book
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.reading.website.api.domain.BookDO">
+    insert into Book (id, created, updated, 
+      isDeleted, bookName, bookPic, 
+      authorId, authorName, isPublished, 
+      isOver, smallCateId, bookPath, 
+      buyPath, postedTime, bookDesc, 
+      ext)
+    values (#{id,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=BIT}, #{bookName,jdbcType=VARCHAR}, #{bookPic,jdbcType=VARCHAR}, 
+      #{authorId,jdbcType=INTEGER}, #{authorName,jdbcType=VARCHAR}, #{isPublished,jdbcType=BIT}, 
+      #{isOver,jdbcType=BIT}, #{smallCateId,jdbcType=INTEGER}, #{bookPath,jdbcType=VARCHAR}, 
+      #{buyPath,jdbcType=VARCHAR}, #{postedTime,jdbcType=TIMESTAMP}, #{bookDesc,jdbcType=VARCHAR}, 
+      #{ext,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.reading.website.api.domain.BookDO">
+    insert into Book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="isDeleted != null">
+        isDeleted,
+      </if>
+      <if test="bookName != null">
+        bookName,
+      </if>
+      <if test="bookPic != null">
+        bookPic,
+      </if>
+      <if test="authorId != null">
+        authorId,
+      </if>
+      <if test="authorName != null">
+        authorName,
+      </if>
+      <if test="isPublished != null">
+        isPublished,
+      </if>
+      <if test="isOver != null">
+        isOver,
+      </if>
+      <if test="smallCateId != null">
+        smallCateId,
+      </if>
+      <if test="bookPath != null">
+        bookPath,
+      </if>
+      <if test="buyPath != null">
+        buyPath,
+      </if>
+      <if test="postedTime != null">
+        postedTime,
+      </if>
+      <if test="bookDesc != null">
+        bookDesc,
+      </if>
+      <if test="ext != null">
+        ext,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="bookName != null">
+        #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPic != null">
+        #{bookPic,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null">
+        #{authorId,jdbcType=INTEGER},
+      </if>
+      <if test="authorName != null">
+        #{authorName,jdbcType=VARCHAR},
+      </if>
+      <if test="isPublished != null">
+        #{isPublished,jdbcType=BIT},
+      </if>
+      <if test="isOver != null">
+        #{isOver,jdbcType=BIT},
+      </if>
+      <if test="smallCateId != null">
+        #{smallCateId,jdbcType=INTEGER},
+      </if>
+      <if test="bookPath != null">
+        #{bookPath,jdbcType=VARCHAR},
+      </if>
+      <if test="buyPath != null">
+        #{buyPath,jdbcType=VARCHAR},
+      </if>
+      <if test="postedTime != null">
+        #{postedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookDesc != null">
+        #{bookDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ext != null">
+        #{ext,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.reading.website.api.domain.BookDO">
+    update Book
+    <set>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        isDeleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="bookName != null">
+        bookName = #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPic != null">
+        bookPic = #{bookPic,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null">
+        authorId = #{authorId,jdbcType=INTEGER},
+      </if>
+      <if test="authorName != null">
+        authorName = #{authorName,jdbcType=VARCHAR},
+      </if>
+      <if test="isPublished != null">
+        isPublished = #{isPublished,jdbcType=BIT},
+      </if>
+      <if test="isOver != null">
+        isOver = #{isOver,jdbcType=BIT},
+      </if>
+      <if test="smallCateId != null">
+        smallCateId = #{smallCateId,jdbcType=INTEGER},
+      </if>
+      <if test="bookPath != null">
+        bookPath = #{bookPath,jdbcType=VARCHAR},
+      </if>
+      <if test="buyPath != null">
+        buyPath = #{buyPath,jdbcType=VARCHAR},
+      </if>
+      <if test="postedTime != null">
+        postedTime = #{postedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookDesc != null">
+        bookDesc = #{bookDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ext != null">
+        ext = #{ext,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.reading.website.api.domain.BookDO">
+    update Book
+    set created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
+      isDeleted = #{isDeleted,jdbcType=BIT},
+      bookName = #{bookName,jdbcType=VARCHAR},
+      bookPic = #{bookPic,jdbcType=VARCHAR},
+      authorId = #{authorId,jdbcType=INTEGER},
+      authorName = #{authorName,jdbcType=VARCHAR},
+      isPublished = #{isPublished,jdbcType=BIT},
+      isOver = #{isOver,jdbcType=BIT},
+      smallCateId = #{smallCateId,jdbcType=INTEGER},
+      bookPath = #{bookPath,jdbcType=VARCHAR},
+      buyPath = #{buyPath,jdbcType=VARCHAR},
+      postedTime = #{postedTime,jdbcType=TIMESTAMP},
+      bookDesc = #{bookDesc,jdbcType=VARCHAR},
+      ext = #{ext,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
