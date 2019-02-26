@@ -52,4 +52,9 @@ public class UserBaseInfoQuery {
      * 是否是后台管理员
      */
     private Boolean isAdmin;
+
+    /**
+     * 用户状态：0未激活，1正常
+     */
+    private Integer status;
 }

@@ -23,11 +23,11 @@ public class JWTUtil {
 
     /**
      * 生成token
-     * @param nickName
+     * @param email
      * @param userId
      * @return
      */
-    public static String sign(String nickName, Long userId) {
+    public static String sign(String email, Long userId) {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             //设置私钥及加密算法
@@ -37,12 +37,12 @@ public class JWTUtil {
             header.put("alg", "HS256");
             return JWT.create()
                     .withHeader(header)
-                    .withClaim("nickName", nickName)
+                    .withClaim("email", email)
                     .withClaim("userId", userId)
                     .withExpiresAt(date)
                     .sign(algorithm);
         } catch (Exception e) {
-            log.error("create token error, nickName is {}, userId is {}, error is {}", nickName, userId, e);
+            log.error("create token error, email is {}, userId is {}, error is {}", email, userId, e);
             return "";
         }
     }

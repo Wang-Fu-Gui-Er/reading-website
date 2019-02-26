@@ -6,20 +6,19 @@ import com.reading.website.api.domain.UserBaseInfoDO;
 import com.reading.website.api.domain.UserBaseInfoQuery;
 import com.reading.website.api.service.UserBaseInfoService;
 import com.reading.website.api.base.StatusCodeEnum;
+import com.reading.website.biz.common.mail.MailService;
+import com.reading.website.biz.utils.EhcacheUtil;
 import com.reading.website.biz.utils.EncryptUtil;
 import com.reading.website.biz.utils.JWTUtil;
+import com.reading.website.biz.utils.VerificationCodeUtil;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,27 +37,95 @@ public class UserController {
     @Autowired
     private UserBaseInfoService userService;
 
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private EhcacheUtil cache;
+
     /**
      * 用户注册
-     * @param userBaseInfoDO
+     * @param userBaseInfoDO email,password
      * @return
      */
     @ApiOperation(value="用户注册操作", notes="注册")
     @PostMapping(value = "/register")
-    public BaseResult<Boolean> register(@RequestBody UserBaseInfoDO userBaseInfoDO) {
+    public BaseResult<String> register(@RequestBody UserBaseInfoDO userBaseInfoDO) {
         if (!checkParam(userBaseInfoDO)) {
             log.warn("user register param user error");
-            return BaseResult.errorReturn(false, StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
         }
 
+        // status = 0 todo
         // 前端使用MD5加密，后端使用SHA1加密
         userBaseInfoDO.setPassword(EncryptUtil.getInstance().SHA1(userBaseInfoDO.getPassword()));
         BaseResult<Integer> serviceRes = userService.insertSelective(userBaseInfoDO);
         if (serviceRes != null && serviceRes.getSuccess()) {
-            return BaseResult.rightReturn(true);
+            return BaseResult.rightReturn(userBaseInfoDO.getEmail());
         }
 
-        return BaseResult.errorReturn(false, StatusCodeEnum.SERVICE_ERROR.getCode(), "inner service error");
+        return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "inner service error");
+    }
+
+    /**
+     * 发送邮件验证码接口
+     * @param email 用户邮箱地址
+     * @param type 邮件校验码类型
+     * @return
+     */
+    @ApiOperation(value="发送邮件验证码接口", notes="发送邮件验证码接口")
+    @GetMapping(value = "/verifyCode/send")
+    public BaseResult sendVerifyCode(@Param("email") String email, @Param("type") Integer type) {
+        if (StringUtils.isEmpty(email) || type == null) {
+            log.warn("user sendVerificationCode param error");
+            return BaseResult.errorReturn(false, StatusCodeEnum.PARAM_ERROR.getCode(), "userId null");
+
+        }
+
+        // 生成验证码
+        String verificationCode = VerificationCodeUtil.createVerificationCode();
+
+        // 放入缓存中
+        cache.put(EhcacheUtil.VERIFY_CODE_CACHE, email, verificationCode);
+
+        // 拼装邮件信息
+        String subject = "";
+        String content = "";
+        // 根据邮件类型，设置文案
+        switch (type) {
+            case 0: {   // 注册激活
+                subject = "【图书阅读网站】用户注册激活邮件";
+                content = "用户您好，欢迎使用图书阅读网站，验证码为:" + verificationCode;
+                break;
+            }
+        }
+        BaseResult result = mailService.send(email, subject, content);
+        if (!result.getSuccess()) {
+            log.warn("发送邮件验证码失败");
+        }
+        return result;
+    }
+
+
+    /**
+     * 邮件验证接口
+     * @param email 邮箱地址
+     * @return
+     */
+    @ApiOperation(value="用户操作验证接口", notes="用户操作验证接口")
+    @GetMapping(value = "/verifyCode/check")
+    public BaseResult<Boolean> checkVerifyCode(@Param("email") String email, @Param("verifyCode") String verifyCode) {
+        if (StringUtils.isEmpty(email) || StringUtils.isEmpty(verifyCode)) {
+            log.warn("user checkVerifyCode param error");
+            return BaseResult.errorReturn(false, StatusCodeEnum.PARAM_ERROR.getCode(), "checkVerifyCode param null");
+
+        }
+        Object verifyCodeCache = cache.get(EhcacheUtil.VERIFY_CODE_CACHE, email);
+        if (verifyCode.equals(String.valueOf(verifyCodeCache))) {
+            // status = 1 todo
+            return BaseResult.rightReturn(true);
+        }
+        return BaseResult.rightReturn(false);
     }
 
     /**
@@ -68,7 +135,7 @@ public class UserController {
      */
     private boolean checkParam(UserBaseInfoDO userBaseInfoDO) {
         return  !(userBaseInfoDO == null
-                || StringUtils.isEmpty(userBaseInfoDO.getNickName())
+                || StringUtils.isEmpty(userBaseInfoDO.getEmail())
                 ||StringUtils.isEmpty(userBaseInfoDO.getPassword()));
     }
 
@@ -86,9 +153,9 @@ public class UserController {
             return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param user is null");
         }
 
-        if (StringUtils.isEmpty(userBaseInfoDO.getNickName())) {
-            log.warn("user login param nickName is null");
-            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param nickName is null");
+        if (StringUtils.isEmpty(userBaseInfoDO.getEmail())) {
+            log.warn("user login param email is null");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param email is null");
 
         }
 
@@ -98,17 +165,17 @@ public class UserController {
 
         }
 
-        // 验证用户是否存在 用户名
+        // 验证用户是否存在 邮箱地址
         UserBaseInfoQuery query = new UserBaseInfoQuery();
-        query.setNickName(userBaseInfoDO.getNickName());
+        query.setEmail(userBaseInfoDO.getEmail());
         BaseResult<List<UserBaseInfoDO>> dbUserRes = userService.selectSelective(query);
         if (!dbUserRes.getSuccess()) {
-            log.warn("user login query user by nickName error, nickName is {}", query.getNickName());
-            return BaseResult.errorReturn(null, StatusCodeEnum.INNER_SERVICE_ERROR.getCode(), "query user by nickName error");
+            log.warn("user login query user by email error, email is {}", query.getNickName());
+            return BaseResult.errorReturn(null, StatusCodeEnum.INNER_SERVICE_ERROR.getCode(), "query user by email error");
         }
 
         if (CollectionUtils.isEmpty(dbUserRes.getData())) {
-            log.warn("user login query user by nickName, nickName {} not exist");
+            log.warn("user login query user by email, email {} not exist");
             return BaseResult.errorReturn(null, StatusCodeEnum.NOT_FOUND.getCode(), "user not found, please register!");
         }
 
@@ -120,10 +187,11 @@ public class UserController {
             return BaseResult.errorReturn(null, StatusCodeEnum.PASSWORD_ERROR.getCode(), "password error");
 
         }
-        // 用户名，密码验证成功，
-        String token = JWTUtil.sign(dbUser.getNickName(), dbUser.getId());
+
+        // 邮箱，密码验证成功，
+        String token = JWTUtil.sign(dbUser.getEmail(), dbUser.getId());
         if (StringUtils.isEmpty(token)) {
-            log.warn("user login refused, password is error, user is {}", JSON.toJSON(userBaseInfoDO));
+            log.warn("user login create token error, user is {}", userBaseInfoDO);
         }
         Map<String, Object> res = new HashMap<>();
         res.put("userBaseInfo", dbUser);

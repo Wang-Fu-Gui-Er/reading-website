@@ -15,7 +15,8 @@ public enum  StatusCodeEnum {
     LOGIC_ERROR(1005, "LOGIC_ERROR"),
     INNER_SERVICE_ERROR(1006, "INNER_SERVICE_ERROR"),
     NOT_FOUND(1007, "NOT_FOUND"),
-    PASSWORD_ERROR(1008, "PASSWORD_ERROR");
+    PASSWORD_ERROR(1008, "PASSWORD_ERROR"),
+    EMAIL_ERROR(1009, "EMAIL_ERROR");
 
     private Integer code;
     private String mark;
