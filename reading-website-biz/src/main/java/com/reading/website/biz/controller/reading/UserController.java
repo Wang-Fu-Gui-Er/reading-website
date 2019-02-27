@@ -56,9 +56,14 @@ public class UserController {
             log.warn("user register param user error");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
         }
+        // 注册之前先查询、该邮箱是否已被注册 todo
 
         //设置用户状态为 未激活
         userBaseInfoDO.setStatus(UserStatusConstant.INACTIVE);
+
+        //设置默认用户昵称
+        userBaseInfoDO.setNickName(userBaseInfoDO.getEmail());
+
         // 前端使用MD5加密，后端使用SHA1加密
         userBaseInfoDO.setPassword(EncryptUtil.getInstance().SHA1(userBaseInfoDO.getPassword()));
         BaseResult<Integer> serviceRes = userService.insertSelective(userBaseInfoDO);
@@ -72,7 +77,7 @@ public class UserController {
     /**
      * 发送邮件验证码接口
      * @param email 用户邮箱地址
-     * @param type 邮件校验码类型
+     * @param type 邮件校验码类型 0注册校验，1重置密码校验
      * @return
      */
     @ApiOperation(value="发送邮件验证码接口", notes="发送邮件验证码接口")
@@ -96,8 +101,13 @@ public class UserController {
         // 根据邮件类型，设置文案
         switch (type) {
             case 0: {   // 注册激活
-                subject = "【图书阅读网站】用户注册激活邮件";
-                content = "用户您好，欢迎使用图书阅读网站，验证码为:" + verificationCode;
+                subject = "【图书阅读网站】注册激活邮件";
+                content = "您好，欢迎使用图书阅读网站，验证码为:" + verificationCode;
+                break;
+            }
+            case 1: {
+                subject = "【图书阅读网站】找回密码";
+                content = "您好，您正在进行重置密码，验证码为:" + verificationCode;
                 break;
             }
         }
@@ -116,28 +126,43 @@ public class UserController {
      */
     @ApiOperation(value="用户操作验证接口", notes="用户操作验证接口")
     @GetMapping(value = "/verifyCode/check")
-    public BaseResult<Boolean> checkVerifyCode(@Param("email") String email, @Param("verifyCode") String verifyCode) {
+    public BaseResult<String> checkVerifyCode(@Param("email") String email,
+                                              @Param("verifyCode") String verifyCode,
+                                              @Param("type") Integer type) {
         if (StringUtils.isEmpty(email) || StringUtils.isEmpty(verifyCode)) {
             log.warn("user checkVerifyCode param error");
-            return BaseResult.errorReturn(false, StatusCodeEnum.PARAM_ERROR.getCode(), "checkVerifyCode param null");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "checkVerifyCode param null");
 
         }
         Object verifyCodeCache = cache.get(EhcacheUtil.VERIFY_CODE_CACHE, email);
-        if (verifyCode.equals(String.valueOf(verifyCodeCache))) {
-            // 更改用户状态为正常
-            UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
-            userBaseInfoDO.setStatus(UserStatusConstant.NORMAL);
-            userBaseInfoDO.setEmail(email);
-            BaseResult<Integer> updateRes = userService.updateByEmailSelective(userBaseInfoDO);
-            if (updateRes.getSuccess()) {
-                log.info("激活用户状态成功");
-                return BaseResult.rightReturn(true);
-            } else {
-                log.warn("激活用户状态失败");
-                return BaseResult.rightReturn(false);
+        switch (type) {
+            case 0:{
+                if (verifyCode.equals(String.valueOf(verifyCodeCache))) {
+                    // 更改用户状态为正常
+                    UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
+                    userBaseInfoDO.setStatus(UserStatusConstant.NORMAL);
+                    userBaseInfoDO.setEmail(email);
+                    BaseResult<Integer> updateRes = userService.updateByEmailSelective(userBaseInfoDO);
+                    if (updateRes.getSuccess()) {
+                        log.info("激活用户状态成功");
+                        return BaseResult.rightReturn(email);
+                    } else {
+                        log.warn("激活用户状态失败");
+                        return BaseResult.rightReturn(null);
+                    }
+                }
+                log.warn("验证码错误");
+                break;
+            }
+            case 1: {
+                if (verifyCode.equals(String.valueOf(verifyCodeCache))) {
+                    return BaseResult.rightReturn(email);
+                }
+                log.warn("验证码错误");
+                break;
             }
         }
-        return BaseResult.rightReturn(false);
+        return BaseResult.rightReturn(null);
     }
 
     /**
@@ -196,7 +221,7 @@ public class UserController {
         String loginPassWord = EncryptUtil.getInstance().SHA1(userBaseInfoDO.getPassword());
         if (!loginPassWord.equals(dbUser.getPassword())) {
             log.warn("user login refused, password is error, user is {}", JSON.toJSON(userBaseInfoDO));
-            return BaseResult.errorReturn(null, StatusCodeEnum.PASSWORD_ERROR.getCode(), "password error");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PASSWORD_ERROR.getCode(), "密码错误");
 
         }
 
@@ -209,6 +234,25 @@ public class UserController {
         res.put("userBaseInfo", dbUser);
         res.put("token", token);
         return BaseResult.rightReturn(res);
+    }
+
+
+    @ApiOperation(value="重置密码", notes="重置密码")
+    @PostMapping("/resetPassword")
+    public BaseResult<Boolean> resetPassword(@RequestBody UserBaseInfoDO userBaseInfoDO) {
+        // 参数校验
+        if (!checkParam(userBaseInfoDO)) {
+            log.warn("user resetPassword param user error");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
+        }
+
+        // 前端使用MD5加密，后端使用SHA1加密
+        userBaseInfoDO.setPassword(EncryptUtil.getInstance().SHA1(userBaseInfoDO.getEmail()));
+        BaseResult<Integer> updateRes = userService.updateByEmailSelective(userBaseInfoDO);
+        if (updateRes.getSuccess()) {
+            return BaseResult.rightReturn(true);
+        }
+        return BaseResult.errorReturn(false, StatusCodeEnum.SERVICE_ERROR.getCode(), "重置密码失败");
     }
 
 }
