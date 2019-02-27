@@ -111,7 +111,7 @@
   </insert>
 
   <!-- 根据id更新 -->
-  <update id="updateByPrimaryKeySelective" parameterType="com.reading.website.api.domain.UserBaseInfoDO" >
+  <update id="updateByEmailSelective" parameterType="com.reading.website.api.domain.UserBaseInfoDO" >
     update UserBaseInfo
     <set >
       <if test="created != null" >
@@ -138,9 +138,6 @@
       <if test="weiboName != null" >
         weiboName = #{weiboName,jdbcType=VARCHAR},
       </if>
-      <if test="email != null" >
-        email = #{email,jdbcType=VARCHAR},
-      </if>
       <if test="headPicPath != null" >
         headPicPath = #{headPicPath,jdbcType=VARCHAR},
       </if>
@@ -151,7 +148,7 @@
         status = #{status,jdbcType=INTEGER}
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where email = #{email,jdbcType=VARCHAR}
   </update>
 
   <!-- 条件查询 -->

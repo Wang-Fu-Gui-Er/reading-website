@@ -2,6 +2,7 @@ package com.reading.website.biz.controller.reading;
 
 import com.alibaba.fastjson.JSON;
 import com.reading.website.api.base.BaseResult;
+import com.reading.website.api.constants.UserStatusConstant;
 import com.reading.website.api.domain.UserBaseInfoDO;
 import com.reading.website.api.domain.UserBaseInfoQuery;
 import com.reading.website.api.service.UserBaseInfoService;
@@ -56,7 +57,8 @@ public class UserController {
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
         }
 
-        // status = 0 todo
+        //设置用户状态为 未激活
+        userBaseInfoDO.setStatus(UserStatusConstant.INACTIVE);
         // 前端使用MD5加密，后端使用SHA1加密
         userBaseInfoDO.setPassword(EncryptUtil.getInstance().SHA1(userBaseInfoDO.getPassword()));
         BaseResult<Integer> serviceRes = userService.insertSelective(userBaseInfoDO);
@@ -122,8 +124,18 @@ public class UserController {
         }
         Object verifyCodeCache = cache.get(EhcacheUtil.VERIFY_CODE_CACHE, email);
         if (verifyCode.equals(String.valueOf(verifyCodeCache))) {
-            // status = 1 todo
-            return BaseResult.rightReturn(true);
+            // 更改用户状态为正常
+            UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
+            userBaseInfoDO.setStatus(UserStatusConstant.NORMAL);
+            userBaseInfoDO.setEmail(email);
+            BaseResult<Integer> updateRes = userService.updateByEmailSelective(userBaseInfoDO);
+            if (updateRes.getSuccess()) {
+                log.info("激活用户状态成功");
+                return BaseResult.rightReturn(true);
+            } else {
+                log.warn("激活用户状态失败");
+                return BaseResult.rightReturn(false);
+            }
         }
         return BaseResult.rightReturn(false);
     }

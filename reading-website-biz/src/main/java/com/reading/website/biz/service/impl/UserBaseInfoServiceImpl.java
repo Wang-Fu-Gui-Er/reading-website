@@ -45,7 +45,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
     }
 
     @Override
-    public BaseResult<Integer> updateByPrimaryKeySelective(UserBaseInfoDO record) {
+    public BaseResult<Integer> updateByEmailSelective(UserBaseInfoDO record) {
         if (null == record) {
             log.warn("UserBaseInfoService insertSelective param user is null");
             return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param user is null");
@@ -53,7 +53,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
         }
 
         try {
-            return BaseResult.rightReturn(userBaseInfoMapper.updateByPrimaryKeySelective(record));
+            return BaseResult.rightReturn(userBaseInfoMapper.updateByEmailSelective(record));
         } catch (Exception e) {
             log.error("UserBaseInfoService updateByPrimaryKeySelective error {}", e);
             return BaseResult.errorReturn(null, StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");

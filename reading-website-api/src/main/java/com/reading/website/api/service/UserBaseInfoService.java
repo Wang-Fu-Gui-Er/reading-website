@@ -23,11 +23,11 @@ public interface UserBaseInfoService {
     BaseResult<Integer> insertSelective(UserBaseInfoDO record);
 
     /**
-     * 根据userId修改用户信息
+     * 根据邮箱地址修改用户信息
      * @param record
      * @return
      */
-    BaseResult<Integer> updateByPrimaryKeySelective(UserBaseInfoDO record);
+    BaseResult<Integer> updateByEmailSelective(UserBaseInfoDO record);
 
     /**
      * 条件查询
