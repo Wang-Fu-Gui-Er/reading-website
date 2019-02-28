@@ -29,6 +29,13 @@ public interface UserBaseInfoMapper {
     int updateByEmailSelective(UserBaseInfoDO record);
 
     /**
+     * 根据id修改用户信息
+     * @param record
+     * @return
+     */
+    int updateByIdSelective(UserBaseInfoDO record);
+
+    /**
      * 条件查询
      * @param query
      * @return

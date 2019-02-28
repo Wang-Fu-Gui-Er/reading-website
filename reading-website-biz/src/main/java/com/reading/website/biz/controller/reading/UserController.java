@@ -106,8 +106,13 @@ public class UserController {
                 break;
             }
             case 1: {
-                subject = "【图书阅读网站】找回密码";
+                subject = "【图书阅读网站】重置密码";
                 content = "您好，您正在进行重置密码，验证码为:" + verificationCode;
+                break;
+            }
+            case 2: {
+                subject = "【图书阅读网站】重置邮箱";
+                content = "您好，您正在进行重置邮箱，验证码为:" + verificationCode;
                 break;
             }
         }
@@ -154,7 +159,8 @@ public class UserController {
                 log.warn("验证码错误");
                 break;
             }
-            case 1: {
+            case 1:
+            case 2: {
                 if (verifyCode.equals(String.valueOf(verifyCodeCache))) {
                     return BaseResult.rightReturn(email);
                 }
@@ -255,4 +261,64 @@ public class UserController {
         return BaseResult.errorReturn(false, StatusCodeEnum.SERVICE_ERROR.getCode(), "重置密码失败");
     }
 
+    @ApiOperation(value="修改用户信息", notes="修改用户信息")
+    @PostMapping("/updateUserInfo")
+    public BaseResult<Boolean> updateUserInfo(@RequestBody UserBaseInfoDO userBaseInfoDO) {
+        // 参数校验
+        if (userBaseInfoDO == null || userBaseInfoDO.getEmail() == null) {
+            log.warn("user updateUserInfo param user error");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
+        }
+
+        // 过滤掉密码，密码不修改
+        userBaseInfoDO.setPassword(null);
+        BaseResult<Integer> updateRes = userService.updateByEmailSelective(userBaseInfoDO);
+        if (updateRes.getSuccess()) {
+            return BaseResult.rightReturn(true);
+        }
+        return BaseResult.errorReturn(false, StatusCodeEnum.SERVICE_ERROR.getCode(), "修改个人信息失败");
+    }
+
+    @ApiOperation(value="查询用户信息", notes="查询用户信息")
+    @GetMapping("/getUserInfo")
+    public BaseResult<UserBaseInfoDO> getUserInfo(@Param("email") String email) {
+        // 参数校验
+        if (StringUtils.isEmpty(email)) {
+            log.warn("user getUserInfo param email empty");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param email empty");
+        }
+
+        // 查询信息
+        BaseResult<UserBaseInfoDO> userRes = userService.selectByEmail(email);
+        if (!userRes.getSuccess()) {
+            return BaseResult.errorReturn(null, StatusCodeEnum.SERVICE_ERROR.getCode(), "查询用户信息失败");
+        }
+
+        if (userRes.getData() != null) {
+            return BaseResult.rightReturn(userRes.getData());
+        }
+
+        return BaseResult.errorReturn(null, StatusCodeEnum.NOT_FOUND.getCode(), "用户不存在");
+    }
+
+    @ApiOperation(value="修改邮箱", notes="修改邮箱")
+    @GetMapping("/resetEmail")
+    public BaseResult<Boolean> resetEmail(@Param("userId") Long userId, @Param("email") String email) {
+        // 参数校验
+        if (userId == null || StringUtils.isEmpty(email)) {
+            log.warn("user resetEmail param empty");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param empty");
+        }
+
+        UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
+        userBaseInfoDO.setEmail(email);
+        userBaseInfoDO.setId(userId);
+        BaseResult<Integer> updateRes = userService.updateByIdSelective(userBaseInfoDO);
+        if (updateRes.getSuccess()) {
+            return BaseResult.rightReturn(true);
+        }
+
+        log.warn("user resetEmail error");
+        return BaseResult.errorReturn(null, StatusCodeEnum.SERVICE_ERROR.getCode(), "修改邮箱失败");
+    }
 }
