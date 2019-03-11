@@ -37,11 +37,11 @@ public class UserBaseInfoServiceTest extends BaseTest {
     }
 
     @Test
-    public void testUpdateByPrimaryKeySelective() {
+    public void testUpdateByEmailSelective() {
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
-        userBaseInfoDO.setPassword("xnuikh");
-        userBaseInfoDO.setId(1L);
-        BaseResult<Integer> res =  userBaseInfoService.updateByPrimaryKeySelective(userBaseInfoDO);
+        userBaseInfoDO.setMobileNum("135467757567");
+        userBaseInfoDO.setEmail("1912246570@qq.com");
+        BaseResult<Integer> res =  userBaseInfoService.updateByEmailSelective(userBaseInfoDO);
         System.out.println(res);
     }
 

@@ -35,11 +35,11 @@ public class UserBaseInfoMapperTest extends BaseTest {
     }
 
     @Test
-    public void testUpdateByPrimaryKeySelective() {
+    public void testUpdateByEmailSelective() {
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
         userBaseInfoDO.setId(1L);
         userBaseInfoDO.setIsAdmin(true);
-        int res = userBaseInfoMapper.updateByPrimaryKeySelective(userBaseInfoDO);
+        int res = userBaseInfoMapper.updateByEmailSelective(userBaseInfoDO);
         System.out.println(res);
     }
 

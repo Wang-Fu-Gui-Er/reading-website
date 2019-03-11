@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.UUID;
 
 /**
- * class comment
+ * token工具测试类
  *
  * @xyang010 2019/1/10
  */
@@ -15,9 +15,10 @@ public class JWTUtilTest {
 
     @Test
     public void testSign() {
-        String nickName = "test";
+        String email = "1912246570@qq.com";
         Long userId = 123L;
-        String token = JWTUtil.sign(nickName, userId);
+        String token = JWTUtil.sign(email, userId);
+
         System.out.println(token);
         DecodedJWT decodedJWT = JWTUtil.verify(token);
         System.out.println(JSON.toJSON(decodedJWT));

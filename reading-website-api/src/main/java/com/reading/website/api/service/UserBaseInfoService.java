@@ -23,11 +23,18 @@ public interface UserBaseInfoService {
     BaseResult<Integer> insertSelective(UserBaseInfoDO record);
 
     /**
-     * 根据userId修改用户信息
+     * 根据邮箱地址修改用户信息
      * @param record
      * @return
      */
-    BaseResult<Integer> updateByPrimaryKeySelective(UserBaseInfoDO record);
+    BaseResult<Integer> updateByEmailSelective(UserBaseInfoDO record);
+
+    /**
+     * 根据id修改用户信息
+     * @param record
+     * @return
+     */
+    BaseResult<Integer> updateByIdSelective(UserBaseInfoDO record);
 
     /**
      * 条件查询
@@ -36,4 +43,17 @@ public interface UserBaseInfoService {
      */
     BaseResult<List<UserBaseInfoDO>> selectSelective(UserBaseInfoQuery query);
 
+    /**
+     * 根据id查询
+     * @param email
+     * @return
+     */
+    BaseResult<UserBaseInfoDO> selectByEmail(String email);
+
+    /**
+     * 根据邮箱地址查询
+     * @param id 用户id
+     * @return
+     */
+    BaseResult<UserBaseInfoDO> selectById(Long id);
 }

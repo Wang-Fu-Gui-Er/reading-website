@@ -22,11 +22,18 @@ public interface UserBaseInfoMapper {
     int insertSelective(UserBaseInfoDO record);
 
     /**
-     * 根据userId修改用户信息
+     * 根据email修改用户信息
      * @param record
      * @return
      */
-    int updateByPrimaryKeySelective(UserBaseInfoDO record);
+    int updateByEmailSelective(UserBaseInfoDO record);
+
+    /**
+     * 根据id修改用户信息
+     * @param record
+     * @return
+     */
+    int updateByIdSelective(UserBaseInfoDO record);
 
     /**
      * 条件查询

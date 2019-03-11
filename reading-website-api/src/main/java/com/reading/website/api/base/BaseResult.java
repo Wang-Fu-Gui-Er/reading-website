@@ -69,4 +69,8 @@ public class BaseResult<T> implements Serializable {
         return new BaseResult<T>(false, data, code, message);
     }
 
+    public static <T> BaseResult<T> errorReturn (int code, String message) {
+        return new BaseResult<T>(false, null, code, message);
+    }
+
 }

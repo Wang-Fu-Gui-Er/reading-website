@@ -49,8 +49,8 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public BaseResult<Map<BigCategoryDO, List<SmallCategoryDO>>> listAllCategory() {
-        Map<BigCategoryDO, List<SmallCategoryDO>> resMap = new HashMap<>();
+    public BaseResult<List<BigCategoryDO>> listAllCategory() {
+
         try {
             //1. 查询所有大类
             List<BigCategoryDO> bigCategoryList = bigCategoryMapper.listAll();
@@ -72,14 +72,14 @@ public class CategoryServiceImpl implements CategoryService {
                                 list.add(smallCategoryDO);
                             }
                         });
-                        resMap.put(bigCategoryDO, list);
+                        bigCategoryDO.setSmallCategoryList(list);
                     });
                 }
             }
-            return BaseResult.rightReturn(resMap);
+            return BaseResult.rightReturn(bigCategoryList);
         } catch (Exception e) {
             log.error("CategoryService listAllCategory error {}", e);
-            return BaseResult.errorReturn(null, StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
+            return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }
 
