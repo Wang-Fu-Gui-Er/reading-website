@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用户注册、登录接口
+ * 用户接口
  *
  * @xyang010 2019/1/9
  */
-@Api(value = "用户相关接口", description = "UserController", tags = {"用户相关接口"})
+@Api(value = "用户操作相关接口", description = "UserController", tags = {"用户操作相关接口"})
 @RestController
 @Slf4j
 @RequestMapping("/user")
