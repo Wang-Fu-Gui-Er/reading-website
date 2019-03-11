@@ -44,8 +44,8 @@ public class CategoryController {
 
     @ApiOperation(value="获取所有分类", notes="获取所有分类")
     @GetMapping(value = "/getAllCategory")
-    public BaseResult<Map<BigCategoryDO, List<SmallCategoryDO>>> listAllCategory() {
-        BaseResult<Map<BigCategoryDO, List<SmallCategoryDO>>> result = categoryService.listAllCategory();
+    public BaseResult<List<BigCategoryDO>> listAllCategory() {
+        BaseResult<List<BigCategoryDO>> result = categoryService.listAllCategory();
         if (!result.getSuccess()) {
             result.setCode(StatusCodeEnum.INNER_SERVICE_ERROR.getCode());
             result.setMessage(StatusCodeEnum.INNER_SERVICE_ERROR.getMark());

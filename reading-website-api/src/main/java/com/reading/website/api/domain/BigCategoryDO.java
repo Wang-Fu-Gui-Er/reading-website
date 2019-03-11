@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 图书分类，大类
@@ -28,6 +29,9 @@ public class BigCategoryDO {
      * 大类名称
      */
     private String cateName;
+
+    // 打类下的小类集合
+    private List<SmallCategoryDO> smallCategoryList;
 
     public BigCategoryDO() {
     }

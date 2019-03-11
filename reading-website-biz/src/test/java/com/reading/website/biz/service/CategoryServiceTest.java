@@ -2,15 +2,13 @@ package com.reading.website.biz.service;
 
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.domain.BigCategoryDO;
-import com.reading.website.api.domain.SmallCategoryDO;
 import com.reading.website.api.service.CategoryService;
 import com.reading.website.biz.BaseTest;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * CategoryServiceTest
@@ -24,7 +22,9 @@ public class CategoryServiceTest extends BaseTest {
 
     @Test
     public void testGetAllCategory() {
-        BaseResult<Map<BigCategoryDO, List<SmallCategoryDO>>> res = categoryService.listAllCategory();
+        BaseResult<List<BigCategoryDO>> res = categoryService.listAllCategory();
+        Assert.assertTrue(res.getSuccess());
+        Assert.assertNotNull(res.getData());
         System.out.println(res);
     }
 }

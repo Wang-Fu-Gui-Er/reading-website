@@ -26,7 +26,7 @@ public interface CategoryService {
      * 查询所有分类
      * @return
      */
-    BaseResult<Map<BigCategoryDO, List<SmallCategoryDO>>> listAllCategory();
+    BaseResult<List<BigCategoryDO>> listAllCategory();
 
     /**
      * 根据大类id查询小类
