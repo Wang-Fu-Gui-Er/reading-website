@@ -5,11 +5,13 @@ import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.constants.FileConstant;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 /**
@@ -49,7 +51,7 @@ public class TransportController {
         }
 
         String fileName = UUID.randomUUID().toString();
-        File destFile = new File(filePath + fileName + file.getContentType());
+        File destFile = new File(filePath + File.separator + fileName + file.getContentType());
 
         try {
             file.transferTo(destFile);
@@ -58,6 +60,65 @@ public class TransportController {
             log.warn("上传文件失败");
             return BaseResult.errorReturn(StatusCodeEnum.FILE_UPLOAD_ERROR.getCode(), "上传文件失败");
         }
+    }
+
+
+    /**
+     * 文件下载接口
+     * @param path 文件路径
+     * @return
+     */
+    @GetMapping("/download")
+    public BaseResult<Void> downloadBook(@RequestParam("bookPath") String path,
+                                         @RequestParam("bookName") String bookName,
+                                         HttpServletResponse response) {
+        if (StringUtils.isEmpty(path)) {
+            log.warn("文件下载路径为空,bookName {}", bookName);
+            return BaseResult.errorReturn(StatusCodeEnum.FILE_PATH_NOT_EXIST.getCode(), "文件下载路径为空");
+        }
+
+        File file = new File(path);
+        if (!file.exists()) {
+            log.warn("文件不存在,bookName {}, path {}", bookName, path);
+            return BaseResult.errorReturn(StatusCodeEnum.NOT_FOUND.getCode(), "文件不存在");
+        }
+
+        byte[] buffer = new byte[1024];
+        FileInputStream fileInputStream = null; //文件输入流
+        BufferedInputStream bufferedInputStream = null; // 缓冲输入流
+        OutputStream outputStream = null; //输出流
+
+        try {
+            String fileName  = bookName + FileConstant.getFileType(path);
+            response.setContentType("application/force-download;charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            outputStream = response.getOutputStream();
+            fileInputStream = new FileInputStream(file);
+            bufferedInputStream = new BufferedInputStream(fileInputStream);
+
+            while(bufferedInputStream.read(buffer) != -1){
+                outputStream.write(buffer);
+            }
+
+        } catch (Exception e) {
+            log.error("下载文件异常，error {}", e);
+        }
+
+        try {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+            if (bufferedInputStream != null) {
+                bufferedInputStream.close();
+            }
+            if (fileInputStream != null) {
+                fileInputStream.close();
+            }
+        } catch (IOException e) {
+            log.error("关闭文件流异常，error {}", e);
+        }
+        return BaseResult.rightReturn(null);
     }
 
 }

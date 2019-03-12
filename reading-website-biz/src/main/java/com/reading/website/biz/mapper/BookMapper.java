@@ -21,21 +21,30 @@ public interface BookMapper {
     List<BookDO> listNewlyBooks();
 
     /**
-     * 条件查询，可分页
+     * 分页查询
+     * @param query
+     * @return
+     */
+    List<BookDO> pageQuery(BookInfoQuery query);
+
+    /**
+     * 条件查询
      * @param query
      * @return
      */
     List<BookDO> selectSelective(BookInfoQuery query);
 
-    int deleteByPrimaryKey(Integer id);
+    /**
+     * 增加或更新
+     * @param record
+     * @return
+     */
+    int insertOrUpdate(BookDO record);
 
-    int insert(BookDO record);
-
-    int insertSelective(BookDO record);
-
-    BookDO selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(BookDO record);
-
-    int updateByPrimaryKey(BookDO record);
+    /**
+     * 批量增加
+     * @param list
+     * @return
+     */
+    int batchInsert(List<BookDO> list);
 }

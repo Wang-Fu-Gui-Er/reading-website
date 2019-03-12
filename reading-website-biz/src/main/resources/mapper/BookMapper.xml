@@ -33,47 +33,26 @@
     order by postedTime desc
     limit 50
   </select>
-  
-  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.BookQuery">
+
+  <!-- 分页查询 -->
+  <select id="pageQuery" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.BookInfoQuery">
     select
     <include refid="Base_Column_List" />
     from Book
     <include refid="whereClause"/>
     limit #{offset},#{pageSize}
   </select>
-  
-  <sql id="whereClause">
-    where isDeleted = 0
-    <if test="smallCateId != null">
-      and smallCateId = #{smallCateId}
-    </if>
-  </sql>
-  
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+
+  <!-- 条件查询 -->
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.BookInfoQuery">
+    select
     <include refid="Base_Column_List" />
     from Book
-    where id = #{id,jdbcType=INTEGER}
+    <include refid="whereClause"/>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from Book
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.reading.website.api.domain.BookDO">
-    insert into Book (id, created, updated, 
-      isDeleted, bookName, bookPic, 
-      authorId, authorName, isPublished, 
-      isOver, smallCateId, bookPath, 
-      buyPath, postedTime, bookDesc, 
-      ext)
-    values (#{id,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=BIT}, #{bookName,jdbcType=VARCHAR}, #{bookPic,jdbcType=VARCHAR}, 
-      #{authorId,jdbcType=INTEGER}, #{authorName,jdbcType=VARCHAR}, #{isPublished,jdbcType=BIT}, 
-      #{isOver,jdbcType=BIT}, #{smallCateId,jdbcType=INTEGER}, #{bookPath,jdbcType=VARCHAR}, 
-      #{buyPath,jdbcType=VARCHAR}, #{postedTime,jdbcType=TIMESTAMP}, #{bookDesc,jdbcType=VARCHAR}, 
-      #{ext,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.reading.website.api.domain.BookDO">
+
+  <!-- insertOrUpdate -->
+  <insert id="insertOrUpdate" useGeneratedKeys="true" keyProperty="id" parameterType="com.reading.website.api.domain.BookDO">
     insert into Book
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -175,13 +154,8 @@
         #{ext,jdbcType=VARCHAR},
       </if>
     </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.reading.website.api.domain.BookDO">
-    update Book
-    <set>
-      <if test="created != null">
-        created = #{created,jdbcType=TIMESTAMP},
-      </if>
+    ON DUPLICATE KEY UPDATE
+    <trim suffixOverrides=",">
       <if test="updated != null">
         updated = #{updated,jdbcType=TIMESTAMP},
       </if>
@@ -224,26 +198,58 @@
       <if test="ext != null">
         ext = #{ext,jdbcType=VARCHAR},
       </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.reading.website.api.domain.BookDO">
-    update Book
-    set created = #{created,jdbcType=TIMESTAMP},
-      updated = #{updated,jdbcType=TIMESTAMP},
-      isDeleted = #{isDeleted,jdbcType=BIT},
-      bookName = #{bookName,jdbcType=VARCHAR},
-      bookPic = #{bookPic,jdbcType=VARCHAR},
-      authorId = #{authorId,jdbcType=INTEGER},
-      authorName = #{authorName,jdbcType=VARCHAR},
-      isPublished = #{isPublished,jdbcType=BIT},
-      isOver = #{isOver,jdbcType=BIT},
-      smallCateId = #{smallCateId,jdbcType=INTEGER},
-      bookPath = #{bookPath,jdbcType=VARCHAR},
-      buyPath = #{buyPath,jdbcType=VARCHAR},
-      postedTime = #{postedTime,jdbcType=TIMESTAMP},
-      bookDesc = #{bookDesc,jdbcType=VARCHAR},
-      ext = #{ext,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    </trim>
+  </insert>
+
+  <!-- 批量新增 -->
+  <insert id="batchInsert" parameterType="list">
+    insert into Book(bookName, bookPic, authorId, authorName, isPublished,
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext)
+    values
+    <foreach collection="list" item="item" index="index" separator="," close=";">
+      (
+        #{item.bookName},
+        #{item.bookPic},
+        #{item.authorId},
+        #{item.authorName},
+        #{item.isPublished},
+        #{item.isOver},
+        #{item.smallCateId},
+        #{item.bookPath},
+        #{item.buyPath},
+        #{item.postedTime},
+        #{item.bookDesc},
+        #{item.ext}
+      )
+    </foreach>
+  </insert>
+
+  <!-- 条件子句 -->
+  <sql id="whereClause">
+    where isDeleted = 0
+    <if test="id != null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="bookName != null">
+      and bookName = #{bookName,jdbcType=VARCHAR}
+    </if>
+    <if test="authorId != null">
+      and authorId = #{authorId,jdbcType=INTEGER}
+    </if>
+    <if test="authorName != null">
+      and authorName = #{authorName,jdbcType=VARCHAR}
+    </if>
+    <if test="isPublished != null">
+      and isPublished = #{isPublished,jdbcType=BIT}
+    </if>
+    <if test="isOver != null">
+      and isOver = #{isOver,jdbcType=BIT}
+    </if>
+    <if test="smallCateId != null">
+      and smallCateId = #{smallCateId,jdbcType=INTEGER}
+    </if>
+    <if test="postedTime != null">
+      and postedTime = #{postedTime,jdbcType=TIMESTAMP}
+    </if>
+  </sql>
 </mapper>
