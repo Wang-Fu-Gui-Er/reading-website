@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reading.website.biz.mapper.ChapterMapper">
+  <resultMap id="BaseResultMap" type="com.reading.website.api.domain.ChapterDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="isDeleted" jdbcType="BIT" property="isDeleted" />
+    <result column="bookId" jdbcType="INTEGER" property="bookId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sequence" jdbcType="INTEGER" property="sequence" />
+    <result column="contentPath" jdbcType="VARCHAR" property="contentPath" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created, updated, isDeleted, bookId, title, sequence, contentPath
+  </sql>
+
+  <!-- 批量新增 -->
+  <insert id="batchInsert" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+    insert into Chapter(bookId, title, sequence, contentPath)
+    values
+    <foreach collection="list" item="chapter" index="index" separator=",">
+      (
+        #{chapter.bookId,jdbcType=INTEGER},
+        #{chapter.title,jdbcType=VARCHAR},
+        #{chapter.sequence,jdbcType=INTEGER},
+        #{chapter.contentPath,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+
+  <!-- 批量更新 -->
+  <update id="batchUpdate" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      UPDATE Chapter
+      <set>
+        <if test="item.isDeleted != null">
+          isDeleted = #{item.isDeleted,jdbcType=BIT},
+        </if>
+        <if test="item.bookId != null">
+          bookId = #{item.bookId,jdbcType=INTEGER},
+        </if>
+        <if test="item.title != null">
+          title = #{item.title,jdbcType=VARCHAR},
+        </if>
+        <if test="item.sequence != null">
+          sequence = #{item.sequence,jdbcType=INTEGER},
+        </if>
+        <if test="item.contentPath != null">
+          contentPath = #{item.contentPath,jdbcType=VARCHAR},
+        </if>
+      </set>
+      where id = #{item.id,jdbcType=INTEGER}
+    </foreach>
+  </update>
+
+  <!-- 根据图书id查询 -->
+  <select id="selectByBookId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from Chapter
+    where bookId = #{bookId,jdbcType=INTEGER}
+    order by sequence
+  </select>
+
+  <!-- 根据主键查询 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Chapter
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+  <insert id="insertSelective" parameterType="com.reading.website.api.domain.ChapterDO">
+    insert into Chapter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="isDeleted != null">
+        isDeleted,
+      </if>
+      <if test="bookId != null">
+        bookId,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="sequence != null">
+        sequence,
+      </if>
+      <if test="contentPath != null">
+        contentPath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="contentPath != null">
+        #{contentPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.reading.website.api.domain.ChapterDO">
+    update Chapter
+    <set>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        isDeleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="bookId != null">
+        bookId = #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="contentPath != null">
+        contentPath = #{contentPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
