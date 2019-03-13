@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reading.website.biz.mapper.AuthorMapper">
+  <resultMap id="BaseResultMap" type="com.reading.website.api.domain.AuthorDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="isDeleted" jdbcType="BIT" property="isDeleted" />
+    <result column="authorName" jdbcType="VARCHAR" property="authorName" />
+    <result column="authorPic" jdbcType="VARCHAR" property="authorPic" />
+    <result column="weiboName" jdbcType="VARCHAR" property="weiboName" />
+    <result column="authorDesc" jdbcType="VARCHAR" property="authorDesc" />
+    <result column="represenWorks" jdbcType="VARCHAR" property="represenWorks" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created, updated, isDeleted, authorName, authorPic, weiboName, authorDesc, represenWorks
+  </sql>
+
+  <!-- 新增或更新 -->
+  <insert id="insertOrUpdate" parameterType="com.reading.website.api.domain.AuthorDO" keyProperty="id" useGeneratedKeys="true">
+    insert into Author
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="isDeleted != null">
+        isDeleted,
+      </if>
+      <if test="authorName != null">
+        authorName,
+      </if>
+      <if test="authorPic != null">
+        authorPic,
+      </if>
+      <if test="weiboName != null">
+        weiboName,
+      </if>
+      <if test="authorDesc != null">
+        authorDesc,
+      </if>
+      <if test="represenWorks != null">
+        represenWorks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="authorName != null">
+        #{authorName,jdbcType=VARCHAR},
+      </if>
+      <if test="authorPic != null">
+        #{authorPic,jdbcType=VARCHAR},
+      </if>
+      <if test="weiboName != null">
+        #{weiboName,jdbcType=VARCHAR},
+      </if>
+      <if test="authorDesc != null">
+        #{authorDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="represenWorks != null">
+        #{represenWorks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    ON DUPLICATE KEY UPDATE
+    <trim suffixOverrides=",">
+      <if test="isDeleted != null">
+        isDeleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="authorName != null">
+        authorName = #{authorName,jdbcType=VARCHAR},
+      </if>
+      <if test="authorPic != null">
+        authorPic = #{authorPic,jdbcType=VARCHAR},
+      </if>
+      <if test="weiboName != null">
+        weiboName = #{weiboName,jdbcType=VARCHAR},
+      </if>
+      <if test="authorDesc != null">
+        authorDesc = #{authorDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="represenWorks != null">
+        represenWorks = #{represenWorks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 根据主键查询 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Author
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据作者名称模糊查询 -->
+  <select id="fuzzySelectByAuthorName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Author
+    where authorName LIKE concat(concat('%',#{authorName,jdbcType=VARCHAR}),'%')
+  </select>
+
+</mapper>
