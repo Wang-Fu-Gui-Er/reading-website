@@ -1,7 +1,5 @@
 package com.reading.website.api.base;
 
-import lombok.Data;
-
 /**
  * 返回参数状态码 枚举类
  *

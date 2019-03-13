@@ -40,11 +40,15 @@
             <!--&lt;!&ndash; 使用表中字段名作为实体属性名；若为false则表中字段带下划线，对应实体属性为驼峰命名 &ndash;&gt;-->
             <!--<property name="useActualColumnNames" value="true"/>-->
         <!--</table>-->
-        <table tableName="BigCategory" domainObjectName="BigCategory" modelType="flat" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
-            <!-- 使用表中字段名作为实体属性名；若为false则表中字段带下划线，对应实体属性为驼峰命名 -->
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        <table tableName="SmallCategory" domainObjectName="SmallCategory" modelType="flat" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
+        <!--<table tableName="BigCategory" domainObjectName="BigCategory" modelType="flat" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">-->
+            <!--&lt;!&ndash; 使用表中字段名作为实体属性名；若为false则表中字段带下划线，对应实体属性为驼峰命名 &ndash;&gt;-->
+            <!--<property name="useActualColumnNames" value="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="SmallCategory" domainObjectName="SmallCategory" modelType="flat" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">-->
+            <!--&lt;!&ndash; 使用表中字段名作为实体属性名；若为false则表中字段带下划线，对应实体属性为驼峰命名 &ndash;&gt;-->
+            <!--<property name="useActualColumnNames" value="true"/>-->
+        <!--</table>-->
+        <table tableName="Chapter" domainObjectName="Chapter" modelType="flat" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
             <!-- 使用表中字段名作为实体属性名；若为false则表中字段带下划线，对应实体属性为驼峰命名 -->
             <property name="useActualColumnNames" value="true"/>
         </table>
