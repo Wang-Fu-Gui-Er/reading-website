@@ -1,7 +1,11 @@
 package com.reading.website.api.service;
 
 import com.reading.website.api.base.BaseResult;
+import com.reading.website.api.base.Page;
 import com.reading.website.api.domain.BookDO;
+import com.reading.website.api.domain.BookInfoQuery;
+
+import java.util.List;
 
 /**
  * 图书服务
@@ -30,5 +34,21 @@ public interface BookService {
      * @return 是否成功
      */
     BaseResult<Boolean> delByBookId(Integer bookId);
+
+    /**
+     * 推荐图书接口
+     * @param recommendType 推荐类型
+     * @param page 分页信息
+     * @return 图书列表
+     */
+    BaseResult<List<BookDO>> listRecommendBooks(String recommendType, Page page);
+
+    /**
+     * 分页查询
+     * @param query 查询条件
+     * @return
+     */
+    BaseResult<List<BookDO>> pageQuery(BookInfoQuery query);
+
 
 }

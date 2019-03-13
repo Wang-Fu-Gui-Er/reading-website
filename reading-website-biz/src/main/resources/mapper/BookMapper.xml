@@ -20,18 +20,47 @@
     <result column="ext" jdbcType="VARCHAR" property="ext" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, created, updated, isDeleted, bookName, bookPic, authorId, authorName, isPublished, 
+    id, created, updated, isDeleted, bookName, bookPic, authorId, authorName, isPublished,
     isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext
   </sql>
   
-  <!-- 查询最新的书籍 -->
-  <select id="listNewlyBooks" resultMap="BaseResultMap">
+  <!-- 查询新的图书 -->
+  <select id="listNewlyBooks" resultMap="BaseResultMap" parameterType="com.reading.website.api.base.Page">
     select
-    <include refid="Base_Column_List" />
-    from Book
-    where isDeleted = 0
-    order by postedTime desc
-    limit 50
+    b.id, b.created, b.updated, b.isDeleted, bookName, bookPic, authorId, authorName, isPublished,
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext
+    from Book as b
+    left outer join BookGradeInfo as g
+    on b.id = g.bookId
+    where b.isDeleted = 0
+    order by postedTime desc, g.readCount desc, created desc
+    limit #{offset},#{pageSize}
+  </select>
+
+  <!-- 查询受欢迎的图书 -->
+  <select id="listFavorableBooks" resultMap="BaseResultMap" parameterType="com.reading.website.api.base.Page">
+    select
+    b.id, b.created, b.updated, b.isDeleted, bookName, bookPic, authorId, authorName, isPublished,
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext
+    from Book as b
+    left outer join BookGradeInfo as g
+    on b.id = g.bookId
+    where b.isDeleted = 0
+    order by g.fiveNum desc, g.fourNum desc, g.threeNum desc, g.twoNum desc, g.oneNum desc
+    limit #{offset},#{pageSize}
+  </select>
+
+  <!-- 查询经典的图书 -->
+  <select id="listClassicBooks" resultMap="BaseResultMap" parameterType="com.reading.website.api.base.Page">
+    select
+    b.id, b.created, b.updated, b.isDeleted, bookName, bookPic, authorId, authorName, isPublished,
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext
+    from Book as b
+    left outer join BookGradeInfo as g
+    on b.id = g.bookId
+    where b.isDeleted = 0
+    order by postedTime asc, g.readCount desc, created asc
+    limit #{offset},#{pageSize}
   </select>
 
   <!-- 分页查询 -->
@@ -224,6 +253,13 @@
     </foreach>
   </insert>
 
+  <!-- 计数 -->
+  <select id="countSelective" resultType="java.lang.Integer" parameterType="com.reading.website.api.domain.BookInfoQuery">
+    select count(1)
+    from Book
+    <include refid="whereClause"/>
+  </select>
+
   <!-- 条件子句 -->
   <sql id="whereClause">
     where isDeleted = 0
@@ -231,7 +267,7 @@
       and id = #{id,jdbcType=BIGINT}
     </if>
     <if test="bookName != null">
-      and bookName = #{bookName,jdbcType=VARCHAR}
+      and bookName LIKE concat(concat('%',#{bookName,jdbcType=VARCHAR}),'%')
     </if>
     <if test="authorId != null">
       and authorId = #{authorId,jdbcType=INTEGER}

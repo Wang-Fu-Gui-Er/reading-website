@@ -1,15 +1,18 @@
 package com.reading.website.biz.service.impl;
 
 import com.reading.website.api.base.BaseResult;
+import com.reading.website.api.base.Page;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.BookDO;
 import com.reading.website.api.domain.BookInfoQuery;
 import com.reading.website.api.service.BookService;
+import com.reading.website.biz.enums.BookRecommendType;
 import com.reading.website.biz.mapper.BookMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -92,6 +95,73 @@ public class BookServiceImpl implements BookService {
             return BaseResult.rightReturn(res > 0);
         } catch (Exception e) {
             log.error("BookServiceImpl delByBookId bookId {}, error {}", bookId, e);
+            return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
+        }
+    }
+
+    /**
+     * 推荐图书接口
+     * @param recommendType 推荐类型
+     * @param page 分页信息
+     * @return 图书列表
+     */
+    @Override
+    public BaseResult<List<BookDO>> listRecommendBooks(String recommendType, Page page) {
+        if (StringUtils.isEmpty(recommendType)) {
+            log.warn("listRecommendBooks param recommendType is null");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param recommendType is null");
+        }
+        if (page == null) {
+            page = new Page();
+        }
+
+        try {
+            BaseResult<List<BookDO>> result = new BaseResult<>();
+            result.setSuccess(true);
+
+            if (recommendType.equals(BookRecommendType.NEWLY.getType())) {
+                result.setData(bookMapper.listNewlyBooks(page));
+            } else if (recommendType.equals(BookRecommendType.FAVORABLE.getType())) {
+                result.setData(bookMapper.listFavorableBooks(page));
+            } else if (recommendType.equals(BookRecommendType.CLASSIC.getType())) {
+                result.setData(bookMapper.listClassicBooks(page));
+            } else {
+                log.warn("listRecommendBooks param recommendType is invalid");
+                return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param recommendType is invalid");
+            }
+            page.setTotalNum(bookMapper.countSelective(new BookInfoQuery()));
+            result.setPage(page);
+            return result;
+        } catch (Exception e) {
+            log.error("BookServiceImpl listRecommendBooks error {}", e);
+            return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
+        }
+    }
+
+    /**
+     * 分页查询
+     * @param query 查询条件
+     * @return
+     */
+    @Override
+    public BaseResult<List<BookDO>> pageQuery(BookInfoQuery query) {
+        if (query == null) {
+            log.warn("pageQuery param query is null");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param recommendType is null");
+        }
+
+        try {
+            BaseResult<List<BookDO>> result = new BaseResult<>();
+            result.setSuccess(true);
+            result.setData(bookMapper.pageQuery(query));
+            Page page = new Page();
+            page.setTotalNum(bookMapper.countSelective(query));
+            page.setPageNum(query.getPageNum());
+            page.setPageSize(query.getPageSize());
+            result.setPage(page);
+            return result;
+        } catch (Exception e) {
+            log.error("BookServiceImpl listRecommendBooks error {}", e);
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }
