@@ -32,8 +32,15 @@ public class Page {
 
     public Page(Integer pageNum, Integer pageSize) {
         this.pageNum = (pageNum == null || pageNum <= 0) ? 1 : pageNum;
-        this.pageSize = (pageSize == null || pageSize <= 0) ? 1 : pageSize;
+        this.pageSize = (pageSize == null || pageSize <= 0) ? 10 : pageSize;
         this.offset = (this.pageNum - 1) * this.pageSize;
+    }
+
+    public Page(Integer pageNum, Integer pageSize, Integer totalNum) {
+        this.pageNum = (pageNum == null || pageNum <= 0) ? 1 : pageNum;
+        this.pageSize = (pageSize == null || pageSize <= 0) ? 10 : pageSize;
+        this.offset = (this.pageNum - 1) * this.pageSize;
+        this.totalNum = totalNum;
     }
 
     public Integer getPageNum() {
@@ -50,7 +57,7 @@ public class Page {
     }
 
     public void setPageSize(Integer pageSize) {
-        this.pageSize = (pageSize == null || pageSize <= 0) ? 1 : pageSize;
+        this.pageSize = (pageSize == null || pageSize <= 0) ? 10 : pageSize;
         this.offset = (this.pageNum - 1) * this.pageSize;
     }
 

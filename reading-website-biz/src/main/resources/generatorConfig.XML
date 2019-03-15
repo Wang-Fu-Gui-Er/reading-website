@@ -52,7 +52,7 @@
             <!--&lt;!&ndash; 使用表中字段名作为实体属性名；若为false则表中字段带下划线，对应实体属性为驼峰命名 &ndash;&gt;-->
             <!--<property name="useActualColumnNames" value="true"/>-->
         <!--</table>-->
-        <table tableName="Author" domainObjectName="Author" modelType="flat" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
+        <table tableName="BookGradeInfo" domainObjectName="BookGradeInfo" modelType="flat" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
             <!-- 使用表中字段名作为实体属性名；若为false则表中字段带下划线，对应实体属性为驼峰命名 -->
             <property name="useActualColumnNames" value="true"/>
         </table>

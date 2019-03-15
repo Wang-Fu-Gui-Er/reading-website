@@ -39,6 +39,6 @@ public class ChapterController {
         return chapterService.selectByChapterId(chapterId);
     }
 
-
+    // todo 保存章节信息时，更新book表中的chapNum章节数
 
 }

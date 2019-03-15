@@ -5,15 +5,21 @@ import com.reading.website.api.base.Page;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.BookDO;
 import com.reading.website.api.domain.BookInfoQuery;
+import com.reading.website.api.domain.UserReadingInfoDO;
+import com.reading.website.api.domain.UserReadingInfoQuery;
 import com.reading.website.api.service.BookService;
+import com.reading.website.api.service.UserReadingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 图书列表接口
@@ -28,6 +34,9 @@ public class BookListController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private UserReadingService readingService;
 
     @ApiOperation(value="图书推荐", notes="图书推荐")
     @GetMapping(value = "/recommend")
@@ -70,6 +79,59 @@ public class BookListController {
         query.setPageNum(pageNum);
         query.setPageSize(pageSize);
         return bookService.pageQuery(query);
+    }
+
+    @ApiOperation(value="查询加入书架的图书", notes="查询加入书架的图书")
+    @GetMapping(value = "/onShelf")
+    public BaseResult<List<BookDO>> onShelf(@RequestParam("userId") Integer userId,
+                                            @RequestParam("pageNum") Integer pageNum,
+                                            @RequestParam("pageSize") Integer pageSize) {
+        if (userId == null) {
+            log.warn("queryReadingHistory param userId is null");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param userId is null");
+        }
+
+        //1. 查询阅读记录
+        UserReadingInfoQuery readingInfoQuery = new UserReadingInfoQuery();
+        readingInfoQuery.setUserId(userId);
+        readingInfoQuery.setPageNum(pageNum);
+        readingInfoQuery.setPageSize(pageSize);
+        readingInfoQuery.setIsOnShelf(true);
+        BaseResult<List<UserReadingInfoDO>> readingRes = readingService.pageQuery(readingInfoQuery);
+        if (!readingRes.getSuccess()) {
+            log.warn("query onShelf book, query readingInfo error, userId is {}, readingRes {}", userId, readingRes);
+            return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "query readingInfo error");
+        }
+
+        List<UserReadingInfoDO> readingInfoList = readingRes.getData();
+        if (CollectionUtils.isEmpty(readingInfoList)) {
+            log.warn("query onShelf book, readingInfo is empty");
+            return BaseResult.rightReturn(null);
+        }
+
+        //2. 查询图书信息
+        List<Integer> bookIds = readingInfoList
+                .stream()
+                .map(UserReadingInfoDO::getBookId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
+
+        BookInfoQuery bookInfoQuery = new BookInfoQuery();
+        bookInfoQuery.setBookIds(bookIds);
+        bookInfoQuery.setPageSize(bookIds.size());
+        BaseResult<List<BookDO>> bookRes = bookService.pageQuery(bookInfoQuery);
+        if (!bookRes.getSuccess()) {
+            log.warn("queryReadingHistory, query bookInfo error, bookIds is {}, bookRes {}", bookIds, bookRes);
+            return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "query readingInfo error");
+        }
+
+        //3. 拼装返回结果
+        BaseResult<List<BookDO>> result = new BaseResult<>();
+        result.setSuccess(true);
+        result.setData(bookRes.getData());
+        result.setPage(new Page(readingInfoQuery.getPageNum(), readingInfoQuery.getPageSize(), readingRes.getPage().getTotalNum()));
+        return result;
     }
 
 

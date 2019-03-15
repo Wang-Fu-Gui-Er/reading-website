@@ -4,6 +4,7 @@ import com.reading.website.api.base.Page;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 图书查询类
@@ -15,6 +16,9 @@ public class BookInfoQuery extends Page {
 
     // 图书id
     private Integer id;
+
+    // 图书id列表
+    private List<Integer> bookIds;
 
     // 图书名称
     private String bookName;

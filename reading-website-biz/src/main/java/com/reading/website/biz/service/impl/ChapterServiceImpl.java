@@ -103,4 +103,24 @@ public class ChapterServiceImpl implements ChapterService {
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }
+
+    /**
+     * 根据章节id列表查询
+     * @param chapIds 章节id列表
+     * @return
+     */
+    @Override
+    public BaseResult<List<ChapterDO>> selectByChapIdList(List<Integer> chapIds) {
+        if (CollectionUtils.isEmpty(chapIds)) {
+            log.warn("ChapterServiceImpl selectByChapIdList param chapIds is empty");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param chapIds is empty");
+        }
+
+        try {
+            return BaseResult.rightReturn(chapterMapper.selectByChapIdList(chapIds));
+        } catch (Exception e) {
+            log.error("ChapterServiceImpl selectByChapIdList error, chapIds {}, error{}", chapIds, e);
+            return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
+        }
+    }
 }

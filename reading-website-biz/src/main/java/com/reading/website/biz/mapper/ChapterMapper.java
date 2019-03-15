@@ -1,7 +1,6 @@
 package com.reading.website.biz.mapper;
 
 import com.reading.website.api.domain.ChapterDO;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +42,11 @@ public interface ChapterMapper {
      */
     ChapterDO selectByPrimaryKey(Integer id);
 
-    int insertSelective(ChapterDO record);
+    /**
+     * 根据章节id列表查询
+     * @param chapIds 章节id列表
+     * @return
+     */
+    List<ChapterDO> selectByChapIdList(List<Integer> chapIds);
 
-    int updateByPrimaryKeySelective(ChapterDO record);
 }

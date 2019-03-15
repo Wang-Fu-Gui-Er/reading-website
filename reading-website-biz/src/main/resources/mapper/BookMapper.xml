@@ -17,18 +17,19 @@
     <result column="buyPath" jdbcType="VARCHAR" property="buyPath" />
     <result column="postedTime" jdbcType="TIMESTAMP" property="postedTime" />
     <result column="bookDesc" jdbcType="VARCHAR" property="bookDesc" />
+    <result column="chapNum" jdbcType="INTEGER" property="chapNum" />
     <result column="ext" jdbcType="VARCHAR" property="ext" />
   </resultMap>
   <sql id="Base_Column_List">
     id, created, updated, isDeleted, bookName, bookPic, authorId, authorName, isPublished,
-    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, chapNum, ext
   </sql>
   
   <!-- 查询新的图书 -->
   <select id="listNewlyBooks" resultMap="BaseResultMap" parameterType="com.reading.website.api.base.Page">
     select
     b.id, b.created, b.updated, b.isDeleted, bookName, bookPic, authorId, authorName, isPublished,
-    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, chapNum, ext
     from Book as b
     left outer join BookGradeInfo as g
     on b.id = g.bookId
@@ -41,7 +42,7 @@
   <select id="listFavorableBooks" resultMap="BaseResultMap" parameterType="com.reading.website.api.base.Page">
     select
     b.id, b.created, b.updated, b.isDeleted, bookName, bookPic, authorId, authorName, isPublished,
-    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, chapNum, ext
     from Book as b
     left outer join BookGradeInfo as g
     on b.id = g.bookId
@@ -54,7 +55,7 @@
   <select id="listClassicBooks" resultMap="BaseResultMap" parameterType="com.reading.website.api.base.Page">
     select
     b.id, b.created, b.updated, b.isDeleted, bookName, bookPic, authorId, authorName, isPublished,
-    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, chapNum, ext
     from Book as b
     left outer join BookGradeInfo as g
     on b.id = g.bookId
@@ -129,6 +130,9 @@
       <if test="bookDesc != null">
         bookDesc,
       </if>
+      <if test="chapNum != null">
+        chapNum,
+      </if>
       <if test="ext != null">
         ext,
       </if>
@@ -179,6 +183,9 @@
       <if test="bookDesc != null">
         #{bookDesc,jdbcType=VARCHAR},
       </if>
+      <if test="chapNum != null">
+        #{chapNum,jdbcType=INTEGER},
+      </if>
       <if test="ext != null">
         #{ext,jdbcType=VARCHAR},
       </if>
@@ -224,6 +231,9 @@
       <if test="bookDesc != null">
         bookDesc = #{bookDesc,jdbcType=VARCHAR},
       </if>
+      <if test="chapNum != null">
+        chapNum = #{chapNum,jdbcType=INTEGER},
+      </if>
       <if test="ext != null">
         ext = #{ext,jdbcType=VARCHAR},
       </if>
@@ -233,7 +243,7 @@
   <!-- 批量新增 -->
   <insert id="batchInsert" parameterType="list">
     insert into Book(bookName, bookPic, authorId, authorName, isPublished,
-    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, ext)
+    isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, chapNum, ext)
     values
     <foreach collection="list" item="item" index="index" separator="," close=";">
       (
@@ -248,6 +258,7 @@
         #{item.buyPath},
         #{item.postedTime},
         #{item.bookDesc},
+        #{item.chapNum},
         #{item.ext}
       )
     </foreach>
@@ -265,6 +276,12 @@
     where isDeleted = 0
     <if test="id != null">
       and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="bookIds != null">
+      and id in
+      <foreach collection="bookIds" index="index" item="item" open="(" close=")" separator=",">
+        #{item,jdbcType=INTEGER}
+      </foreach>
     </if>
     <if test="bookName != null">
       and bookName LIKE concat(concat('%',#{bookName,jdbcType=VARCHAR}),'%')

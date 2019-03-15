@@ -6,15 +6,13 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 章节信息
+ * 阅读记录信息
  *
  * @yx8102 2019/3/13
  */
-@ApiModel(value = "章节信息")
+@ApiModel(value = "阅读记录信息")
 @Data
-public class ChapterDO {
-
-    // 章节id
+public class UserReadingInfoDO {
     private Integer id;
 
     private Date created;
@@ -23,14 +21,18 @@ public class ChapterDO {
 
     private Boolean isDeleted;
 
+    // 用户id
+    private Integer userId;
+
+    // 章节id
+    private Integer chapId;
+
+    // 是否在书架中
+    private Boolean isOnShelf;
+
+    // 图书id
     private Integer bookId;
 
-    // 章节标题
-    private String title;
 
-    // 章节序号
-    private Integer sequence;
 
-    // 章节路径
-    private String contentPath;
 }

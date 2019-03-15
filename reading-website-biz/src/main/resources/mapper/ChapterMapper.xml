@@ -59,9 +59,10 @@
     select
     <include refid="Base_Column_List"/>
     from Chapter
-    where bookId = #{bookId,jdbcType=INTEGER}
+    where isDeleted = 0 and bookId = #{bookId,jdbcType=INTEGER}
     order by sequence
   </select>
+
 
   <!-- 根据主键查询 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -69,6 +70,17 @@
     <include refid="Base_Column_List" />
     from Chapter
     where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据主键批量查询 -->
+  <select id="selectByChapIdList" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from Chapter
+    where isDeleted = 0 and id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item,jdbcType=INTEGER}
+    </foreach>
   </select>
 
 

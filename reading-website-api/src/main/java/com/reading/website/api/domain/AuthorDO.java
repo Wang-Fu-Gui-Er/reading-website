@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 作者Mapper
+ * 作者信息
  *
  * @yx8102 2019/3/13
  */

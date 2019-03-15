@@ -40,4 +40,12 @@ public interface ChapterService {
      */
     BaseResult<ChapterDO> selectByChapterId(Integer chapterId);
 
+    /**
+     * 根据章节id列表查询
+     * @param chapIds 章节id列表
+     * @return
+     */
+    BaseResult<List<ChapterDO>> selectByChapIdList(List<Integer> chapIds);
+
+
 }
