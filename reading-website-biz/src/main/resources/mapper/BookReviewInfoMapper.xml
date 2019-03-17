@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reading.website.biz.mapper.BookReviewInfoMapper">
+  <resultMap id="BaseResultMap" type="com.reading.website.api.domain.BookReviewInfoDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="isDeleted" jdbcType="BIT" property="isDeleted" />
+    <result column="bookId" jdbcType="INTEGER" property="bookId" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="likeNum" jdbcType="INTEGER" property="likeNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created, updated, isDeleted, bookId, userId, comment, likeNum
+  </sql>
+
+  <!-- 新增或更新 -->
+  <insert id="insertOrUpdate" useGeneratedKeys="true" keyProperty="id"
+          parameterType="com.reading.website.api.domain.BookReviewInfoDO">
+    insert into BookReviewInfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="isDeleted != null">
+        isDeleted,
+      </if>
+      <if test="bookId != null">
+        bookId,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="likeNum != null">
+        likeNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="likeNum != null">
+        #{likeNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+    ON DUPLICATE KEY UPDATE
+    <trim suffixOverrides=",">
+      <if test="isDeleted != null">
+        isDeleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="likeNum != null">
+        likeNum = #{likeNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 分页查询 -->
+  <select id="pageQuery" resultMap="BaseResultMap"
+          parameterType="com.reading.website.api.domain.BookReviewInfoQuery">
+    select
+    <include refid="Base_Column_List" />
+    from BookReviewInfo
+    <include refid="Where_Clause"/>
+    limit #{offset}, #{pageSize}
+  </select>
+
+  <!-- 计数 -->
+  <select id="count" resultType="java.lang.Integer"
+          parameterType="com.reading.website.api.domain.BookReviewInfoQuery">
+    select count(*)
+    from BookReviewInfo
+    <include refid="Where_Clause"/>
+  </select>
+
+  <sql id="Where_Clause">
+    where isDeleted = 0
+    <if test="id != null">
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="bookId != null">
+      and bookId = #{bookId,jdbcType=INTEGER}
+    </if>
+    <if test="userId != null">
+      and userId = #{userId,jdbcType=INTEGER}
+    </if>
+  </sql>
+
+</mapper>
