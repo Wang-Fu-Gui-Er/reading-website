@@ -23,6 +23,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/notes")
 public class UserNoteController {
+
     @Autowired
     private UserNotesInfoService notesInfoService;
 
