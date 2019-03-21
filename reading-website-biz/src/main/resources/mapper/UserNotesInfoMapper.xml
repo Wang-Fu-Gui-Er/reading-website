@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reading.website.biz.mapper.UserNotesInfoMapper">
+  <resultMap id="BaseResultMap" type="com.reading.website.api.domain.UserNotesInfoDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="isDeleted" jdbcType="BIT" property="isDeleted" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="bookId" jdbcType="INTEGER" property="bookId" />
+    <result column="chapId" jdbcType="INTEGER" property="chapId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="notation" jdbcType="VARCHAR" property="notation" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created, updated, isDeleted, userId, bookId, chapId, content, notation
+  </sql>
+
+  <!-- 新增 -->
+  <insert id="insertSelective" parameterType="com.reading.website.api.domain.UserNotesInfoDO">
+    insert into UserNotesInfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="isDeleted != null">
+        isDeleted,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="bookId != null">
+        bookId,
+      </if>
+      <if test="chapId != null">
+        chapId,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="notation != null">
+        notation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="chapId != null">
+        #{chapId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="notation != null">
+        #{notation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 修改 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.reading.website.api.domain.UserNotesInfoDO">
+    update UserNotesInfo
+    <set>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        isDeleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null">
+        bookId = #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="chapId != null">
+        chapId = #{chapId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="notation != null">
+        notation = #{notation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 根据用户id查询图书笔记列表 -->
+  <select id="selectByUserIdGroupBookId" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from UserNotesInfo
+    where userId = #{userId,jdbcType=INTEGER}
+    group by bookId
+    order by id
+    limit #{offset}, #{pageSize}
+  </select>
+
+  <!-- 图书id计数 -->
+  <select id="countSelectByUserIdGroupBookId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(distinct bookId)
+    from UserNotesInfo
+    where isDeleted = 0 and userId = #{userId}
+  </select>
+
+  <!-- 分页查询 -->
+  <select id="pageQuery" resultMap="BaseResultMap" parameterType="com.reading.website.api.domain.UserNotesInfoQuery">
+    select
+    <include refid="Base_Column_List" />
+    from UserNotesInfo
+    <include refid="Where_Clause"/>
+    order by created desc
+    limit #{offset}, #{pageSize}
+  </select>
+
+  <!-- 分页查询计数 -->
+  <select id="countPageQuery" resultType="java.lang.Integer" parameterType="com.reading.website.api.domain.UserNotesInfoQuery">
+    select count(1)
+    from UserNotesInfo
+    <include refid="Where_Clause"/>
+  </select>
+
+  <!-- 条件子句 -->
+  <sql id="Where_Clause">
+    where isDeleted = 0
+    <if test="id != null">
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="userId != null">
+      and userId = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="bookId != null">
+      and bookId = #{bookId,jdbcType=INTEGER}
+    </if>
+    <if test="chapId != null">
+      and chapId = #{chapId,jdbcType=INTEGER}
+    </if>
+  </sql>
+
+</mapper>

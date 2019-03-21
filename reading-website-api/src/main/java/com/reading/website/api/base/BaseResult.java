@@ -37,6 +37,7 @@ public class BaseResult<T> implements Serializable {
     private Page page;
 
     public BaseResult() {
+        this.success = true;
     }
 
     private BaseResult(Boolean success, T data, int code, String message) {
