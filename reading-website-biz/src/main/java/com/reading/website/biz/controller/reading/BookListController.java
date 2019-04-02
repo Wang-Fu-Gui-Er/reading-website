@@ -171,5 +171,24 @@ public class BookListController {
         return result;
     }
 
+    @ApiOperation(value="查询全部图书", notes="查询全部图书")
+    @GetMapping(value = "/all")
+    public BaseResult<List<BookInfoVO>> getAllBooks(@RequestParam("pageNum") Integer pageNum,
+                                                    @RequestParam("pageSize") Integer pageSize) {
+        BookInfoQuery query = new BookInfoQuery();
+        query.setPageNum(pageNum);
+        query.setPageSize(pageSize);
+        BaseResult<List<BookDO>> bookRes = bookService.pageQuery(query);
+
+        if (!bookRes.getSuccess()) {
+            return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "内部服务异常");
+        }
+
+        List<BookInfoVO> bookInfoVOList = bookLogic.assemblyGrade(bookRes.getData());
+        if (CollectionUtils.isEmpty(bookInfoVOList)) {
+            return BaseResult.errorReturn(StatusCodeEnum.LOGIC_ERROR.getCode(), "获取图书评分信息异常");
+        }
+        return BaseResult.rightReturn(bookInfoVOList, bookRes.getPage());
+    }
 
 }
