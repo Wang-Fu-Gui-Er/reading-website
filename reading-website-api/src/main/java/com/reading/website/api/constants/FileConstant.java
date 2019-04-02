@@ -1,5 +1,7 @@
 package com.reading.website.api.constants;
 
+import org.springframework.util.StringUtils;
+
 /**
  * 文件相关常量类
  *
@@ -43,4 +45,24 @@ public class FileConstant {
         return path.substring(path.lastIndexOf("."));
     }
 
+    /**
+     * 转换文件类型为后缀
+     * @param fileContentType
+     * @return
+     */
+    public static String convertFileType(String fileContentType) {
+        if (StringUtils.isEmpty(fileContentType)) {
+            return null;
+        }
+
+        switch (fileContentType) {
+            case "image/jpeg": return "jpeg";
+            case "image/gif": return "gif";
+            case "image/x-ms-bmp": return "bmp";
+            case "image/png": return "png";
+            case "text/plain": return "txt";
+            case "application/pdf": return "pdf";
+            default: return null;
+        }
+    }
 }

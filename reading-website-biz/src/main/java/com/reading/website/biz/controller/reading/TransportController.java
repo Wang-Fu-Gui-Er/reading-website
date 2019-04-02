@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -51,7 +52,17 @@ public class TransportController {
         }
 
         String fileName = UUID.randomUUID().toString();
-        File destFile = new File(filePath + File.separator + fileName + file.getContentType());
+        String fileType = FileConstant.convertFileType(file.getContentType());
+        if (StringUtils.isEmpty(fileType)) {
+            log.warn("文件类型不合法！ fileContentType {}", file.getContentType());
+            return BaseResult.errorReturn(StatusCodeEnum.FILE_UPLOAD_ERROR.getCode(), "文件类型不合法");
+        }
+        File folder = new File(filePath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        File destFile = new File(filePath + File.separator + fileName + "." + fileType);
 
         try {
             file.transferTo(destFile);
