@@ -8,6 +8,9 @@ import com.reading.website.biz.mapper.BookGradeInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * 图书评分服务实现
@@ -57,6 +60,26 @@ public class BookGradeInfoServiceImpl implements BookGradeInfoService {
             return BaseResult.rightReturn(bookGradeInfoMapper.selectByBookId(bookId));
         } catch (Exception e) {
             log.error("BookGradeInfoServiceImpl selectByBookId error, bookId {}, error {}", bookId, e);
+            return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
+        }
+    }
+
+    /**
+     * 根据图书id列表查询评分信息
+     * @param bookIds 图书id列表
+     * @return
+     */
+    @Override
+    public BaseResult<List<BookGradeInfoDO>> selectByBookIds(List<Integer> bookIds) {
+        if (CollectionUtils.isEmpty(bookIds)) {
+            log.warn("BookGradeInfoServiceImpl selectByBookIds param error, param bookIds is empty");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param bookIds is empty");
+        }
+
+        try {
+            return BaseResult.rightReturn(bookGradeInfoMapper.selectByBookIds(bookIds));
+        } catch (Exception e) {
+            log.error("BookGradeInfoServiceImpl selectByBookIds error, bookIds {}, error {}", bookIds, e);
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }

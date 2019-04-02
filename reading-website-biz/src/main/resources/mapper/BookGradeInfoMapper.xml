@@ -136,4 +136,15 @@
     where bookId = #{bookId,jdbcType=INTEGER}
   </select>
 
+  <!-- 根据图书id查询 -->
+  <select id="selectByBookIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from BookGradeInfo
+    where bookId in
+    <foreach collection="list" open="(" separator="," close=");" item="item" index="index">
+      #{item,jdbcType=INTEGER}
+    </foreach>
+  </select>
+
 </mapper>

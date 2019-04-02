@@ -3,6 +3,8 @@ package com.reading.website.api.service;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.domain.BookGradeInfoDO;
 
+import java.util.List;
+
 /**
  * 图书评分服务
  *
@@ -23,4 +25,12 @@ public interface BookGradeInfoService {
      * @return
      */
     BaseResult<BookGradeInfoDO> selectByBookId(Integer bookId);
+
+    /**
+     * 根据图书id列表查询评分信息
+     * @param bookIds 图书id列表
+     * @return
+     */
+    BaseResult<List<BookGradeInfoDO>> selectByBookIds(List<Integer> bookIds);
+
 }

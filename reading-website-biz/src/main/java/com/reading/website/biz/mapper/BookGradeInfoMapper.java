@@ -3,6 +3,8 @@ package com.reading.website.biz.mapper;
 import com.reading.website.api.domain.BookGradeInfoDO;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * 图书评分信息Mapper
  *
@@ -24,4 +26,11 @@ public interface BookGradeInfoMapper {
      * @return
      */
     BookGradeInfoDO selectByBookId(Integer bookId);
+
+    /**
+     * 根据图书id列表查询评分信息
+     * @param bookIds 图书id列表
+     * @return
+     */
+    List<BookGradeInfoDO> selectByBookIds(List<Integer> bookIds);
 }
