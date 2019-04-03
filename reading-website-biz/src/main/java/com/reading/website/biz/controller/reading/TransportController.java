@@ -3,8 +3,10 @@ package com.reading.website.biz.controller.reading;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.constants.FileConstant;
+import com.reading.website.biz.utils.Base64Util;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -28,6 +31,7 @@ public class TransportController {
 
     /**
      * 上传文件接口
+     *
      * @param file 文件
      * @param type 上传文件类型
      * @return 文件路径
@@ -52,7 +56,7 @@ public class TransportController {
         }
 
         String fileName = UUID.randomUUID().toString();
-        String fileType = FileConstant.convertFileType(file.getContentType());
+        String fileType = FileConstant.convert2FileType(file.getContentType());
         if (StringUtils.isEmpty(fileType)) {
             log.warn("文件类型不合法！ fileContentType {}", file.getContentType());
             return BaseResult.errorReturn(StatusCodeEnum.FILE_UPLOAD_ERROR.getCode(), "文件类型不合法");
@@ -76,6 +80,7 @@ public class TransportController {
 
     /**
      * 文件下载接口
+     *
      * @param path 文件路径
      * @return
      */
@@ -100,7 +105,7 @@ public class TransportController {
         OutputStream outputStream = null; //输出流
 
         try {
-            String fileName  = bookName + FileConstant.getFileType(path);
+            String fileName = bookName + "." + FileConstant.getFileType(path);
             response.setContentType("application/force-download;charset=UTF-8");
             response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, "UTF-8"));
 
@@ -108,7 +113,7 @@ public class TransportController {
             fileInputStream = new FileInputStream(file);
             bufferedInputStream = new BufferedInputStream(fileInputStream);
 
-            while(bufferedInputStream.read(buffer) != -1){
+            while (bufferedInputStream.read(buffer) != -1) {
                 outputStream.write(buffer);
             }
 
@@ -132,4 +137,19 @@ public class TransportController {
         return BaseResult.rightReturn(null);
     }
 
+    /**
+     * 图片展示接口
+     *
+     * @param path 文件路径
+     * @return
+     */
+    @GetMapping("/getPicture")
+    public BaseResult<String> getPicture(@RequestParam("picturePath") String path) {
+        if (StringUtils.isEmpty(path)) {
+            log.warn("文件路径为空");
+            return BaseResult.errorReturn(StatusCodeEnum.FILE_PATH_NOT_EXIST.getCode(), "文件路径为空");
+        }
+
+        return BaseResult.rightReturn(Base64Util.FileToBase64ByLocal(path));
+    }
 }

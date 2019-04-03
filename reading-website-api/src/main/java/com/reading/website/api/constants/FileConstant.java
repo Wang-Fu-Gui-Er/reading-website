@@ -43,15 +43,15 @@ public class FileConstant {
      * @return 文件类型
      */
     public static String getFileType(String path) {
-        return path.substring(path.lastIndexOf("."));
+        return path.substring(path.lastIndexOf(".") + 1);
     }
 
     /**
      * 转换文件类型为后缀
-     * @param fileContentType
+     * @param fileContentType 文件内容类型
      * @return
      */
-    public static String convertFileType(String fileContentType) {
+    public static String convert2FileType(String fileContentType) {
         if (StringUtils.isEmpty(fileContentType)) {
             return null;
         }
@@ -63,6 +63,27 @@ public class FileConstant {
             case "image/png": return "png";
             case "text/plain": return "txt";
             case "application/pdf": return "pdf";
+            default: return null;
+        }
+    }
+
+    /**
+     * 转换文件后缀为类型
+     * @param fileType 文件后缀
+     * @return
+     */
+    public static String convert2ContentType(String fileType) {
+        if (StringUtils.isEmpty(fileType)) {
+            return null;
+        }
+
+        switch (fileType) {
+            case "jpeg": return "image/jpeg";
+            case "gif": return "image/gif";
+            case "bmp": return "image/x-ms-bmp";
+            case "png": return "image/png";
+            case "txt": return "text/plain";
+            case "pdf": return "application/pdf";
             default: return null;
         }
     }
