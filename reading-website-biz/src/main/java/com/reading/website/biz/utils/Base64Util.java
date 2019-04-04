@@ -56,7 +56,7 @@ public class Base64Util {
         stringBuilder.append(fileContentType);
         stringBuilder.append(";base64,");
         stringBuilder.append(fileEncoder);
-        return stringBuilder.toString();
+        return stringBuilder.toString().replaceAll("\n", "");
     }
 
 
@@ -108,6 +108,6 @@ public class Base64Util {
         stringBuilder.append(fileContentType);
         stringBuilder.append(";base64,");
         stringBuilder.append(fileEncoder);
-        return stringBuilder.toString();
+        return stringBuilder.toString().replaceAll("\n", "");
     }
 }
