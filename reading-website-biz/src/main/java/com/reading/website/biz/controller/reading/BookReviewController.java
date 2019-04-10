@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @xyang010 2019/3/17
  */
-@Api(value = "图书评论接口", description = "BookReviewController", tags = {"图书列表接口"})
+@Api(value = "图书评论接口", description = "BookReviewController", tags = {"图书评论接口"})
 @RestController
 @Slf4j
 @RequestMapping("/review")
