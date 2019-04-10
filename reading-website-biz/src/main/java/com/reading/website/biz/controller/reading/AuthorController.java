@@ -3,9 +3,12 @@ package com.reading.website.biz.controller.reading;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.domain.AuthorDO;
 import com.reading.website.api.service.AuthorService;
+import com.reading.website.api.vo.AuthorVO;
+import com.reading.website.biz.utils.Base64Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +36,9 @@ public class AuthorController {
 
     @ApiOperation(value="查询作者信息", notes="查询作者信息")
     @GetMapping(value = "/getAuthorInfo")
-    public BaseResult<AuthorDO> getAuthorInfo(@RequestParam("authorId") Integer authorId) {
+    public BaseResult<AuthorVO> getAuthorInfo(@RequestParam("authorId") Integer authorId) {
         return authorService.selectByAuthorId(authorId);
+
     }
 
     @ApiOperation(value="模糊查询作者信息", notes="模糊查询作者信息")

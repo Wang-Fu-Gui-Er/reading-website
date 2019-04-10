@@ -8,10 +8,7 @@ import com.reading.website.api.domain.UserBaseInfoQuery;
 import com.reading.website.api.service.UserBaseInfoService;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.biz.common.mail.MailService;
-import com.reading.website.biz.utils.EhcacheUtil;
-import com.reading.website.biz.utils.EncryptUtil;
-import com.reading.website.biz.utils.JWTUtil;
-import com.reading.website.biz.utils.VerificationCodeUtil;
+import com.reading.website.biz.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -237,6 +234,7 @@ public class UserController {
             log.warn("user login create token error, user is {}", userBaseInfoDO);
         }
         Map<String, Object> res = new HashMap<>();
+        dbUser.setHeadPicPath(Base64Util.fileToBase64ByLocal(dbUser.getHeadPicPath()));
         res.put("userBaseInfo", dbUser);
         res.put("token", token);
         return BaseResult.rightReturn(res);
@@ -295,7 +293,8 @@ public class UserController {
         }
 
         if (userRes.getData() != null) {
-            return BaseResult.rightReturn(userRes.getData());
+            userRes.getData().setHeadPicPath(Base64Util.fileToBase64ByLocal(userRes.getData().getHeadPicPath()));
+            return userRes;
         }
 
         return BaseResult.errorReturn(null, StatusCodeEnum.NOT_FOUND.getCode(), "用户不存在");

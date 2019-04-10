@@ -18,7 +18,7 @@ public class ReadingHistoryVO implements Serializable {
     // 图书名称
     private String bookName;
 
-    // 图书封面地址
+    // 图书封面
     private String bookPic;
 
     // 图书地址

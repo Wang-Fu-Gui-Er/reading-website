@@ -6,7 +6,9 @@ import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.BookDO;
 import com.reading.website.api.domain.BookInfoQuery;
 import com.reading.website.api.service.BookService;
+import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.biz.enums.BookRecommendType;
+import com.reading.website.biz.logic.BookLogic;
 import com.reading.website.biz.mapper.BookMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ public class BookServiceImpl implements BookService {
      * @return 图书实体
      */
     @Override
-    public BaseResult<BookDO> selectByBookId(Integer bookId) {
+    public BaseResult<BookInfoVO> selectByBookId(Integer bookId) {
         if (bookId == null || bookId < 0) {
             log.warn("getBookInfo param bookId is null");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param bookId is null");
@@ -45,7 +47,7 @@ public class BookServiceImpl implements BookService {
             query.setId(bookId);
             List<BookDO> list = bookMapper.selectSelective(query);
             if (!CollectionUtils.isEmpty(list)) {
-                return BaseResult.rightReturn(list.get(0));
+                return BaseResult.rightReturn(BookLogic.convertDO2VO(list.get(0)));
             }
             return BaseResult.rightReturn(null);
         } catch (Exception e) {
@@ -106,7 +108,7 @@ public class BookServiceImpl implements BookService {
      * @return 图书列表
      */
     @Override
-    public BaseResult<List<BookDO>> listRecommendBooks(String recommendType, Page page) {
+    public BaseResult<List<BookInfoVO>> listRecommendBooks(String recommendType, Page page) {
         if (StringUtils.isEmpty(recommendType)) {
             log.warn("listRecommendBooks param recommendType is null");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param recommendType is null");
@@ -116,15 +118,15 @@ public class BookServiceImpl implements BookService {
         }
 
         try {
-            BaseResult<List<BookDO>> result = new BaseResult<>();
+            BaseResult<List<BookInfoVO>> result = new BaseResult<>();
             result.setSuccess(true);
 
             if (recommendType.equals(BookRecommendType.NEWLY.getType())) {
-                result.setData(bookMapper.listNewlyBooks(page));
+                result.setData(BookLogic.convertDOs2VOs(bookMapper.listNewlyBooks(page)));
             } else if (recommendType.equals(BookRecommendType.FAVORABLE.getType())) {
-                result.setData(bookMapper.listFavorableBooks(page));
+                result.setData(BookLogic.convertDOs2VOs(bookMapper.listFavorableBooks(page)));
             } else if (recommendType.equals(BookRecommendType.CLASSIC.getType())) {
-                result.setData(bookMapper.listClassicBooks(page));
+                result.setData(BookLogic.convertDOs2VOs(bookMapper.listClassicBooks(page)));
             } else {
                 log.warn("listRecommendBooks param recommendType is invalid");
                 return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param recommendType is invalid");
@@ -144,16 +146,16 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
-    public BaseResult<List<BookDO>> pageQuery(BookInfoQuery query) {
+    public BaseResult<List<BookInfoVO>> pageQuery(BookInfoQuery query) {
         if (query == null) {
             log.warn("pageQuery param query is null");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param recommendType is null");
         }
 
         try {
-            BaseResult<List<BookDO>> result = new BaseResult<>();
+            BaseResult<List<BookInfoVO>> result = new BaseResult<>();
             result.setSuccess(true);
-            result.setData(bookMapper.pageQuery(query));
+            result.setData(BookLogic.convertDOs2VOs(bookMapper.pageQuery(query)));
             Page page = new Page();
             page.setTotalNum(bookMapper.countSelective(query));
             page.setPageNum(query.getPageNum());

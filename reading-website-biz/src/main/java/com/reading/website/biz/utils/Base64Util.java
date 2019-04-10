@@ -21,7 +21,7 @@ public class Base64Util {
      * @param fileUrl	文件在服务器上的路径
      * @return
      */
-    public static String FileToBase64ByLocal(String fileUrl) {
+    public static String fileToBase64ByLocal(String fileUrl) {
 
 
         InputStream inputStream = null;

@@ -7,6 +7,7 @@ import com.reading.website.api.service.BookGradeInfoService;
 import com.reading.website.api.service.BookService;
 import com.reading.website.api.service.ChapterService;
 import com.reading.website.api.service.UserReadingService;
+import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.api.vo.ReadingHistoryVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -86,21 +87,21 @@ public class UserReadingController {
         BookInfoQuery bookInfoQuery = new BookInfoQuery();
         bookInfoQuery.setBookIds(bookIds);
         bookInfoQuery.setPageSize(bookIds.size());
-        BaseResult<List<BookDO>> bookRes = bookService.pageQuery(bookInfoQuery);
+        BaseResult<List<BookInfoVO>> bookRes = bookService.pageQuery(bookInfoQuery);
         if (!bookRes.getSuccess()) {
             log.warn("queryReadingHistory, query bookInfo error, bookIds is {}, bookRes {}", bookIds, bookRes);
             return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "query readingInfo error");
         }
 
-        List<BookDO> bookList = bookRes.getData();
+        List<BookInfoVO> bookList = bookRes.getData();
         if (CollectionUtils.isEmpty(bookList)) {
             log.warn("queryReadingHistory, bookInfo is empty, bookIds is {}", bookIds);
             return BaseResult.rightReturn(null);
         }
 
-        Map<Integer, BookDO> bookMap = bookList
+        Map<Integer, BookInfoVO> bookMap = bookList
                 .stream()
-                .collect(Collectors.toMap(BookDO::getId, bookDO -> bookDO, (v1, v2) -> v2));
+                .collect(Collectors.toMap(BookInfoVO::getId, bookInfoVO -> bookInfoVO, (v1, v2) -> v2));
 
         //3. 查询章节信息
         List<Integer> chapIds = readingInfoList
@@ -135,14 +136,14 @@ public class UserReadingController {
                 continue;
             }
 
-            BookDO bookDO = bookMap.get(chapterDO.getBookId());
-            if (bookDO == null) {
+            BookInfoVO bookInfoVO = bookMap.get(chapterDO.getBookId());
+            if (bookInfoVO == null) {
                 continue;
             }
             ReadingHistoryVO vo = new ReadingHistoryVO();
             BeanUtils.copyProperties(chapterDO, vo);
-            BeanUtils.copyProperties(bookDO, vo);
-            vo.setProgress(bookDO.getChapNum() == 0 ? 0 : (int)Math.ceil(chapterDO.getSequence() / bookDO.getChapNum()) * 100);
+            BeanUtils.copyProperties(bookInfoVO, vo);
+            vo.setProgress(bookInfoVO.getChapNum() == 0 ? 0 : (int)Math.ceil(chapterDO.getSequence() / bookInfoVO.getChapNum()) * 100);
             readingHistoryList.add(vo);
         }
         return BaseResult.rightReturn(readingHistoryList);

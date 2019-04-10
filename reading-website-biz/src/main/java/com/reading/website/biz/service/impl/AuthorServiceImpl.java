@@ -6,6 +6,8 @@ import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.AuthorDO;
 import com.reading.website.api.service.AuthorService;
 import com.reading.website.api.service.BookService;
+import com.reading.website.api.vo.AuthorVO;
+import com.reading.website.biz.logic.AuthorLogic;
 import com.reading.website.biz.mapper.AuthorMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +54,14 @@ public class AuthorServiceImpl implements AuthorService {
      * @return
      */
     @Override
-    public BaseResult<AuthorDO> selectByAuthorId(Integer authorId) {
+    public BaseResult<AuthorVO> selectByAuthorId(Integer authorId) {
         if (authorId == null) {
             log.warn("AuthorServiceImpl selectByAuthorId param authorId is null");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param authorId is null");
         }
 
         try {
-            return BaseResult.rightReturn(authorMapper.selectByPrimaryKey(authorId));
+            return BaseResult.rightReturn(AuthorLogic.convertDO2VO(authorMapper.selectByPrimaryKey(authorId)));
         } catch (Exception e) {
             log.error("AuthorServiceImpl selectByAuthorId failed, authorId {}, error {},", authorId, e);
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");

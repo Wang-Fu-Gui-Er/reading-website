@@ -2,6 +2,7 @@ package com.reading.website.api.service;
 
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.domain.AuthorDO;
+import com.reading.website.api.vo.AuthorVO;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface AuthorService {
      * @param authorId 作者id
      * @return
      */
-    BaseResult<AuthorDO> selectByAuthorId(Integer authorId);
+    BaseResult<AuthorVO> selectByAuthorId(Integer authorId);
 
     /**
      * 根据作者名称模糊查询

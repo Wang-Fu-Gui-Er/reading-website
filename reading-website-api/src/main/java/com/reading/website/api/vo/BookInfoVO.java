@@ -18,7 +18,7 @@ public class BookInfoVO {
     // 图书名称
     private String bookName;
 
-    // 图书封面地址
+    // 图书封面
     private String bookPic;
 
     // 作者id

@@ -150,6 +150,6 @@ public class TransportController {
             return BaseResult.errorReturn(StatusCodeEnum.FILE_PATH_NOT_EXIST.getCode(), "文件路径为空");
         }
 
-        return BaseResult.rightReturn(Base64Util.FileToBase64ByLocal(path));
+        return BaseResult.rightReturn(Base64Util.fileToBase64ByLocal(path));
     }
 }

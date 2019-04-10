@@ -50,7 +50,7 @@ public class BookListController {
                                                   @RequestParam("pageNum") Integer pageNum,
                                                   @RequestParam("pageSize") Integer pageSize) {
         Page page = new Page(pageNum, pageSize);
-        BaseResult<List<BookDO>> bookRes = bookService.listRecommendBooks(recommendType, page);
+        BaseResult<List<BookInfoVO>> bookRes = bookService.listRecommendBooks(recommendType, page);
         if (!bookRes.getSuccess()) {
             return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "内部服务异常");
         }
@@ -77,7 +77,7 @@ public class BookListController {
         query.setSmallCateId(smallCateId);
         query.setPageNum(pageNum);
         query.setPageSize(pageSize);
-        BaseResult<List<BookDO>> bookRes = bookService.pageQuery(query);
+        BaseResult<List<BookInfoVO>> bookRes = bookService.pageQuery(query);
 
         if (!bookRes.getSuccess()) {
             return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "内部服务异常");
@@ -105,7 +105,7 @@ public class BookListController {
         query.setBookName(bookName);
         query.setPageNum(pageNum);
         query.setPageSize(pageSize);
-        BaseResult<List<BookDO>> bookRes = bookService.pageQuery(query);
+        BaseResult<List<BookInfoVO>> bookRes = bookService.pageQuery(query);
 
         if (!bookRes.getSuccess()) {
             return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "内部服务异常");
@@ -120,7 +120,7 @@ public class BookListController {
 
     @ApiOperation(value="查询加入书架的图书", notes="查询加入书架的图书")
     @GetMapping(value = "/onShelf")
-    public BaseResult<List<BookDO>> onShelf(@RequestParam("userId") Integer userId,
+    public BaseResult<List<BookInfoVO>> onShelf(@RequestParam("userId") Integer userId,
                                             @RequestParam("pageNum") Integer pageNum,
                                             @RequestParam("pageSize") Integer pageSize) {
         if (userId == null) {
@@ -157,14 +157,14 @@ public class BookListController {
         BookInfoQuery bookInfoQuery = new BookInfoQuery();
         bookInfoQuery.setBookIds(bookIds);
         bookInfoQuery.setPageSize(bookIds.size());
-        BaseResult<List<BookDO>> bookRes = bookService.pageQuery(bookInfoQuery);
+        BaseResult<List<BookInfoVO>> bookRes = bookService.pageQuery(bookInfoQuery);
         if (!bookRes.getSuccess()) {
             log.warn("queryReadingHistory, query bookInfo error, bookIds is {}, bookRes {}", bookIds, bookRes);
             return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "query readingInfo error");
         }
 
         //3. 拼装返回结果
-        BaseResult<List<BookDO>> result = new BaseResult<>();
+        BaseResult<List<BookInfoVO>> result = new BaseResult<>();
         result.setSuccess(true);
         result.setData(bookRes.getData());
         result.setPage(new Page(readingInfoQuery.getPageNum(), readingInfoQuery.getPageSize(), readingRes.getPage().getTotalNum()));
@@ -178,7 +178,7 @@ public class BookListController {
         BookInfoQuery query = new BookInfoQuery();
         query.setPageNum(pageNum);
         query.setPageSize(pageSize);
-        BaseResult<List<BookDO>> bookRes = bookService.pageQuery(query);
+        BaseResult<List<BookInfoVO>> bookRes = bookService.pageQuery(query);
 
         if (!bookRes.getSuccess()) {
             return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "内部服务异常");

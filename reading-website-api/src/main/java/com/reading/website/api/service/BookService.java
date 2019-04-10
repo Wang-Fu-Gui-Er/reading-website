@@ -4,6 +4,7 @@ import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.Page;
 import com.reading.website.api.domain.BookDO;
 import com.reading.website.api.domain.BookInfoQuery;
+import com.reading.website.api.vo.BookInfoVO;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface BookService {
      * @param bookId 图书id
      * @return 图书实体
      */
-    BaseResult<BookDO> selectByBookId(Integer bookId);
+    BaseResult<BookInfoVO> selectByBookId(Integer bookId);
 
     /**
      * 新增或更新
@@ -41,14 +42,14 @@ public interface BookService {
      * @param page 分页信息
      * @return 图书列表
      */
-    BaseResult<List<BookDO>> listRecommendBooks(String recommendType, Page page);
+    BaseResult<List<BookInfoVO>> listRecommendBooks(String recommendType, Page page);
 
     /**
      * 分页查询
      * @param query 查询条件
      * @return
      */
-    BaseResult<List<BookDO>> pageQuery(BookInfoQuery query);
+    BaseResult<List<BookInfoVO>> pageQuery(BookInfoQuery query);
 
 
 }
