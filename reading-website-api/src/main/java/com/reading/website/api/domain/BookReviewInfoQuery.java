@@ -20,4 +20,7 @@ public class BookReviewInfoQuery extends Page {
     // 用户id
     private Integer userId;
 
+    // 评论排序方式
+    private String sort;
+
 }

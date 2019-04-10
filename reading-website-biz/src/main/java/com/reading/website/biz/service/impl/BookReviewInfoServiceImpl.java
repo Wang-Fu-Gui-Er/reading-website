@@ -49,6 +49,7 @@ public class BookReviewInfoServiceImpl implements BookReviewInfoService {
     /**
      * 分页查询
      * @param query 查询条件
+     * 默认时间倒序
      * @return
      */
     @Override

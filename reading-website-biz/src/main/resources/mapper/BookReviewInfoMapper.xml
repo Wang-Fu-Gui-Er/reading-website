@@ -92,6 +92,14 @@
     <include refid="Base_Column_List" />
     from BookReviewInfo
     <include refid="Where_Clause"/>
+    <choose>
+      <when test='sort == "hot" '>
+        order by likeNum desc
+      </when>
+      <otherwise>
+        order by created desc
+      </otherwise>
+    </choose>
     limit #{offset}, #{pageSize}
   </select>
 
