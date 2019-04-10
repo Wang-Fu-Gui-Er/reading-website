@@ -5,6 +5,7 @@ import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.BigCategoryDO;
 import com.reading.website.api.domain.SmallCategoryDO;
 import com.reading.website.api.service.CategoryService;
+import com.reading.website.api.vo.CategoryVO;
 import com.reading.website.biz.mapper.BigCategoryMapper;
 import com.reading.website.biz.mapper.SmallCategoryMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -49,9 +50,11 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public BaseResult<List<BigCategoryDO>> listAllCategory() {
+    public BaseResult<List<CategoryVO>> listAllCategory() {
 
         try {
+            List<CategoryVO> categoryVOList = new ArrayList<>();
+
             //1. 查询所有大类
             List<BigCategoryDO> bigCategoryList = bigCategoryMapper.listAll();
             if (!CollectionUtils.isEmpty(bigCategoryList)) {
@@ -63,20 +66,24 @@ public class CategoryServiceImpl implements CategoryService {
                         .collect(Collectors.toList());
                 //2. 根据大类查询小类
                 List<SmallCategoryDO> smallCateList = smallCategoryMapper.listByBigCateIds(bigCateIds);
+
                 //3. 拼装结果集
                 if (!CollectionUtils.isEmpty(smallCateList)) {
                     bigCategoryList.forEach(bigCategoryDO -> {
-                        List<SmallCategoryDO> list = new ArrayList<>();
+                        List<SmallCategoryDO> smallCategoryDOList = new ArrayList<>();
                         smallCateList.forEach(smallCategoryDO -> {
                             if (bigCategoryDO.getId().equals(smallCategoryDO.getBigCateId())) {
-                                list.add(smallCategoryDO);
+                                smallCategoryDOList.add(smallCategoryDO);
                             }
                         });
-                        bigCategoryDO.setSmallCategoryList(list);
+                        CategoryVO categoryVO = new CategoryVO();
+                        categoryVO.setBigCategoryDO(bigCategoryDO);
+                        categoryVO.setSmallCategoryList(smallCategoryDOList);
+                        categoryVOList.add(categoryVO);
                     });
                 }
             }
-            return BaseResult.rightReturn(bigCategoryList);
+            return BaseResult.rightReturn(categoryVOList);
         } catch (Exception e) {
             log.error("CategoryService listAllCategory error {}", e);
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");

@@ -3,6 +3,7 @@ package com.reading.website.biz.service;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.domain.BigCategoryDO;
 import com.reading.website.api.service.CategoryService;
+import com.reading.website.api.vo.CategoryVO;
 import com.reading.website.biz.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class CategoryServiceTest extends BaseTest {
 
     @Test
     public void testGetAllCategory() {
-        BaseResult<List<BigCategoryDO>> res = categoryService.listAllCategory();
+        BaseResult<List<CategoryVO>> res = categoryService.listAllCategory();
         Assert.assertTrue(res.getSuccess());
         Assert.assertNotNull(res.getData());
         System.out.println(res);

@@ -5,6 +5,7 @@ import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.BigCategoryDO;
 import com.reading.website.api.domain.SmallCategoryDO;
 import com.reading.website.api.service.CategoryService;
+import com.reading.website.api.vo.CategoryVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +45,8 @@ public class CategoryController {
 
     @ApiOperation(value="获取所有分类", notes="获取所有分类")
     @GetMapping(value = "/getAllCategory")
-    public BaseResult<List<BigCategoryDO>> listAllCategory() {
-        BaseResult<List<BigCategoryDO>> result = categoryService.listAllCategory();
+    public BaseResult<List<CategoryVO>> listAllCategory() {
+        BaseResult<List<CategoryVO>> result = categoryService.listAllCategory();
         if (!result.getSuccess()) {
             result.setCode(StatusCodeEnum.INNER_SERVICE_ERROR.getCode());
             result.setMessage(StatusCodeEnum.INNER_SERVICE_ERROR.getMark());

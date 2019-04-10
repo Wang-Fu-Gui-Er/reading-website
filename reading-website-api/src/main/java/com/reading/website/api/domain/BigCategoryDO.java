@@ -30,9 +30,6 @@ public class BigCategoryDO {
      */
     private String cateName;
 
-    // 打类下的小类集合
-    private List<SmallCategoryDO> smallCategoryList;
-
     public BigCategoryDO() {
     }
 

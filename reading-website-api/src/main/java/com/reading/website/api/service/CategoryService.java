@@ -3,6 +3,7 @@ package com.reading.website.api.service;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.domain.BigCategoryDO;
 import com.reading.website.api.domain.SmallCategoryDO;
+import com.reading.website.api.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface CategoryService {
      * 查询所有分类
      * @return
      */
-    BaseResult<List<BigCategoryDO>> listAllCategory();
+    BaseResult<List<CategoryVO>> listAllCategory();
 
     /**
      * 根据大类id查询小类
