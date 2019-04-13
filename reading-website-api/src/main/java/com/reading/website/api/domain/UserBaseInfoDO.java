@@ -19,12 +19,12 @@ public class UserBaseInfoDO implements Serializable {
     /**
      * 主键userId
      */
-    private Long id;
+    private Integer id;
 
     /**
      * userId List
      */
-    private List<Long> ids;
+    private List<Integer> ids;
 
     /**
      * 创建时间

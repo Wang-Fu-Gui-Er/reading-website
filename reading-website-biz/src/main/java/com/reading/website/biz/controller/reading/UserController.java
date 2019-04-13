@@ -308,7 +308,7 @@ public class UserController {
 
     @ApiOperation(value="修改邮箱", notes="修改邮箱")
     @GetMapping("/resetEmail")
-    public BaseResult<Boolean> resetEmail(@Param("userId") Long userId, @Param("email") String email) {
+    public BaseResult<Boolean> resetEmail(@Param("userId") Integer userId, @Param("email") String email) {
         // 参数校验
         if (userId == null || StringUtils.isEmpty(email)) {
             log.warn("user resetEmail param empty");

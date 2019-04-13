@@ -16,7 +16,7 @@ public class JWTUtilTest {
     @Test
     public void testSign() {
         String email = "1912246570@qq.com";
-        Long userId = 123L;
+        Integer userId = 123;
         String token = JWTUtil.sign(email, userId);
 
         System.out.println(token);

@@ -130,7 +130,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
      * @return
      */
     @Override
-    public BaseResult<UserBaseInfoDO> selectById(Long id) {
+    public BaseResult<UserBaseInfoDO> selectById(Integer id) {
         if (id == null) {
             log.warn("UserBaseInfoService selectById param id is null");
             return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param id is null");

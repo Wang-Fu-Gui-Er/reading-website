@@ -51,9 +51,9 @@ public class UserBaseInfoServiceTest extends BaseTest {
         //userBaseInfoDTO.setId(2L);
         //userBaseInfoDTO.setNickName("yx8102");
         //userBaseInfoDTO.setMobileNum("8978687689");
-        List<Long> ids = new ArrayList<>();
-        ids.add(1L);
-        ids.add(2L);
+        List<Integer> ids = new ArrayList<>();
+        ids.add(1);
+        ids.add(2);
         query.setIds(ids);
         query.setIsAdmin(true);
         BaseResult<List<UserBaseInfoDO>> res =  userBaseInfoService.selectSelective(query);

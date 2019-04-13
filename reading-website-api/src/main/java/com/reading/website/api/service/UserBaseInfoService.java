@@ -55,5 +55,5 @@ public interface UserBaseInfoService {
      * @param id 用户id
      * @return
      */
-    BaseResult<UserBaseInfoDO> selectById(Long id);
+    BaseResult<UserBaseInfoDO> selectById(Integer id);
 }

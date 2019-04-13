@@ -16,12 +16,12 @@ public class UserBaseInfoQuery {
     /**
      * 主键userId
      */
-    private Long id;
+    private Integer id;
 
     /**
      * userId列表
      */
-    private List<Long> ids;
+    private List<Integer> ids;
 
     /**
      * 用户昵称

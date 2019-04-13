@@ -27,7 +27,7 @@ public class JWTUtil {
      * @param userId
      * @return
      */
-    public static String sign(String email, Long userId) {
+    public static String sign(String email, Integer userId) {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             //设置私钥及加密算法

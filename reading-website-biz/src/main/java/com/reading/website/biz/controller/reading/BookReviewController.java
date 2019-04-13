@@ -4,6 +4,8 @@ import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.domain.BookReviewInfoDO;
 import com.reading.website.api.domain.BookReviewInfoQuery;
 import com.reading.website.api.service.BookReviewInfoService;
+import com.reading.website.api.vo.BookReviewVO;
+import com.reading.website.biz.logic.ReviewLogic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +25,16 @@ import java.util.List;
 @RequestMapping("/review")
 public class BookReviewController {
 
+    private final BookReviewInfoService reviewInfoService;
+
+    private final ReviewLogic reviewLogic;
+
     @Autowired
-    private BookReviewInfoService reviewInfoService;
+    public BookReviewController(BookReviewInfoService reviewInfoService, ReviewLogic reviewLogic) {
+        this.reviewInfoService = reviewInfoService;
+        this.reviewLogic = reviewLogic;
+    }
+
 
     @ApiOperation(value="新增或修改图书评论", notes="新增或修改图书评论")
     @PostMapping(value = "/addOrUpdate")
@@ -34,8 +44,8 @@ public class BookReviewController {
 
     @ApiOperation(value="查询图书评论", notes="查询图书评论")
     @PostMapping(value = "/query")
-    public BaseResult<List<BookReviewInfoDO>> query(@RequestBody BookReviewInfoQuery query) {
-        return reviewInfoService.pageQuery(query);
+    public BaseResult<List<BookReviewVO>> query(@RequestBody BookReviewInfoQuery query) {
+        return BaseResult.rightReturn(reviewLogic.queryReview(query));
     }
 
     @ApiOperation(value="删除图书评论", notes="删除图书评论")

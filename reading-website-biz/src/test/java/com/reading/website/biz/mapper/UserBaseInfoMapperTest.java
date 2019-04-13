@@ -37,7 +37,7 @@ public class UserBaseInfoMapperTest extends BaseTest {
     @Test
     public void testUpdateByEmailSelective() {
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();
-        userBaseInfoDO.setId(1L);
+        userBaseInfoDO.setId(1);
         userBaseInfoDO.setIsAdmin(true);
         int res = userBaseInfoMapper.updateByEmailSelective(userBaseInfoDO);
         System.out.println(res);
@@ -49,9 +49,9 @@ public class UserBaseInfoMapperTest extends BaseTest {
         //userBaseInfoDTO.setId(2L);
         //userBaseInfoDTO.setNickName("yx8102");
         //userBaseInfoDTO.setMobileNum("8978687689");
-        List<Long> ids = new ArrayList<>();
-        ids.add(1L);
-        ids.add(2L);
+        List<Integer> ids = new ArrayList<>();
+        ids.add(1);
+        ids.add(2);
         query.setIds(ids);
         List<UserBaseInfoDO> res = userBaseInfoMapper.selectSelective(query);
         System.out.println(res);
