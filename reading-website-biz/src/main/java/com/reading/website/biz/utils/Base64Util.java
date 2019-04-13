@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import com.reading.website.api.constants.FileConstant;
+import org.springframework.util.StringUtils;
 import sun.misc.BASE64Encoder;
 
 /**
@@ -23,6 +24,10 @@ public class Base64Util {
      */
     public static String fileToBase64ByLocal(String fileUrl) {
 
+        if (StringUtils.isEmpty(fileUrl)) {
+            return null;
+        }
+
 
         InputStream inputStream = null;
         byte[] data = null;
@@ -35,6 +40,7 @@ public class Base64Util {
             inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
 
         // 对字节数组Base64编码
