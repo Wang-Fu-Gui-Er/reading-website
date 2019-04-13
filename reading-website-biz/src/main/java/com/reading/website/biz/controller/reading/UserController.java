@@ -53,7 +53,13 @@ public class UserController {
             log.warn("user register param user error");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
         }
-        // 注册之前先查询、该邮箱是否已被注册 todo
+
+        // 注册之前先查询、该邮箱是否已被注册
+        BaseResult<UserBaseInfoDO> queryRes = userService.selectByEmail(userBaseInfoDO.getEmail());
+        if(queryRes.getSuccess() && queryRes.getData() != null) {
+            log.warn("用户已注册");
+            return BaseResult.errorReturn(StatusCodeEnum.BUSINESS_DATA_ERROR.getCode(), "用户已注册，忘记密码请找回。");
+        }
 
         //设置用户状态为 未激活
         userBaseInfoDO.setStatus(UserStatusConstant.INACTIVE);
@@ -279,7 +285,7 @@ public class UserController {
 
     @ApiOperation(value="查询用户信息", notes="查询用户信息")
     @GetMapping("/getUserInfo")
-    public BaseResult<UserBaseInfoDO> getUserInfo(@Param("email") String email) {
+    public BaseResult<UserBaseInfoDO> getUserInfo(@RequestParam("email") String email) {
         // 参数校验
         if (StringUtils.isEmpty(email)) {
             log.warn("user getUserInfo param email empty");
