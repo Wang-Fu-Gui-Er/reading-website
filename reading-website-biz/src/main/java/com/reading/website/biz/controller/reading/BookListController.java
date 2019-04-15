@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.Page;
 import com.reading.website.api.base.StatusCodeEnum;
-import com.reading.website.api.domain.BookDO;
-import com.reading.website.api.domain.BookInfoQuery;
-import com.reading.website.api.domain.UserReadingInfoDO;
-import com.reading.website.api.domain.UserReadingInfoQuery;
+import com.reading.website.api.constants.SearchTypeConstant;
+import com.reading.website.api.domain.*;
+import com.reading.website.api.service.AuthorService;
 import com.reading.website.api.service.BookService;
 import com.reading.website.api.service.UserReadingService;
 import com.reading.website.api.vo.BookInfoVO;
@@ -35,14 +34,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/book/list")
 public class BookListController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
+
+    private final UserReadingService readingService;
+
+    private final BookLogic bookLogic;
+
+    private final AuthorService authorService;
 
     @Autowired
-    private UserReadingService readingService;
-
-    @Autowired
-    private BookLogic bookLogic;
+    public BookListController(BookService bookService, UserReadingService readingService, BookLogic bookLogic, AuthorService authorService) {
+        this.bookService = bookService;
+        this.readingService = readingService;
+        this.bookLogic = bookLogic;
+        this.authorService = authorService;
+    }
 
     @ApiOperation(value="图书推荐", notes="图书推荐")
     @GetMapping(value = "/recommend")
@@ -189,6 +195,67 @@ public class BookListController {
             return BaseResult.errorReturn(StatusCodeEnum.LOGIC_ERROR.getCode(), "获取图书评分信息异常");
         }
         return BaseResult.rightReturn(bookInfoVOList, bookRes.getPage());
+    }
+
+    @ApiOperation(value="搜索框模糊查询", notes="搜索框模糊查询")
+    @GetMapping(value = "/fuzzyQueryAll")
+    public BaseResult<List<BookInfoVO>> fuzzyQueryAll(@RequestParam("searchType") String searchType,
+                                                      @RequestParam("searchKey") String searchKey,
+                                                      @RequestParam("pageNum") Integer pageNum,
+                                                      @RequestParam("pageSize") Integer pageSize) {
+        boolean paramError = false;
+        if (StringUtils.isEmpty(searchType)) {
+            paramError = true;
+            log.warn("BookListController fuzzyQueryAll, searchType is empty");
+        }
+
+        if (StringUtils.isEmpty(searchKey)) {
+            paramError = true;
+            log.warn("BookListController fuzzyQueryAll, searchKey is empty");
+        }
+
+        if (paramError) {
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "参数异常");
+        }
+
+        // 根据图书模糊查询
+        if (searchType.equals(SearchTypeConstant.BOOK)) {
+            return fuzzyQueryBook(searchKey, pageNum, pageSize);
+        }
+
+        // 根据作者模糊查询
+        if (searchType.equals(SearchTypeConstant.AUTHOR)) {
+            BaseResult<List<AuthorDO>> authorRes = authorService.fuzzySelectByAuthorName(searchKey);
+            if (!authorRes.getSuccess()) {
+                log.warn("模糊查询作者信息异常, searchKey {}, authorRes {}", searchKey, authorRes);
+                return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "查询作者信息失败");
+            }
+
+            List<AuthorDO> authorDOList = authorRes.getData();
+            if (CollectionUtils.isEmpty(authorDOList)) {
+                log.warn("模糊查询作者信息为空, searchKey {}", searchKey);
+                return BaseResult.errorReturn(StatusCodeEnum.NOT_FOUND.getCode(), "未收录该作者信息，可提反馈意见，工作人员将补录");
+            }
+
+            List<Integer> authorIds = authorDOList.stream().map(AuthorDO::getId).distinct().collect(Collectors.toList());
+            BookInfoQuery bookInfoQuery = new BookInfoQuery();
+            bookInfoQuery.setAuthorIds(authorIds);
+            bookInfoQuery.setPageNum(pageNum);
+            bookInfoQuery.setPageSize(pageSize);
+            BaseResult<List<BookInfoVO>> bookRes = bookService.pageQuery(bookInfoQuery);
+
+            if (!bookRes.getSuccess()) {
+                return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "内部服务异常");
+            }
+
+            List<BookInfoVO> bookInfoVOList = bookLogic.assemblyGrade(bookRes.getData());
+            if (CollectionUtils.isEmpty(bookInfoVOList)) {
+                return BaseResult.errorReturn(StatusCodeEnum.LOGIC_ERROR.getCode(), "获取图书评分信息异常");
+            }
+            return BaseResult.rightReturn(bookInfoVOList, bookRes.getPage());
+        }
+
+        return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "查询类型为非法值");
     }
 
 }

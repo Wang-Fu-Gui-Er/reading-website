@@ -289,6 +289,12 @@
     <if test="authorId != null">
       and authorId = #{authorId,jdbcType=INTEGER}
     </if>
+    <if test="authorIds != null">
+      and authorId in
+      <foreach collection="authorIds" index="index" item="item" open="(" close=")" separator=",">
+        #{item,jdbcType=INTEGER}
+      </foreach>
+    </if>
     <if test="authorName != null">
       and authorName = #{authorName,jdbcType=VARCHAR}
     </if>

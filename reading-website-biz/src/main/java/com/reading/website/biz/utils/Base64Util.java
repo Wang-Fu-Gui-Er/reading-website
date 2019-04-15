@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import com.reading.website.api.constants.FileConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import sun.misc.BASE64Encoder;
 
@@ -15,6 +16,7 @@ import sun.misc.BASE64Encoder;
  *
  * @xyang010 2019/4/3
  */
+@Slf4j
 public class Base64Util {
 
     /**
@@ -39,7 +41,7 @@ public class Base64Util {
             inputStream.read(data);
             inputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("文件转换异常 error {}", e);
             return null;
         }
 

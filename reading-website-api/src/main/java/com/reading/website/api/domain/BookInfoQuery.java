@@ -26,6 +26,9 @@ public class BookInfoQuery extends Page {
     // 作者id
     private Integer authorId;
 
+    // 作者id列表
+    private List<Integer> authorIds;
+
     // 作者名称
     private String authorName;
 
