@@ -32,7 +32,7 @@ public class SmallCategoryDO {
     /**
      * 对应大类id
      */
-    private Long bigCateId;
+    private Integer bigCateId;
 
     /**
      * 是否在首页展示
@@ -42,7 +42,7 @@ public class SmallCategoryDO {
     public SmallCategoryDO() {
     }
 
-    public SmallCategoryDO(String cateName, Long bigCateId) {
+    public SmallCategoryDO(String cateName, Integer bigCateId) {
         this.cateName = cateName;
         this.bigCateId = bigCateId;
     }

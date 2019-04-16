@@ -3,6 +3,7 @@ package com.reading.website.biz.service.impl;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.BigCategoryDO;
+import com.reading.website.api.domain.CategoryDTO;
 import com.reading.website.api.domain.SmallCategoryDO;
 import com.reading.website.api.service.CategoryService;
 import com.reading.website.api.vo.CategoryVO;
@@ -58,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
             //1. 查询所有大类
             List<BigCategoryDO> bigCategoryList = bigCategoryMapper.listAll();
             if (!CollectionUtils.isEmpty(bigCategoryList)) {
-                List<Long> bigCateIds = bigCategoryList
+                List<Integer> bigCateIds = bigCategoryList
                         .stream()
                         .map(BigCategoryDO::getId)
                         .filter(Objects::nonNull)
@@ -96,18 +97,51 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public BaseResult<List<SmallCategoryDO>> listSmallCateByBigCateId(Long bigCateId) {
+    public BaseResult<List<SmallCategoryDO>> listSmallCateByBigCateId(Integer bigCateId) {
         if (bigCateId == null) {
             log.warn("CategoryService listSmallCateByBigCateId param bigCateId is null");
             return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param bigCateId is null");
         }
         try {
-            List<Long> bigCateIds = new ArrayList<>();
+            List<Integer> bigCateIds = new ArrayList<>();
             bigCateIds.add(bigCateId);
             return BaseResult.rightReturn(smallCategoryMapper.listByBigCateIds(bigCateIds));
         } catch (Exception e) {
             log.error("CategoryService listSmallCateByBigCateIds error {}", e);
             return BaseResult.errorReturn(null, StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
+    }
+
+    /**
+     * 根据小类id列表查全部分类信息
+     * @return
+     */
+    @Override
+    public BaseResult<CategoryDTO> getCategoryBySmallCateId(Integer smallCateId) {
+        if (smallCateId == null) {
+            log.warn("CategoryService listCategoryBySmallCateId param smallCateId is null");
+            return BaseResult.errorReturn(null, StatusCodeEnum.PARAM_ERROR.getCode(), "param smallCateId is null");
+        }
+
+        SmallCategoryDO smallCategoryDO = smallCategoryMapper.selectByPrimaryKey(smallCateId);
+        if (smallCategoryDO == null) {
+            log.warn("二级分类不存在, smallCateId {}", smallCateId);
+            return BaseResult.rightReturn(null);
+        }
+
+        BigCategoryDO bigCategoryDO = bigCategoryMapper.selectByPrimaryKey(smallCategoryDO.getBigCateId());
+        if (bigCategoryDO == null) {
+            log.warn("一级分类不存在, smallCateId {}, bigCateId", smallCateId, smallCategoryDO.getBigCateId());
+            return BaseResult.rightReturn(null);
+        }
+
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setSmallCateId(smallCategoryDO.getId());
+        categoryDTO.setSmallCateName(smallCategoryDO.getCateName());
+        categoryDTO.setBigCateId(bigCategoryDO.getId());
+        categoryDTO.setBigCateName(bigCategoryDO.getCateName());
+
+        return BaseResult.rightReturn(categoryDTO);
+
     }
 }

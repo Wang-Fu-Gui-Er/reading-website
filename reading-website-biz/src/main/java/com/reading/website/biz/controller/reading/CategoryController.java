@@ -57,7 +57,7 @@ public class CategoryController {
 
     @ApiOperation(value="查询有声文学二级分类列表", notes="有声文学二级分类列表")
     @GetMapping(value = "/audioBookSmallCate")
-    public BaseResult<List<SmallCategoryDO>> listAudioBookSmallCate(@RequestParam("bigCateId") Long bigCateId) {
+    public BaseResult<List<SmallCategoryDO>> listAudioBookSmallCate(@RequestParam("bigCateId") Integer bigCateId) {
         BaseResult<List<SmallCategoryDO>> result = categoryService.listSmallCateByBigCateId(bigCateId);
         if (!result.getSuccess()) {
             result.setCode(StatusCodeEnum.INNER_SERVICE_ERROR.getCode());

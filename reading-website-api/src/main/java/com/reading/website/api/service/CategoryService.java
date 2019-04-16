@@ -1,13 +1,12 @@
 package com.reading.website.api.service;
 
 import com.reading.website.api.base.BaseResult;
-import com.reading.website.api.domain.BigCategoryDO;
+import com.reading.website.api.domain.CategoryDTO;
 import com.reading.website.api.domain.SmallCategoryDO;
 import com.reading.website.api.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 图书分类服务类
@@ -34,6 +33,13 @@ public interface CategoryService {
      * @param bigCateId
      * @return
      */
-    BaseResult<List<SmallCategoryDO>> listSmallCateByBigCateId(Long bigCateId);
+    BaseResult<List<SmallCategoryDO>> listSmallCateByBigCateId(Integer bigCateId);
+
+    /**
+     * 根据小类id查全部分类信息
+     * @return
+     */
+    BaseResult<CategoryDTO> getCategoryBySmallCateId(Integer smallCateId);
+
 
 }

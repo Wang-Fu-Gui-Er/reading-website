@@ -36,6 +36,15 @@ public class BookInfoVO {
     // 小类id
     private Integer smallCateId;
 
+    // 小类名称
+    private String smallCateName;
+
+    // 大类id
+    private Integer bigCateId;
+
+    // 大类名称
+    private String bigCateName;
+
     // 图书地址
     private String bookPath;
 

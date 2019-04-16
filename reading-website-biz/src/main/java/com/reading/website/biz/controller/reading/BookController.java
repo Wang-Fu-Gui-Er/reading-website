@@ -3,11 +3,11 @@ package com.reading.website.biz.controller.reading;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.BookDO;
-import com.reading.website.api.domain.BookInfoQuery;
 import com.reading.website.api.domain.UserReadingInfoDO;
 import com.reading.website.api.service.BookService;
 import com.reading.website.api.service.UserReadingService;
 import com.reading.website.api.vo.BookInfoVO;
+import com.reading.website.biz.logic.BookLogic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +32,18 @@ public class BookController {
     @Autowired
     private UserReadingService readingService;
 
+    @Autowired
+    private BookLogic bookLogic;
+
     @ApiOperation(value="查询图书信息", notes="查询图书信息")
     @GetMapping(value = "/getBookInfo")
     public BaseResult<BookInfoVO> getBookInfo(@RequestParam("bookId") Integer bookId) {
-        return bookService.selectByBookId(bookId);
+        BaseResult<BookInfoVO> queryBookRes = bookService.selectByBookId(bookId);
+        if (!queryBookRes.getSuccess()) {
+            return queryBookRes;
+        }
+
+        return BaseResult.rightReturn(bookLogic.assemblyCategory(queryBookRes.getData()));
     }
 
     @ApiOperation(value="新增或修改图书信息", notes="新增或修改图书信息")

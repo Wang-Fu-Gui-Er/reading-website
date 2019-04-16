@@ -17,7 +17,7 @@ public class BigCategoryDO {
     /**
      * 大类id
      */
-    private Long id;
+    private Integer id;
 
     private Date created;
 

@@ -25,7 +25,7 @@ public interface SmallCategoryMapper {
      * @param bigCateIds
      * @return
      */
-    List<SmallCategoryDO> listByBigCateIds(@Param("bigCateIds") List<Long> bigCateIds);
+    List<SmallCategoryDO> listByBigCateIds(@Param("bigCateIds") List<Integer> bigCateIds);
 
     /**
      * 新增小类
@@ -34,13 +34,18 @@ public interface SmallCategoryMapper {
      */
     int insertSelective(SmallCategoryDO record);
 
+    /**
+     * 根据小类id查询
+     * @param id
+     * @return
+     */
+    SmallCategoryDO selectByPrimaryKey(Integer id);
+
 
 
     int deleteByPrimaryKey(Integer id);
 
     int insert(SmallCategoryDO record);
-
-    SmallCategoryDO selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(SmallCategoryDO record);
 

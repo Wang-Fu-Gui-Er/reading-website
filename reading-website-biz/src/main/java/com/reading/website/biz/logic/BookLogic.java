@@ -1,15 +1,14 @@
 package com.reading.website.biz.logic;
 
 import com.reading.website.api.base.BaseResult;
-import com.reading.website.api.domain.AuthorDO;
 import com.reading.website.api.domain.BookDO;
 import com.reading.website.api.domain.BookGradeInfoDO;
+import com.reading.website.api.domain.CategoryDTO;
 import com.reading.website.api.service.BookGradeInfoService;
 import com.reading.website.api.service.BookService;
-import com.reading.website.api.vo.AuthorVO;
+import com.reading.website.api.service.CategoryService;
 import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.biz.utils.Base64Util;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,18 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 public class BookLogic {
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
+
+    private final BookGradeInfoService gradeInfoService;
+
+    private final CategoryService categoryService;
 
     @Autowired
-    private BookGradeInfoService gradeInfoService;
+    public BookLogic(BookService bookService, BookGradeInfoService gradeInfoService, CategoryService categoryService) {
+        this.bookService = bookService;
+        this.gradeInfoService = gradeInfoService;
+        this.categoryService = categoryService;
+    }
 
 
     /**
@@ -40,7 +46,7 @@ public class BookLogic {
      */
     public List<BookInfoVO> assemblyGrade(List<BookInfoVO> bookInfoVOList) {
         if (CollectionUtils.isEmpty(bookInfoVOList)) {
-            return null;
+            return bookInfoVOList;
         }
 
         // 查询评分信息
@@ -48,7 +54,7 @@ public class BookLogic {
         BaseResult<List<BookGradeInfoDO>> gradeRes = gradeInfoService.selectByBookIds(bookIds);
         if (!gradeRes.getSuccess()) {
             log.warn("gradeInfoService selectByBookIds error, result {}", gradeRes);
-            return null;
+            return bookInfoVOList;
         }
 
         Map<Integer, BookGradeInfoDO> bookGradeMap = gradeRes
@@ -65,6 +71,30 @@ public class BookLogic {
         });
 
         return bookInfoVOList;
+    }
+
+    /**
+     * 拼装图书详细分类信息
+     * @param bookInfoVO
+     */
+    public BookInfoVO assemblyCategory(BookInfoVO bookInfoVO) {
+        if (bookInfoVO == null) {
+            return null;
+        }
+
+        BaseResult<CategoryDTO> categoryDTORes = categoryService.getCategoryBySmallCateId(bookInfoVO.getSmallCateId());
+        if (!categoryDTORes.getSuccess()) {
+            log.warn("查询分类信息失败");
+            return bookInfoVO;
+        }
+
+        if (categoryDTORes.getData() == null) {
+            log.warn("分类信息为空 smallCateId {}", bookInfoVO.getSmallCateId());
+            return bookInfoVO;
+        }
+
+        BeanUtils.copyProperties(categoryDTORes.getData(), bookInfoVO);
+        return bookInfoVO;
     }
 
     /**
