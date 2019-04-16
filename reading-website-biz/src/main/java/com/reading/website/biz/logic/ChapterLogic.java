@@ -6,7 +6,10 @@ import com.reading.website.api.domain.ChapterDO;
 import com.reading.website.api.service.BookService;
 import com.reading.website.api.service.ChapterService;
 import com.reading.website.api.vo.BookInfoVO;
+import com.reading.website.api.vo.ChapterVO;
+import com.reading.website.biz.utils.Base64Util;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -58,5 +61,22 @@ public class ChapterLogic {
             log.warn("更新图书章节数量失败, bookId {}, beforeChapNum {}, afterChapNum {}", bookId, bookRes.getData().getChapNum(), bookDO.getChapNum());
         }
         return true;
+    }
+
+    /**
+     * 补充章节内容
+     * @param chapterDO
+     * @return
+     */
+    public ChapterVO assemblyContent(ChapterDO chapterDO) {
+        if (chapterDO == null) {
+            return null;
+        }
+
+        String content = Base64Util.fileToBase64ByLocal(chapterDO.getContentPath());
+        ChapterVO chapterVO = new ChapterVO();
+        BeanUtils.copyProperties(chapterDO, chapterVO);
+        chapterVO.setContent(content);
+        return chapterVO;
     }
 }

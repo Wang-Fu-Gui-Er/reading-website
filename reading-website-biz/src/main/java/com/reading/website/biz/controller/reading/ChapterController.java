@@ -4,6 +4,7 @@ import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.ChapterDO;
 import com.reading.website.api.service.ChapterService;
+import com.reading.website.api.vo.ChapterVO;
 import com.reading.website.biz.logic.ChapterLogic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,8 +38,13 @@ public class ChapterController {
 
     @ApiOperation(value="获取章节信息", notes="获取章节信息")
     @PostMapping(value = "/getChapterInfo")
-    public BaseResult<ChapterDO> getChapterInfo(@RequestParam("chapterId") Integer chapterId) {
-        return chapterService.selectByChapterId(chapterId);
+    public BaseResult<ChapterVO> getChapterInfo(@RequestParam("chapterId") Integer chapterId) {
+        BaseResult<ChapterDO> chapterRes = chapterService.selectByChapterId(chapterId);
+        if (!chapterRes.getSuccess()) {
+            return BaseResult.errorReturn(chapterRes.getCode(), chapterRes.getMessage());
+        }
+
+        return BaseResult.rightReturn(chapterLogic.assemblyContent(chapterRes.getData()));
     }
 
     @ApiOperation(value="新增章节信息", notes="新增章节信息")
