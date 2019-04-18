@@ -12,7 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -73,10 +77,30 @@ public class ChapterLogic {
             return null;
         }
 
-        String content = Base64Util.fileToBase64ByLocal(chapterDO.getContentPath());
+        String content = convertFile2Text(chapterDO.getContentPath());
         ChapterVO chapterVO = new ChapterVO();
         BeanUtils.copyProperties(chapterDO, chapterVO);
         chapterVO.setContent(content);
         return chapterVO;
     }
+
+    private String convertFile2Text(String filePath) {
+        if (StringUtils.isEmpty(filePath)) {
+            return null;
+        }
+
+
+        byte[] dataBytes;
+
+        try(InputStream inputStream = new FileInputStream(filePath)) {
+            dataBytes = new byte[inputStream.available()];
+            inputStream.read(dataBytes);
+        } catch (IOException e) {
+            log.error("获取章节内容失败 error {}", e);
+            return null;
+        }
+
+        return new String(dataBytes);
+    }
+
 }
