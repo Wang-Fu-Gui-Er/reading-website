@@ -1,6 +1,8 @@
 package com.reading.website.biz.logic;
 
 import com.reading.website.api.base.BaseResult;
+import com.reading.website.api.base.Page;
+import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.BookReviewInfoDO;
 import com.reading.website.api.domain.BookReviewInfoQuery;
 import com.reading.website.api.domain.UserBaseInfoDO;
@@ -41,18 +43,18 @@ public class ReviewLogic {
      * @param query
      * @return
      */
-    public List<BookReviewVO> queryReview(BookReviewInfoQuery query) {
+    public BaseResult<List<BookReviewVO>> queryReview(BookReviewInfoQuery query) {
         // 1.查询评论信息
         BaseResult<List<BookReviewInfoDO>> reviewRes = reviewInfoService.pageQuery(query);
         if (!reviewRes.getSuccess()) {
             log.warn("查询图书评论失败, query {}, reviewRes {}", query, reviewRes);
-            return null;
+            return BaseResult.errorReturn(StatusCodeEnum.LOGIC_ERROR.getCode(), "查询图书评论信息失败");
         }
 
         List<BookReviewInfoDO> reviewInfoDOS = reviewRes.getData();
         if (CollectionUtils.isEmpty(reviewInfoDOS)) {
             log.warn("暂无评论信息, query {}", query);
-            return null;
+            return BaseResult.rightReturn(null, reviewRes.getPage());
         }
 
         // 2. 获取用户id
@@ -87,6 +89,6 @@ public class ReviewLogic {
             reviewVOList.add(vo);
         }
 
-        return reviewVOList;
+        return BaseResult.rightReturn(reviewVOList, reviewRes.getPage());
     }
 }

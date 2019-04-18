@@ -45,7 +45,7 @@ public class BookReviewController {
     @ApiOperation(value="查询图书评论", notes="查询图书评论")
     @PostMapping(value = "/query")
     public BaseResult<List<BookReviewVO>> query(@RequestBody BookReviewInfoQuery query) {
-        return BaseResult.rightReturn(reviewLogic.queryReview(query));
+        return reviewLogic.queryReview(query);
     }
 
     @ApiOperation(value="删除图书评论", notes="删除图书评论")
