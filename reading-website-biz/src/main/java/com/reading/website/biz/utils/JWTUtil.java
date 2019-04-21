@@ -17,7 +17,7 @@ import java.util.Map;
 @Slf4j
 public class JWTUtil {
     // 失效时间
-    private static final Long EXPIRE_TIME = 15 * 60 * 1000L;
+    private static final Long EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;
     // 私钥
     private static final String TOKEN_SECRET = "226093fa-ed40-43c1-b79a-295b80ba21af";
 

@@ -1,17 +1,27 @@
 package com.reading.website.biz.configure;
 
+import com.reading.website.biz.configure.handler.LoginInterceptorHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * 跨域配置
+ * webConfig
  *
  * @xyang010 2019/3/28
  */
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
+public class WebMvcConfig implements WebMvcConfigurer {
 
+    @Autowired
+    private LoginInterceptorHandler loginInterceptorHandler;
+
+    /**
+     * 跨域配置
+     * @param registry
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -20,4 +30,22 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .maxAge(3600)
                 .allowCredentials(true);
     }
+
+    /**
+     * 注册拦截器,自己写好的拦截器需要通过这里添加注册才能生效
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // addPathPatterns("/**") 表示拦截所有的请求，
+        // excludePathPatterns() 表示不拦截的请求
+        registry.addInterceptor(loginInterceptorHandler)
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/user/login",
+                        "/user/register"
+                );
+
+    }
+
 }
