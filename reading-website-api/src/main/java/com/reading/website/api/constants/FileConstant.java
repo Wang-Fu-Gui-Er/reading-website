@@ -2,6 +2,9 @@ package com.reading.website.api.constants;
 
 import org.springframework.util.StringUtils;
 
+import java.io.File;
+import java.util.UUID;
+
 /**
  * 文件相关常量类
  *
@@ -86,5 +89,31 @@ public class FileConstant {
             case "pdf": return "application/pdf";
             default: return null;
         }
+    }
+
+    /**
+     * 生成文件名称（无后缀即文件类型）
+     * @param type 文件业务类型：picture,book,chapter
+     * @return
+     */
+    public static String generatorFileName(String type) {
+        String filePath = "";
+        if (type.equals(FileConstant.PICTURE)) {
+            filePath = FileConstant.UPLOAD_PATH + FileConstant.PICTURE_SUB_PATH;
+
+        } else if (type.equals(FileConstant.BOOK)) {
+            filePath = FileConstant.UPLOAD_PATH + FileConstant.BOOK_SUB_PATH;
+
+        } else if (type.equals(FileConstant.CHAPTER)) {
+            filePath = FileConstant.UPLOAD_PATH + FileConstant.CHAPTER_SUB_PATH;
+        }
+
+        String fileName = UUID.randomUUID().toString();
+        File folder = new File(filePath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        return filePath + File.separator + fileName;
     }
 }

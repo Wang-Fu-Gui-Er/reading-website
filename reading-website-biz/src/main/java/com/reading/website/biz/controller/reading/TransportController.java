@@ -3,10 +3,11 @@ package com.reading.website.biz.controller.reading;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.constants.FileConstant;
+import com.reading.website.biz.logic.ChapterLogic;
 import com.reading.website.biz.utils.Base64Util;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Base64Utils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,9 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.Base64;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * 文件传输接口：上传，下载
@@ -28,6 +26,9 @@ import java.util.UUID;
 @Slf4j
 @RequestMapping("/transport")
 public class TransportController {
+
+    @Autowired
+    private ChapterLogic chapterLogic;
 
     /**
      * 上传文件接口
@@ -43,30 +44,26 @@ public class TransportController {
             return BaseResult.errorReturn(StatusCodeEnum.FILE_IS_EMPTY.getCode(), "文件为空");
         }
 
-        // 根据类型区分子目录路径
-        String filePath = "";
-        if (type.equals(FileConstant.PICTURE)) {
-            filePath = FileConstant.UPLOAD_PATH + FileConstant.PICTURE_SUB_PATH;
-
-        } else if (type.equals(FileConstant.BOOK)) {
-            filePath = FileConstant.UPLOAD_PATH + FileConstant.BOOK_SUB_PATH;
-
-        } else if (type.equals(FileConstant.CHAPTER)) {
-            filePath = FileConstant.UPLOAD_PATH + FileConstant.CHAPTER_SUB_PATH;
+        if (!(type.equals(FileConstant.BOOK)
+                || type.equals(FileConstant.CHAPTER)
+                || type.equals(FileConstant.PICTURE))) {
+            log.warn("上传请求类型不合法, type {}", type);
+            return BaseResult.errorReturn(StatusCodeEnum.FILE_UPLOAD_ERROR.getCode(), "请求类型不合法");
         }
 
-        String fileName = UUID.randomUUID().toString();
         String fileType = FileConstant.convert2FileType(file.getContentType());
         if (StringUtils.isEmpty(fileType)) {
             log.warn("文件类型不合法！ fileContentType {}", file.getContentType());
             return BaseResult.errorReturn(StatusCodeEnum.FILE_UPLOAD_ERROR.getCode(), "文件类型不合法");
         }
-        File folder = new File(filePath);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
 
-        File destFile = new File(filePath + File.separator + fileName + "." + fileType);
+        String fileName = FileConstant.generatorFileName(type);
+        if (StringUtils.isEmpty(file)) {
+            log.warn("生成文件名称失败");
+            return BaseResult.errorReturn(StatusCodeEnum.FILE_UPLOAD_ERROR.getCode(), "生成文件名称失败");
+
+        }
+        File destFile = new File(  fileName + "." + fileType);
 
         try {
             file.transferTo(destFile);
@@ -151,5 +148,27 @@ public class TransportController {
         }
 
         return BaseResult.rightReturn(Base64Util.fileToBase64ByLocal(path));
+    }
+
+    /**
+     * 章节预览接口
+     *
+     * @param path 文件路径
+     * @return
+     */
+    @GetMapping("/getChapter")
+    public BaseResult<String> getChapter(@RequestParam("chapterPath") String path) {
+        if (StringUtils.isEmpty(path)) {
+            log.warn("文件路径为空");
+            return BaseResult.errorReturn(StatusCodeEnum.FILE_PATH_NOT_EXIST.getCode(), "文件路径为空");
+        }
+
+        if (!new File(path).exists()) {
+            log.warn("文件不存在");
+            return BaseResult.errorReturn(StatusCodeEnum.NOT_FOUND.getCode(), "文件不存在");
+
+        }
+
+        return BaseResult.rightReturn(chapterLogic.convertFile2Text(path));
     }
 }

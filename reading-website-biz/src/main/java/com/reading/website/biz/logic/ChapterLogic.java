@@ -84,7 +84,7 @@ public class ChapterLogic {
         return chapterVO;
     }
 
-    private String convertFile2Text(String filePath) {
+    public String convertFile2Text(String filePath) {
         if (StringUtils.isEmpty(filePath)) {
             return null;
         }
