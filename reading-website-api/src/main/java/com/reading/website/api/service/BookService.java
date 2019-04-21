@@ -51,5 +51,11 @@ public interface BookService {
      */
     BaseResult<List<BookInfoVO>> pageQuery(BookInfoQuery query);
 
+    /**
+     * 相似图书推荐
+     * @param smallCateId 二级分类
+     * @return
+     */
+    BaseResult<List<BookInfoVO>> listSimilarRecommendBooks(Integer smallCateId);
 
 }

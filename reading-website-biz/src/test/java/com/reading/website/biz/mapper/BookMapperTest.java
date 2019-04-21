@@ -82,4 +82,10 @@ public class BookMapperTest extends BaseTest {
         int res = bookMapper.batchInsert(list);
         Assert.assertTrue(res > 0);
     }
+
+    @Test
+    public void testListSimilarBook() {
+        List<BookDO> list = bookMapper.listSimilarBook(12);
+        Assert.assertNotNull(list);
+    }
 }

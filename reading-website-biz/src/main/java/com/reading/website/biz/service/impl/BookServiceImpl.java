@@ -167,4 +167,19 @@ public class BookServiceImpl implements BookService {
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }
+
+    /**
+     * 相似图书推荐
+     * @param smallCateId 二级分类
+     * @return
+     */
+    @Override
+    public BaseResult<List<BookInfoVO>> listSimilarRecommendBooks(Integer smallCateId) {
+        if (smallCateId == null) {
+            log.warn("BookService listSimilarRecommendBooks param smallCateId is null");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param smallCateId is null");
+        }
+
+        return BaseResult.rightReturn(BookLogic.convertDOs2VOs(bookMapper.listSimilarBook(smallCateId)));
+    }
 }

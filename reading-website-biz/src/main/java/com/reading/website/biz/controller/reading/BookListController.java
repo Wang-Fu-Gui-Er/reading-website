@@ -258,4 +258,15 @@ public class BookListController {
         return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "查询类型为非法值");
     }
 
+    @ApiOperation(value="相似推荐", notes="相似推荐")
+    @GetMapping(value = "/similarRecommend")
+    public BaseResult<List<BookInfoVO>> similarRecommend(@RequestParam("smallCateId") Integer smallCateId) {
+        if (smallCateId == null) {
+            log.warn("相似推荐 smallCateId is null");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "smallCateId is null");
+        }
+        return bookService.listSimilarRecommendBooks(smallCateId);
+    }
+
+
 }

@@ -3,6 +3,7 @@ package com.reading.website.biz.mapper;
 import com.reading.website.api.base.Page;
 import com.reading.website.api.domain.BookDO;
 import com.reading.website.api.domain.BookInfoQuery;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -70,5 +71,13 @@ public interface BookMapper {
      * @return
      */
     List<BookDO> listClassicBooks(Page page);
+
+    /**
+     * 查找相似图书列表(随机返回同类中的最多两个)
+     * @param smallCateId 小类id
+     * @return
+     */
+    List<BookDO> listSimilarBook(@Param("smallCateId") Integer smallCateId);
+
 
 }

@@ -81,6 +81,20 @@
     <include refid="whereClause"/>
   </select>
 
+  <!-- 随机获取同类中的最多两个 -->
+  <select id="listSimilarBook" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT a.* FROM Book AS a
+      JOIN
+      (SELECT
+          ROUND(
+              RAND() * ((SELECT MAX(id) FROM Book where smallCateId = #{smallCateId} ) - (SELECT MIN(id) FROM Book where smallCateId = #{smallCateId}))
+              + (SELECT MIN(id) FROM Book where smallCateId = #{smallCateId})
+          ) AS id
+      ) AS b
+    WHERE a.id >= b.id and a.smallCateId = #{smallCateId}
+    limit 2
+  </select>
+
   <!-- insertOrUpdate -->
   <insert id="insertOrUpdate" useGeneratedKeys="true" keyProperty="id" parameterType="com.reading.website.api.domain.BookDO">
     insert into Book
