@@ -40,11 +40,29 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // addPathPatterns("/**") 表示拦截所有的请求，
         // excludePathPatterns() 表示不拦截的请求
         registry.addInterceptor(loginInterceptorHandler)
-                .addPathPatterns("/**")
-                .excludePathPatterns(
-                        "/user/login",
-                        "/user/register"
-                );
+                .addPathPatterns("/advice/query")
+                .addPathPatterns("/advice/update")
+                .addPathPatterns("/book/list/onShelf")
+                .addPathPatterns("/review/addOrUpdate")
+                .addPathPatterns("/review/del")
+                .addPathPatterns("/book/addOrRemoveToShelf")
+                .addPathPatterns("/book/addOrUpdateBook")
+                .addPathPatterns("/book/del")
+                .addPathPatterns("/transport/download")
+                .addPathPatterns("/transport/getChapterContent")
+                .addPathPatterns("/transport/getPicture")
+                .addPathPatterns("/notes/add")
+                .addPathPatterns("/notes/del")
+                .addPathPatterns("/notes/queryByUserId")
+                .addPathPatterns("/notes/queryByUserIdAndBookId")
+                .addPathPatterns("/user/getUserInfo")
+                .addPathPatterns("/user/updateUserInfo")
+                .addPathPatterns("/reading/history")
+                .addPathPatterns("/chapter/generatorChapters")
+                .addPathPatterns("/chapter/insertChapterInfo")
+                .addPathPatterns("/chapter/updateChapterInfo")
+                .addPathPatterns("/author/addOrUpdate")
+                .addPathPatterns("/author/del");
 
     }
 

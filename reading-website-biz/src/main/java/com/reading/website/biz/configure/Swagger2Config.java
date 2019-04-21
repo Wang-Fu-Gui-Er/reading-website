@@ -31,8 +31,8 @@ public class Swagger2Config {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("阅读网站API文档")
-                .description("在线阅读网站，http://203.195.135.253:8080/swagger-ui.html#/")
-                .termsOfServiceUrl("http://203.195.135.253:8080/swagger-ui.html#/")
+                .description("在线阅读网站API接口，http://localhost:8080/api-2019-04-21.html")
+                .termsOfServiceUrl("http://localhost:8080/api-2019-04-21.html")
                 .version("1.0")
                 .build();
     }
