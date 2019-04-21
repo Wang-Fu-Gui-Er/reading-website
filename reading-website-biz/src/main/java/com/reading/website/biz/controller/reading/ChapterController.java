@@ -69,7 +69,7 @@ public class ChapterController {
         return chapterService.batchUpdate(chapterDOList);
     }
 
-    @ApiOperation(value="图书自动分割章节", notes="图书自动分割章节")
+    @ApiOperation(value="自动生成章节", notes="自动生成章节")
     @GetMapping(value = "/generatorChapters")
     public BaseResult<List<ChapterDO>> generatorChapters(@RequestParam("bookPath") String bookPath) {
 

@@ -156,8 +156,8 @@ public class TransportController {
      * @param path 文件路径
      * @return
      */
-    @GetMapping("/getChapter")
-    public BaseResult<String> getChapter(@RequestParam("chapterPath") String path) {
+    @GetMapping("/getChapterContent")
+    public BaseResult<String> getChapterContent(@RequestParam("chapterPath") String path) {
         if (StringUtils.isEmpty(path)) {
             log.warn("文件路径为空");
             return BaseResult.errorReturn(StatusCodeEnum.FILE_PATH_NOT_EXIST.getCode(), "文件路径为空");
