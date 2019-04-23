@@ -75,11 +75,6 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public BaseResult<List<AuthorDO>> fuzzySelectByAuthorName(String authorName) {
-        if (StringUtils.isEmpty(authorName)) {
-            log.warn("AuthorServiceImpl fuzzySelectByAuthorName param authorName is empty");
-            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param authorName is empty");
-        }
-
         try {
             return BaseResult.rightReturn(authorMapper.fuzzySelectByAuthorName(authorName));
         } catch (Exception e) {

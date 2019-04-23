@@ -1,6 +1,7 @@
 package com.reading.website.biz.mapper;
 
 import com.reading.website.api.domain.AuthorDO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,5 +33,5 @@ public interface AuthorMapper {
      * @param authorName 作者名称
      * @return
      */
-    List<AuthorDO> fuzzySelectByAuthorName(String authorName);
+    List<AuthorDO> fuzzySelectByAuthorName(@Param("authorName") String authorName);
 }

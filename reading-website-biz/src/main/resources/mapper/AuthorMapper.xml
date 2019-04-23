@@ -113,7 +113,11 @@
     select
     <include refid="Base_Column_List" />
     from Author
-    where authorName LIKE concat(concat('%',#{authorName,jdbcType=VARCHAR}),'%')
+    where isDeleted = 0
+    <if test="authorName != null and authorName != '' ">
+      and authorName LIKE concat(concat('%',#{authorName,jdbcType=VARCHAR}),'%')
+    </if>
+    limit 20
   </select>
 
 </mapper>
