@@ -44,14 +44,20 @@ public class ChapterLogic {
      * @return
      */
     public boolean batchInsertChapter(List<ChapterDO> chapterDOList) {
+
+        BaseResult<Integer> chapterRes = chapterService.batchInsert(chapterDOList);
         Integer bookId = chapterDOList.get(0).getBookId();
         BaseResult<BookInfoVO> bookRes = bookService.selectByBookId(bookId);
-        if (!bookRes.getSuccess() || bookRes.getData() == null) {
+        if (!bookRes.getSuccess()) {
             log.warn("查询图书信息失败, bookId {}, bookRes {}", bookId, bookRes);
             return false;
         }
 
-        BaseResult<Integer> chapterRes = chapterService.batchInsert(chapterDOList);
+        if (bookRes.getData() == null) {
+            log.warn("图书不存在, bookId {}, bookRes {}", bookId, bookRes);
+            return false;
+        }
+
         if (!chapterRes.getSuccess()) {
             log.warn("批量保存章节信息失败 chapterRes {}", chapterRes);
             return false;

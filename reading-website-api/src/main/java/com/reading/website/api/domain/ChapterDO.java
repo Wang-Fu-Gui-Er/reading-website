@@ -3,6 +3,7 @@ package com.reading.website.api.domain;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 @ApiModel(value = "章节信息")
 @Data
-public class ChapterDO {
+public class ChapterDO implements Serializable {
 
     // 章节id
     private Integer id;

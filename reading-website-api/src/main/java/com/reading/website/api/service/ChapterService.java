@@ -29,9 +29,10 @@ public interface ChapterService {
     /**
      * 根据图书id查询
      * @param bookId 图书id
+     * @param sort 排序方式 desc倒序, asc正序
      * @return
      */
-    BaseResult<List<ChapterDO>> selectByBookId(Integer bookId);
+    BaseResult<List<ChapterDO>> selectByBookId(Integer bookId, String sort);
 
     /**
      * 根据章节id查询

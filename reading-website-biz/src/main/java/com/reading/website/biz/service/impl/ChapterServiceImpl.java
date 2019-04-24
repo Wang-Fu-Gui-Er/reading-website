@@ -4,11 +4,13 @@ import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.ChapterDO;
 import com.reading.website.api.service.ChapterService;
+import com.reading.website.biz.enums.ChapterSortEnum;
 import com.reading.website.biz.mapper.ChapterMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -67,17 +69,21 @@ public class ChapterServiceImpl implements ChapterService {
     /**
      * 根据图书id查询
      * @param bookId 图书id
+     * @param sort 排序方式 desc倒序, asc正序
      * @return 章节列表
      */
     @Override
-    public BaseResult<List<ChapterDO>> selectByBookId(Integer bookId) {
+    public BaseResult<List<ChapterDO>> selectByBookId(Integer bookId, String sort) {
         if (bookId == null) {
             log.warn("ChapterServiceImpl selectByBookId param selectByBookId is null");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param selectByBookId is null");
         }
 
         try {
-            return BaseResult.rightReturn(chapterMapper.selectByBookId(bookId));
+            if (StringUtils.isEmpty(sort) || !sort.equals(ChapterSortEnum.DESC.getType())) {
+                sort = ChapterSortEnum.ASC.getType();
+            }
+            return BaseResult.rightReturn(chapterMapper.selectByBookId(bookId, sort));
         } catch (Exception e) {
             log.error("ChapterServiceImpl selectByBookId error, bookId {}, error{}", bookId, e);
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");

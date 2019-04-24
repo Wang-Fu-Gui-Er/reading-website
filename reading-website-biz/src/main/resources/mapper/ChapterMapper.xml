@@ -55,12 +55,19 @@
   </update>
 
   <!-- 根据图书id查询 -->
-  <select id="selectByBookId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+  <select id="selectByBookId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
     <include refid="Base_Column_List"/>
     from Chapter
     where isDeleted = 0 and bookId = #{bookId,jdbcType=INTEGER}
-    order by sequence
+    <choose>
+      <when test='sort == "desc" '>
+        order by sequence desc
+      </when>
+      <otherwise>
+        order by sequence
+      </otherwise>
+    </choose>
   </select>
 
 

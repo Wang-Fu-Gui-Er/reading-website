@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 文件传输接口：上传，下载
@@ -38,7 +40,8 @@ public class TransportController {
      * @return 文件路径
      */
     @PostMapping("/upload")
-    public BaseResult<String> upload(@RequestParam("file") MultipartFile file, @RequestParam("type") String type) {
+    public BaseResult<Map<String, Object>> upload(@RequestParam("file") MultipartFile file, @RequestParam("type") String type) {
+        Map<String, Object> resultMap = new HashMap<>();
         if (file.isEmpty()) {
             log.warn("文件为空");
             return BaseResult.errorReturn(StatusCodeEnum.FILE_IS_EMPTY.getCode(), "文件为空");
@@ -67,7 +70,13 @@ public class TransportController {
 
         try {
             file.transferTo(destFile);
-            return BaseResult.rightReturn(destFile.getPath());
+            resultMap.put("filePath", destFile.getPath());
+
+            // 图书上传做特判处理
+            if (type.equals(FileConstant.BOOK)) {
+                resultMap.put("chapterList", FileConstant.generatorChapters(String.valueOf(resultMap.get("filePath"))));
+            }
+            return BaseResult.rightReturn(resultMap);
         } catch (IOException e) {
             log.warn("上传文件失败");
             return BaseResult.errorReturn(StatusCodeEnum.FILE_UPLOAD_ERROR.getCode(), "上传文件失败");

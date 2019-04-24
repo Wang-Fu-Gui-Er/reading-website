@@ -31,9 +31,10 @@ public interface ChapterMapper {
     /**
      * 根据图书id查询章节
      * @param bookId 图书id
+     * @param sort 排序方式 desc倒序, asc正序
      * @return
      */
-    List<ChapterDO> selectByBookId(@Param(value = "bookId") Integer bookId);
+    List<ChapterDO> selectByBookId(@Param(value = "bookId") Integer bookId, @Param("sort") String sort);
 
     /**
      * 根据主键查询

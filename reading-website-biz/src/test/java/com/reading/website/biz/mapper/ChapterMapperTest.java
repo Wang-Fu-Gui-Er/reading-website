@@ -66,7 +66,7 @@ public class ChapterMapperTest extends BaseTest {
 
     @Test
     public void testSelectByBookId() {
-        List<ChapterDO> list = chapterMapper.selectByBookId(1);
+        List<ChapterDO> list = chapterMapper.selectByBookId(1, "asc");
         Assert.assertNotNull(list);
     }
 }
