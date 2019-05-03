@@ -53,7 +53,8 @@ public class UserReadingController {
     @GetMapping(value = "/history")
     public BaseResult<List<ReadingHistoryVO>> queryReadingHistory(@RequestParam("userId") Integer userId,
                                                                   @RequestParam("pageNum") Integer pageNum,
-                                                                  @RequestParam("pageSize") Integer pageSize) {
+                                                                  @RequestParam("pageSize") Integer pageSize,
+                                                                  @RequestParam(value = "isOnShelf", required = false) Boolean isOnShelf) {
         if (userId == null) {
             log.warn("queryReadingHistory param userId is null");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param userId is null");
@@ -64,6 +65,10 @@ public class UserReadingController {
         query.setUserId(userId);
         query.setPageNum(pageNum);
         query.setPageSize(pageSize);
+        if (isOnShelf != null) {
+            query.setIsOnShelf(isOnShelf);
+        }
+
         BaseResult<List<UserReadingInfoDO>> readingRes = readingService.pageQuery(query);
         if (!readingRes.getSuccess()) {
             log.warn("queryReadingHistory, query readingInfo error, userId is {}, readingRes {}", userId, readingRes);
