@@ -156,8 +156,29 @@ public class UserReadingController {
 
     @ApiOperation(value="查询图书评分信息", notes="查询图书评分信息")
     @GetMapping(value = "/getBookGrade")
-    public BaseResult<BookGradeInfoDO> queryReadingHistory(@RequestParam("bookId") Integer bookId) {
+    public BaseResult<BookGradeInfoDO> getBookGrade(@RequestParam("bookId") Integer bookId) {
         return gradeInfoService.selectByBookId(bookId);
+    }
+
+    @ApiOperation(value="查询图书是否在用户书架中", notes="查询图书是否在用户书架中")
+    @GetMapping(value = "/checkOnShelf")
+    public BaseResult<Boolean> checkOnShelf(@RequestParam("userId") Integer userId,
+                                            @RequestParam("bookId") Integer bookId) {
+        if (userId == null || bookId == null) {
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "参数为空");
+        }
+        UserReadingInfoQuery query = new UserReadingInfoQuery();
+        query.setUserId(userId);
+        query.setBookId(bookId);
+        query.setPageNum(1);
+        query.setPageSize(1);
+        BaseResult<List<UserReadingInfoDO>> result = readingService.pageQuery(query);
+        if (!result.getSuccess()) {
+            return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "服务异常");
+        }
+
+        List<UserReadingInfoDO> list = result.getData();
+        return BaseResult.rightReturn(CollectionUtils.isEmpty(list) ? false : list.get(0).getIsOnShelf());
     }
 
 }
