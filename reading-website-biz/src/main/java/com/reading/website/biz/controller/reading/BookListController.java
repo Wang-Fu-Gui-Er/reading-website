@@ -62,9 +62,6 @@ public class BookListController {
         }
 
         List<BookInfoVO> bookInfoVOList = bookLogic.assemblyGrade(bookRes.getData());
-        if (CollectionUtils.isEmpty(bookInfoVOList)) {
-            return BaseResult.errorReturn(StatusCodeEnum.LOGIC_ERROR.getCode(), "获取图书评分信息异常");
-        }
         return BaseResult.rightReturn(bookInfoVOList, bookRes.getPage());
 
     }
@@ -90,9 +87,6 @@ public class BookListController {
         }
 
         List<BookInfoVO> bookInfoVOList = bookLogic.assemblyGrade(bookRes.getData());
-        if (CollectionUtils.isEmpty(bookInfoVOList)) {
-            return BaseResult.errorReturn(StatusCodeEnum.LOGIC_ERROR.getCode(), "获取图书评分信息异常");
-        }
         return BaseResult.rightReturn(bookInfoVOList, bookRes.getPage());
 
     }
@@ -118,9 +112,6 @@ public class BookListController {
         }
 
         List<BookInfoVO> bookInfoVOList = bookLogic.assemblyGrade(bookRes.getData());
-        if (CollectionUtils.isEmpty(bookInfoVOList)) {
-            return BaseResult.errorReturn(StatusCodeEnum.LOGIC_ERROR.getCode(), "获取图书评分信息异常");
-        }
         return BaseResult.rightReturn(bookInfoVOList, bookRes.getPage());
     }
 
@@ -191,9 +182,6 @@ public class BookListController {
         }
 
         List<BookInfoVO> bookInfoVOList = bookLogic.assemblyGrade(bookRes.getData());
-        if (CollectionUtils.isEmpty(bookInfoVOList)) {
-            return BaseResult.errorReturn(StatusCodeEnum.LOGIC_ERROR.getCode(), "获取图书评分信息异常");
-        }
         return BaseResult.rightReturn(bookInfoVOList, bookRes.getPage());
     }
 
@@ -249,9 +237,6 @@ public class BookListController {
             }
 
             List<BookInfoVO> bookInfoVOList = bookLogic.assemblyGrade(bookRes.getData());
-            if (CollectionUtils.isEmpty(bookInfoVOList)) {
-                return BaseResult.errorReturn(StatusCodeEnum.LOGIC_ERROR.getCode(), "获取图书评分信息异常");
-            }
             return BaseResult.rightReturn(bookInfoVOList, bookRes.getPage());
         }
 
