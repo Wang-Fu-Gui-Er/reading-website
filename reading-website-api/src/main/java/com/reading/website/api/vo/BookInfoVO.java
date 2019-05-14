@@ -61,6 +61,6 @@ public class BookInfoVO {
     private Integer chapNum;
 
     // 平均分
-    private Integer avgScore;
+    private Integer avgScore = 0;
 
 }
