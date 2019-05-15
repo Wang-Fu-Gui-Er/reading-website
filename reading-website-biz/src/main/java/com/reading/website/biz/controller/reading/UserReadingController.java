@@ -122,10 +122,17 @@ public class UserReadingController {
             return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "query chapterInfo error");
         }
 
+        // 无章节处理
+        List<ReadingHistoryVO> readingHistoryList = new ArrayList<>();
         List<ChapterDO> chapList = chapterRes.getData();
         if (CollectionUtils.isEmpty(chapList)) {
             log.warn("queryReadingHistory, chapterInfo is empty, chapIds is {}", chapIds);
-            return BaseResult.rightReturn(null);
+            bookList.forEach(bookInfoVO -> {
+                ReadingHistoryVO vo = new ReadingHistoryVO();
+                BeanUtils.copyProperties(bookInfoVO, vo);
+                readingHistoryList.add(vo);
+            });
+            return BaseResult.rightReturn(readingHistoryList, bookRes.getPage());
         }
 
         Map<Integer, ChapterDO> chapterMap = chapList
@@ -134,7 +141,6 @@ public class UserReadingController {
 
 
         //4. 拼装阅读历史信息
-        List<ReadingHistoryVO> readingHistoryList = new ArrayList<>();
         for (Integer chapId : chapIds) {
             ChapterDO chapterDO = chapterMap.get(chapId);
             if (chapterDO == null) {

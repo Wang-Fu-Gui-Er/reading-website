@@ -6,8 +6,10 @@ import com.reading.website.api.domain.BookSaveDTO;
 import com.reading.website.api.domain.ChapterDO;
 import com.reading.website.api.domain.UserReadingInfoDO;
 import com.reading.website.api.service.BookService;
+import com.reading.website.api.service.ChapterService;
 import com.reading.website.api.service.UserReadingService;
 import com.reading.website.api.vo.BookInfoVO;
+import com.reading.website.biz.enums.ChapterSortEnum;
 import com.reading.website.biz.logic.BookLogic;
 import com.reading.website.biz.logic.ChapterLogic;
 import io.swagger.annotations.Api;
@@ -42,6 +44,9 @@ public class BookController {
 
     @Autowired
     private ChapterLogic chapterLogic;
+
+    @Autowired
+    private ChapterService chapterService;
 
     @ApiOperation(value="查询图书信息", notes="查询图书信息")
     @GetMapping(value = "/getBookInfo")
@@ -101,6 +106,19 @@ public class BookController {
         userReadingInfoDO.setUserId(userId);
         userReadingInfoDO.setBookId(bookId);
         userReadingInfoDO.setIsOnShelf(onShelf);
+
+        // 加入书架，记录图书第一章的章节id
+        if (onShelf) {
+            BaseResult<List<ChapterDO>> chapRes = chapterService.selectByBookId(bookId, ChapterSortEnum.ASC.getType());
+            if (!chapRes.getSuccess()) {
+                log.warn("查询图书章节失败 bookId {}, result {}", bookId, chapRes);
+            }
+
+            List<ChapterDO> chapterDOList = chapRes.getData();
+            if (!CollectionUtils.isEmpty(chapterDOList)) {
+                userReadingInfoDO.setChapId(chapterDOList.get(0).getId());
+            }
+        }
         return readingService.insertOrUpdate(userReadingInfoDO);
     }
 }
