@@ -151,7 +151,8 @@ public class UserReadingController {
             vo.setProgress(bookInfoVO.getChapNum() == 0 ? 0 : (int)Math.ceil(chapterDO.getSequence() / bookInfoVO.getChapNum()) * 100);
             readingHistoryList.add(vo);
         }
-        return BaseResult.rightReturn(readingHistoryList);
+
+        return BaseResult.rightReturn(readingHistoryList, bookRes.getPage());
     }
 
     @ApiOperation(value="查询图书评分信息", notes="查询图书评分信息")
