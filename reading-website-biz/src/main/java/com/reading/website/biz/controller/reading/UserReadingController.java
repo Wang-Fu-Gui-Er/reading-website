@@ -130,6 +130,7 @@ public class UserReadingController {
             bookList.forEach(bookInfoVO -> {
                 ReadingHistoryVO vo = new ReadingHistoryVO();
                 BeanUtils.copyProperties(bookInfoVO, vo);
+                vo.setBookId(bookInfoVO.getId());
                 readingHistoryList.add(vo);
             });
             return BaseResult.rightReturn(readingHistoryList, bookRes.getPage());
