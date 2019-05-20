@@ -69,6 +69,21 @@ public class BookServiceImpl implements BookService {
         }
 
         try {
+            // 新增，判断图书是否存在
+            if (bookDO.getId() == null) {
+                BookInfoQuery query = new BookInfoQuery();
+                query.setAuthorId(bookDO.getAuthorId());
+                query.setBookName(bookDO.getBookName());
+                List<BookDO> dbBookList = bookMapper.selectSelective(query);
+                if (!CollectionUtils.isEmpty(dbBookList)) {
+                    for (BookDO dbBook : dbBookList) {
+                        if (dbBook.getAuthorId().equals(bookDO.getAuthorId())
+                                || dbBook.getBookName().equals(bookDO.getBookName())) {
+                            return BaseResult.errorReturn(StatusCodeEnum.DATA_EXIST.getCode(), "图书已存在");
+                        }
+                    }
+                }
+            }
             bookMapper.insertOrUpdate(bookDO);
             return BaseResult.rightReturn(bookDO.getId());
         } catch (Exception e) {
