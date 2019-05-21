@@ -33,7 +33,7 @@ public class LoginInterceptorHandler implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
-        String token = request.getHeader("Access-Token");
+        String token = request.getHeader("Authorization");
 
         if (StringUtils.isEmpty(token)) {
             log.warn("token为空");
