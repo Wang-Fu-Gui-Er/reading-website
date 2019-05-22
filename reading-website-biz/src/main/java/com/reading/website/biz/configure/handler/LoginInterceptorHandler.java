@@ -33,12 +33,19 @@ public class LoginInterceptorHandler implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
+
+        // 预请求直接跳过
+        if ("OPTIONS".equals(request.getMethod())) {
+            return true;
+        }
+
         String token = request.getHeader("Access-Token");
 
         if (StringUtils.isEmpty(token)) {
             log.warn("token为空");
             throw new BusinessException(StatusCodeEnum.TOKEN_EXPIRE.getCode(), StatusCodeEnum.TOKEN_EXPIRE.getMark());
         }
+
         if (JWTUtil.verify(token) == null) {
             log.warn("token失效");
             throw new BusinessException(StatusCodeEnum.TOKEN_EXPIRE.getCode(), StatusCodeEnum.TOKEN_EXPIRE.getMark());

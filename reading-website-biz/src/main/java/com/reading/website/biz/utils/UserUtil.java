@@ -30,7 +30,7 @@ public class UserUtil {
         }
 
         DecodedJWT decodedJWT = JWTUtil.verify(token);
-        if (decodedJWT != null) {
+        if (decodedJWT == null) {
             log.warn("token失效");
             return null;
         }
