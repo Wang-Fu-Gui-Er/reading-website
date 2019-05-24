@@ -162,22 +162,22 @@ public class TransportController {
     /**
      * 章节预览接口
      *
-     * @param path 文件路径
+     * @param contentPath 文件路径
      * @return
      */
     @GetMapping("/getChapterContent")
-    public BaseResult<String> getChapterContent(@RequestParam("chapterPath") String path) {
-        if (StringUtils.isEmpty(path)) {
+    public BaseResult<String> getChapterContent(@RequestParam("contentPath") String contentPath) {
+        if (StringUtils.isEmpty(contentPath)) {
             log.warn("文件路径为空");
             return BaseResult.errorReturn(StatusCodeEnum.FILE_PATH_NOT_EXIST.getCode(), "文件路径为空");
         }
 
-        if (!new File(path).exists()) {
+        if (!new File(contentPath).exists()) {
             log.warn("文件不存在");
             return BaseResult.errorReturn(StatusCodeEnum.NOT_FOUND.getCode(), "文件不存在");
 
         }
 
-        return BaseResult.rightReturn(chapterLogic.convertFile2Text(path));
+        return BaseResult.rightReturn(chapterLogic.convertFile2Text(contentPath));
     }
 }
