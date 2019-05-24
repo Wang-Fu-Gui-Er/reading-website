@@ -115,40 +115,40 @@
     update UserBaseInfo
     <set >
       <if test="created != null" >
-        created = #{created,jdbcType=TIMESTAMP}
+        created = #{created,jdbcType=TIMESTAMP},
       </if>
       <if test="updated != null" >
-        updated = #{updated,jdbcType=TIMESTAMP}
+        updated = #{updated,jdbcType=TIMESTAMP},
       </if>
       <if test="isDeleted != null" >
-        isDeleted = #{isDeleted,jdbcType=BIT}
+        isDeleted = #{isDeleted,jdbcType=BIT},
       </if>
       <if test="nickName != null" >
-        nickName = #{nickName,jdbcType=VARCHAR}
+        nickName = #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR}
+        password = #{password,jdbcType=VARCHAR},
       </if>
       <if test="mobileNum != null" >
-        mobileNum = #{mobileNum,jdbcType=VARCHAR}
+        mobileNum = #{mobileNum,jdbcType=VARCHAR},
       </if>
       <if test="weChatId != null" >
-        weChatId = #{weChatId,jdbcType=VARCHAR}
+        weChatId = #{weChatId,jdbcType=VARCHAR},
       </if>
       <if test="weiboName != null" >
-        weiboName = #{weiboName,jdbcType=VARCHAR}
+        weiboName = #{weiboName,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
-        email = #{email,jdbcType=VARCHAR}
+        email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="headPicPath != null" >
-        headPicPath = #{headPicPath,jdbcType=VARCHAR}
+        headPicPath = #{headPicPath,jdbcType=VARCHAR},
       </if>
       <if test="isAdmin != null">
-        isAdmin = #{isAdmin,jdbcType=BIT}
+        isAdmin = #{isAdmin,jdbcType=BIT},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=INTEGER}
+        status = #{status,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
