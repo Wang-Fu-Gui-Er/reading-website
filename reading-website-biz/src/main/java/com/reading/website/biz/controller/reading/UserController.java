@@ -269,14 +269,17 @@ public class UserController {
     @PostMapping("/updateUserInfo")
     public BaseResult<Boolean> updateUserInfo(@RequestBody UserBaseInfoDO userBaseInfoDO) {
         // 参数校验
-        if (userBaseInfoDO == null || userBaseInfoDO.getEmail() == null) {
+        if (userBaseInfoDO == null || userBaseInfoDO.getId() == null) {
             log.warn("user updateUserInfo param user error");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
         }
 
-        // 过滤掉密码，密码不修改
-        userBaseInfoDO.setPassword(null);
-        BaseResult<Integer> updateRes = userService.updateByEmailSelective(userBaseInfoDO);
+        // 前端使用MD5加密，后端使用SHA1加密
+        if (!StringUtils.isEmpty(userBaseInfoDO.getPassword())) {
+            userBaseInfoDO.setPassword(EncryptUtil.getInstance().SHA1(userBaseInfoDO.getPassword()));
+        }
+
+        BaseResult<Integer> updateRes = userService.updateByIdSelective(userBaseInfoDO);
         if (updateRes.getSuccess()) {
             return BaseResult.rightReturn(true);
         }
