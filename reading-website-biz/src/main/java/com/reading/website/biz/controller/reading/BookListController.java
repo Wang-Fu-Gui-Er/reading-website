@@ -19,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -226,7 +227,7 @@ public class BookListController {
                 page.setPageNum(pageNum);
                 page.setPageSize(pageSize);
                 page.setTotalNum(0);
-                return BaseResult.rightReturn(null, page);
+                return BaseResult.rightReturn(new ArrayList<>(), page);
             }
 
             List<Integer> authorIds = authorDOList.stream().map(AuthorDO::getId).distinct().collect(Collectors.toList());
