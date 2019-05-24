@@ -222,8 +222,11 @@ public class BookListController {
             List<AuthorDO> authorDOList = authorRes.getData();
             if (CollectionUtils.isEmpty(authorDOList)) {
                 log.warn("模糊查询作者信息为空, searchKey {}", searchKey);
-
-                return BaseResult.rightReturn(null);
+                Page page = new Page();
+                page.setPageNum(pageNum);
+                page.setPageSize(pageSize);
+                page.setTotalNum(0);
+                return BaseResult.rightReturn(null, page);
             }
 
             List<Integer> authorIds = authorDOList.stream().map(AuthorDO::getId).distinct().collect(Collectors.toList());
