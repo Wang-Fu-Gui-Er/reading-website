@@ -54,7 +54,7 @@ public class ReviewLogic {
         List<BookReviewInfoDO> reviewInfoDOS = reviewRes.getData();
         if (CollectionUtils.isEmpty(reviewInfoDOS)) {
             log.warn("暂无评论信息, query {}", query);
-            return BaseResult.rightReturn(null, reviewRes.getPage());
+            return BaseResult.rightReturn(new ArrayList<>(), reviewRes.getPage());
         }
 
         // 2. 获取用户id

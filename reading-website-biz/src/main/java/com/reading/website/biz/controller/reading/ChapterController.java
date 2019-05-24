@@ -4,9 +4,14 @@ import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.constants.FileConstant;
 import com.reading.website.api.domain.ChapterDO;
+import com.reading.website.api.domain.LoginInfoDTO;
+import com.reading.website.api.domain.UserReadingInfoDO;
+import com.reading.website.api.domain.UserReadingInfoQuery;
 import com.reading.website.api.service.ChapterService;
+import com.reading.website.api.service.UserReadingService;
 import com.reading.website.api.vo.ChapterVO;
 import com.reading.website.biz.logic.ChapterLogic;
+import com.reading.website.biz.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * 章节接口
@@ -25,11 +31,19 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/chapter")
 public class ChapterController {
-    @Autowired
-    private ChapterService chapterService;
+
+    private final ChapterService chapterService;
+
+    private final ChapterLogic chapterLogic;
+
+    private final UserReadingService readingService;
 
     @Autowired
-    private ChapterLogic chapterLogic;
+    public ChapterController(ChapterService chapterService, ChapterLogic chapterLogic, UserReadingService readingService) {
+        this.chapterService = chapterService;
+        this.chapterLogic = chapterLogic;
+        this.readingService = readingService;
+    }
 
     @ApiOperation(value="获取图书目录", notes="获取图书目录")
     @GetMapping(value = "/getAllChapter")
@@ -38,11 +52,47 @@ public class ChapterController {
     }
 
     @ApiOperation(value="获取章节信息", notes="获取章节信息")
-    @PostMapping(value = "/getChapterInfo")
-    public BaseResult<ChapterVO> getChapterInfo(@RequestParam("chapterId") Integer chapterId) {
+    @GetMapping(value = "/getChapterInfo")
+    public BaseResult<ChapterVO> getChapterInfo(@RequestParam("chapterId") Integer chapterId,
+                                                HttpServletRequest request) {
+
+        // 查询章节信息
         BaseResult<ChapterDO> chapterRes = chapterService.selectByChapterId(chapterId);
         if (!chapterRes.getSuccess()) {
             return BaseResult.errorReturn(chapterRes.getCode(), chapterRes.getMessage());
+        }
+
+        ChapterDO chapterDO = chapterRes.getData();
+        if (chapterDO == null) {
+            return BaseResult.rightReturn(chapterLogic.assemblyContent(chapterRes.getData()));
+        }
+
+        // 查询是否存在阅读记录
+        // 登陆用户,记录阅读信息
+        LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+        if (loginInfoDTO != null) {
+            UserReadingInfoQuery query = new UserReadingInfoQuery();
+            query.setBookId(chapterDO.getBookId());
+            query.setUserId(loginInfoDTO.getUserId());
+            BaseResult<List<UserReadingInfoDO>> queryReadingRes = readingService.pageQuery(query);
+            if (queryReadingRes.getSuccess()) {
+                List<UserReadingInfoDO> readingInfoDOList = queryReadingRes.getData();
+                // 无阅读记录，增加阅读记录;有阅读记录，更新阅读记录
+                Integer readindId = null;
+                if (!CollectionUtils.isEmpty(readingInfoDOList)) {
+                    UserReadingInfoDO readingInfoDO = readingInfoDOList.get(0);
+                    readindId = readingInfoDO.getId();
+                }
+                UserReadingInfoDO readingInfoDO = new UserReadingInfoDO();
+                readingInfoDO.setId(readindId);
+                readingInfoDO.setBookId(chapterDO.getBookId());
+                readingInfoDO.setChapId(chapterId);
+                readingInfoDO.setUserId(loginInfoDTO.getUserId());
+                BaseResult<Integer> saveReadingInfoRes = readingService.insertOrUpdate(readingInfoDO);
+                if (!saveReadingInfoRes.getSuccess()) {
+                    log.warn("记录用户阅读信息失败 saveReadingInfoRes {}", saveReadingInfoRes);
+                }
+            }
         }
 
         return BaseResult.rightReturn(chapterLogic.assemblyContent(chapterRes.getData()));
