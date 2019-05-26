@@ -74,9 +74,9 @@ public class AuthorServiceImpl implements AuthorService {
      * @return
      */
     @Override
-    public BaseResult<List<AuthorDO>> fuzzySelectByAuthorName(String authorName) {
+    public BaseResult<List<AuthorVO>> fuzzySelectByAuthorName(String authorName) {
         try {
-            return BaseResult.rightReturn(authorMapper.fuzzySelectByAuthorName(authorName));
+            return BaseResult.rightReturn(AuthorLogic.convertDOs2VOs(authorMapper.fuzzySelectByAuthorName(authorName)));
         } catch (Exception e) {
             log.error("AuthorServiceImpl fuzzySelectByAuthorName failed, authorName {}, error {},", authorName, e);
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");

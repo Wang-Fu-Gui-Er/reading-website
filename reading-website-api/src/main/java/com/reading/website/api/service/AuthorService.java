@@ -32,7 +32,7 @@ public interface AuthorService {
      * @param authorName 作者名称
      * @return
      */
-    BaseResult<List<AuthorDO>> fuzzySelectByAuthorName(String authorName);
+    BaseResult<List<AuthorVO>> fuzzySelectByAuthorName(String authorName);
 
     /**
      * 删除作者信息

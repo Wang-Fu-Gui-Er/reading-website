@@ -43,7 +43,7 @@ public class AuthorController {
 
     @ApiOperation(value="模糊查询作者信息", notes="模糊查询作者信息")
     @GetMapping(value = "/fuzzyQueryAuthorInfo")
-    public BaseResult<List<AuthorDO>> fuzzyQueryAuthorInfo(@RequestParam("authorName") String authorName) {
+    public BaseResult<List<AuthorVO>> fuzzyQueryAuthorInfo(@RequestParam("authorName") String authorName) {
         return authorService.fuzzySelectByAuthorName(authorName);
     }
 

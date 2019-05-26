@@ -9,6 +9,7 @@ import com.reading.website.api.domain.*;
 import com.reading.website.api.service.AuthorService;
 import com.reading.website.api.service.BookService;
 import com.reading.website.api.service.UserReadingService;
+import com.reading.website.api.vo.AuthorVO;
 import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.biz.logic.BookLogic;
 import io.swagger.annotations.Api;
@@ -214,13 +215,13 @@ public class BookListController {
 
         // 根据作者模糊查询
         if (searchType.equals(SearchTypeConstant.AUTHOR)) {
-            BaseResult<List<AuthorDO>> authorRes = authorService.fuzzySelectByAuthorName(searchKey);
+            BaseResult<List<AuthorVO>> authorRes = authorService.fuzzySelectByAuthorName(searchKey);
             if (!authorRes.getSuccess()) {
                 log.warn("模糊查询作者信息异常, searchKey {}, authorRes {}", searchKey, authorRes);
                 return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "查询作者信息失败");
             }
 
-            List<AuthorDO> authorDOList = authorRes.getData();
+            List<AuthorVO> authorDOList = authorRes.getData();
             if (CollectionUtils.isEmpty(authorDOList)) {
                 log.warn("模糊查询作者信息为空, searchKey {}", searchKey);
                 Page page = new Page();
@@ -230,7 +231,7 @@ public class BookListController {
                 return BaseResult.rightReturn(new ArrayList<>(), page);
             }
 
-            List<Integer> authorIds = authorDOList.stream().map(AuthorDO::getId).distinct().collect(Collectors.toList());
+            List<Integer> authorIds = authorDOList.stream().map(AuthorVO::getId).distinct().collect(Collectors.toList());
             BookInfoQuery bookInfoQuery = new BookInfoQuery();
             bookInfoQuery.setAuthorIds(authorIds);
             bookInfoQuery.setPageNum(pageNum);
