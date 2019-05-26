@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * 章节接口
@@ -98,21 +99,30 @@ public class ChapterController {
         return BaseResult.rightReturn(chapterLogic.assemblyContent(chapterRes.getData()));
     }
 
-    @ApiOperation(value="新增章节信息", notes="新增章节信息")
-    @PostMapping(value = "/insertChapterInfo")
-    public BaseResult<Boolean> insertChapterInfo(@RequestBody List<ChapterDO> chapterDOList) {
-        boolean res = chapterLogic.batchInsertChapter(chapterDOList);
-        if (res) {
-            return BaseResult.rightReturn(res);
-        }
-
-        return BaseResult.errorReturn(res, StatusCodeEnum.LOGIC_ERROR.getCode(), "保存章节信息失败");
-    }
-
     @ApiOperation(value="更新章节信息", notes="更新章节信息")
     @PostMapping(value = "/updateChapterInfo")
     public BaseResult<Integer> updateChapterInfo(@RequestBody List<ChapterDO> chapterDOList) {
-        return chapterService.batchUpdate(chapterDOList);
+        if (CollectionUtils.isEmpty(chapterDOList)) {
+            log.warn("ChapterServiceImpl batchUpdate param chapterDOList is empty");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param chapterDOList is empty");
+        }
+
+        List<ChapterDO> insertChapterDOList = new ArrayList<>();
+        List<ChapterDO> updateChapterDOList = new ArrayList<>();
+        chapterDOList.forEach(chapterDO -> {
+            if (chapterDO.getId() == null) {
+                insertChapterDOList.add(chapterDO);
+            } else {
+                updateChapterDOList.add(chapterDO);
+            }
+        });
+
+        boolean insertRes = chapterLogic.batchInsertChapter(insertChapterDOList);
+        if (!insertRes) {
+            return BaseResult.errorReturn(null, StatusCodeEnum.LOGIC_ERROR.getCode(), "保存章节信息失败");
+        }
+
+        return chapterService.batchUpdate(updateChapterDOList);
     }
 
     @ApiOperation(value="自动生成章节", notes="自动生成章节")
