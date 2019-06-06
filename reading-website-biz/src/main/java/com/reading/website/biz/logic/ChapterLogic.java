@@ -7,11 +7,11 @@ import com.reading.website.api.service.BookService;
 import com.reading.website.api.service.ChapterService;
 import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.api.vo.ChapterVO;
-import com.reading.website.biz.utils.Base64Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.FileInputStream;
@@ -44,7 +44,9 @@ public class ChapterLogic {
      * @return
      */
     public boolean batchInsertChapter(List<ChapterDO> chapterDOList) {
-
+        if (CollectionUtils.isEmpty(chapterDOList)) {
+            return Boolean.TRUE;
+        }
         BaseResult<Integer> chapterRes = chapterService.batchInsert(chapterDOList);
         Integer bookId = chapterDOList.get(0).getBookId();
         BaseResult<BookInfoVO> bookRes = bookService.selectByBookId(bookId);

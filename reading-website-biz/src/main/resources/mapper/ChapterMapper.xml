@@ -15,6 +15,12 @@
     id, created, updated, isDeleted, bookId, title, sequence, contentPath
   </sql>
 
+  <!-- 根据图书id删除章节 -->
+  <update id="delByBookId" parameterType="java.util.Map">
+    UPDATE Chapter set isDeleted = 1
+    where bookId = #{bookId,jdbcType=INTEGER}
+  </update>
+
   <!-- 批量新增 -->
   <insert id="batchInsert" parameterType="list" useGeneratedKeys="true" keyProperty="id">
     insert into Chapter(bookId, title, sequence, contentPath)

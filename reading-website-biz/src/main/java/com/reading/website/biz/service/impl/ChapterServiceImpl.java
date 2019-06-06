@@ -27,6 +27,26 @@ public class ChapterServiceImpl implements ChapterService {
     private ChapterMapper chapterMapper;
 
     /**
+     * 根据图书id删除
+     * @param bookId 图书id
+     * @return
+     */
+    @Override
+    public BaseResult<Integer> debByBookId(Integer bookId) {
+        if (bookId == null) {
+            log.warn("ChapterServiceImpl debByBookId param bookId is null");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param bookId is null");
+        }
+
+        try {
+            return BaseResult.rightReturn(chapterMapper.delByBookId(bookId));
+        } catch (Exception e) {
+            log.error("ChapterServiceImpl debByBookId error, bookId {}, error", bookId, e);
+            return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
+        }
+    }
+
+    /**
      * 批量新增
      * @param list 章节列表
      * @return

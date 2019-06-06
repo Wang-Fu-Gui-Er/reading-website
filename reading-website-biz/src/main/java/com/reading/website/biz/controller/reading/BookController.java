@@ -72,7 +72,7 @@ public class BookController {
         }
 
         //2. 保存相关章节信息
-        List<ChapterDO> chapterDOList = bookSaveDTO.getChapterDOList();
+        List<ChapterDO> chapterDOList = bookSaveDTO.getChapterList();
         if (!CollectionUtils.isEmpty(chapterDOList)) {
             int bookId = bookRes.getData();
             chapterDOList.forEach(chapterDO -> {
@@ -88,7 +88,13 @@ public class BookController {
     @ApiOperation(value="删除图书信息", notes="删除图书信息")
     @GetMapping(value = "/del")
     public BaseResult<Boolean> delBook(@RequestParam("bookId") Integer bookId) {
-        return bookService.delByBookId(bookId);
+        // 删除图书
+        BaseResult<Boolean> delBookRes = bookService.delByBookId(bookId);
+
+        // 删除图书对应章节
+        chapterService.debByBookId(bookId);
+
+        return delBookRes;
     }
 
     @ApiOperation(value="添加到书架或移出书架", notes="添加到书架或移出书架")

@@ -13,6 +13,13 @@ import java.util.List;
 public interface ChapterService {
 
     /**
+     * 根据图书id删除章节
+     * @param bookId 图书id
+     * @return
+     */
+    BaseResult<Integer> debByBookId(Integer bookId);
+
+    /**
      * 批量新增
      * @param list 章节列表
      * @return

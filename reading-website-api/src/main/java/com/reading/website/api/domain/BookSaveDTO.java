@@ -17,5 +17,5 @@ public class BookSaveDTO implements Serializable {
     private BookDO bookDO;
 
     // 章节列表
-    private List<ChapterDO> chapterDOList;
+    private List<ChapterDO> chapterList;
 }

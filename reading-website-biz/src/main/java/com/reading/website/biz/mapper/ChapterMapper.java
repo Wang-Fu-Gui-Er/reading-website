@@ -15,6 +15,13 @@ import java.util.List;
 public interface ChapterMapper {
 
     /**
+     * 根据图书id删除
+     * @param bookId
+     * @return
+     */
+    int delByBookId(@Param(value = "bookId") Integer bookId);
+
+    /**
      * 批量新增
      * @param list 章节列表
      * @return
