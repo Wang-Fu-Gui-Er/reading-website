@@ -1,16 +1,20 @@
 package com.reading.website.biz.controller.reading;
 
 import com.reading.website.api.base.BaseResult;
+import com.reading.website.api.base.StatusCodeEnum;
+import com.reading.website.api.domain.LoginInfoDTO;
 import com.reading.website.api.domain.UserBaseInfoDO;
 import com.reading.website.api.domain.UserNotesInfoDO;
 import com.reading.website.api.domain.UserNotesInfoQuery;
 import com.reading.website.api.service.UserNotesInfoService;
+import com.reading.website.biz.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -29,7 +33,17 @@ public class UserNoteController {
 
     @ApiOperation(value="新增阅读笔记", notes="新增阅读笔记")
     @PostMapping(value = "/add")
-    public BaseResult<Integer> register(@RequestBody UserNotesInfoDO notesInfoDO) {
+    public BaseResult<Integer> register(@RequestBody UserNotesInfoDO notesInfoDO, HttpServletRequest request) {
+        if (notesInfoDO.getUserId() == null) {
+            LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+            if (loginInfoDTO != null) {
+                notesInfoDO.setUserId(loginInfoDTO.getUserId());
+
+            } else {
+                return BaseResult.errorReturn(StatusCodeEnum.TOKEN_EXPIRE.getCode(), "TOKEN_EXPIRE");
+            }
+        }
+
         return notesInfoService.insert(notesInfoDO);
     }
 

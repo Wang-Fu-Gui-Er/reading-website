@@ -4,6 +4,7 @@ import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.BookSaveDTO;
 import com.reading.website.api.domain.ChapterDO;
+import com.reading.website.api.domain.LoginInfoDTO;
 import com.reading.website.api.domain.UserReadingInfoDO;
 import com.reading.website.api.service.BookService;
 import com.reading.website.api.service.ChapterService;
@@ -12,6 +13,7 @@ import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.biz.enums.ChapterSortEnum;
 import com.reading.website.biz.logic.BookLogic;
 import com.reading.website.biz.logic.ChapterLogic;
+import com.reading.website.biz.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -33,20 +36,24 @@ import java.util.List;
 @RequestMapping("/book")
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
+
+    private final UserReadingService readingService;
+
+    private final BookLogic bookLogic;
+
+    private final ChapterLogic chapterLogic;
+
+    private final ChapterService chapterService;
 
     @Autowired
-    private UserReadingService readingService;
-
-    @Autowired
-    private BookLogic bookLogic;
-
-    @Autowired
-    private ChapterLogic chapterLogic;
-
-    @Autowired
-    private ChapterService chapterService;
+    public BookController(BookService bookService, UserReadingService readingService, BookLogic bookLogic, ChapterLogic chapterLogic, ChapterService chapterService) {
+        this.bookService = bookService;
+        this.readingService = readingService;
+        this.bookLogic = bookLogic;
+        this.chapterLogic = chapterLogic;
+        this.chapterService = chapterService;
+    }
 
     @ApiOperation(value="查询图书信息", notes="查询图书信息")
     @GetMapping(value = "/getBookInfo")
@@ -100,12 +107,20 @@ public class BookController {
     @ApiOperation(value="添加到书架或移出书架", notes="添加到书架或移出书架")
     @GetMapping(value = "/addOrRemoveToShelf")
     public BaseResult<Integer> addOrRemoveToShelf(@RequestParam("userId") Integer userId,
-                                       @RequestParam("bookId") Integer bookId,
-                                       @RequestParam("onShelf") Boolean onShelf) {
+                                                  @RequestParam("bookId") Integer bookId,
+                                                  @RequestParam("onShelf") Boolean onShelf,
+                                                  HttpServletRequest request) {
 
-        if (userId == null || bookId == null || onShelf == null) {
+        if (bookId == null || onShelf == null) {
             log.warn("onShelf param userId or bookId or onShelf is null");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param userId or bookId or onShelf is null");
+        }
+
+        if (userId == null) {
+            LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+            if (loginInfoDTO != null) {
+                userId = loginInfoDTO.getUserId();
+            }
         }
 
         UserReadingInfoDO userReadingInfoDO = new UserReadingInfoDO();

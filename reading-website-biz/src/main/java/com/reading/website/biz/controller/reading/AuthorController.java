@@ -25,8 +25,12 @@ import java.util.List;
 @RequestMapping("/author")
 public class AuthorController {
 
+    private final AuthorService authorService;
+
     @Autowired
-    private AuthorService authorService;
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
+    }
 
     @ApiOperation(value="新增或修改作者信息", notes="新增或修改作者信息")
     @PostMapping(value = "/addOrUpdate")

@@ -5,7 +5,9 @@ import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.domain.AdviceInfoDO;
 import com.reading.website.api.domain.AdviceInfoQuery;
 import com.reading.website.api.domain.AuthorDO;
+import com.reading.website.api.domain.LoginInfoDTO;
 import com.reading.website.api.service.AdviceInfoService;
+import com.reading.website.biz.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -27,12 +30,21 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/advice")
 public class AdviceInfoController {
+    private final AdviceInfoService adviceInfoService;
+
     @Autowired
-    private AdviceInfoService adviceInfoService;
+    public AdviceInfoController(AdviceInfoService adviceInfoService) {
+        this.adviceInfoService = adviceInfoService;
+    }
 
     @ApiOperation(value="增加反馈信息", notes="增加反馈信息")
     @PostMapping(value = "/add")
-    public BaseResult<Integer> add(@RequestBody AdviceInfoDO adviceInfoDO) {
+    public BaseResult<Integer> add(@RequestBody AdviceInfoDO adviceInfoDO, HttpServletRequest request) {
+        LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+        if (loginInfoDTO != null) {
+            adviceInfoDO.setUserId(loginInfoDTO.getUserId());
+        }
+
         return adviceInfoService.insert(adviceInfoDO);
     }
 

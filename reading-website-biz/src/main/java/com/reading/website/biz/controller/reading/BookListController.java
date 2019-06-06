@@ -12,6 +12,7 @@ import com.reading.website.api.service.UserReadingService;
 import com.reading.website.api.vo.AuthorVO;
 import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.biz.logic.BookLogic;
+import com.reading.website.biz.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -120,11 +122,16 @@ public class BookListController {
     @ApiOperation(value="查询加入书架的图书", notes="查询加入书架的图书")
     @GetMapping(value = "/onShelf")
     public BaseResult<List<BookInfoVO>> onShelf(@RequestParam("userId") Integer userId,
-                                            @RequestParam("pageNum") Integer pageNum,
-                                            @RequestParam("pageSize") Integer pageSize) {
+                                                @RequestParam("pageNum") Integer pageNum,
+                                                @RequestParam("pageSize") Integer pageSize,
+                                                HttpServletRequest request) {
         if (userId == null) {
-            log.warn("queryReadingHistory param userId is null");
-            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param userId is null");
+            LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+            if (loginInfoDTO != null) {
+                userId = loginInfoDTO.getUserId();
+            } else {
+                return BaseResult.errorReturn(StatusCodeEnum.TOKEN_EXPIRE.getCode(), "TOKEN_EXPIRE");
+            }
         }
 
         //1. 查询阅读记录

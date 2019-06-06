@@ -3,6 +3,7 @@ package com.reading.website.biz.controller.reading;
 import com.alibaba.fastjson.JSON;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.constants.UserStatusConstant;
+import com.reading.website.api.domain.LoginInfoDTO;
 import com.reading.website.api.domain.UserBaseInfoDO;
 import com.reading.website.api.domain.UserBaseInfoQuery;
 import com.reading.website.api.service.UserBaseInfoService;
@@ -18,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +34,18 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
-    private UserBaseInfoService userService;
+    private final UserBaseInfoService userService;
+
+    private final MailService mailService;
+
+    private final EhcacheUtil cache;
 
     @Autowired
-    private MailService mailService;
-
-    @Autowired
-    private EhcacheUtil cache;
+    public UserController(UserBaseInfoService userService, MailService mailService, EhcacheUtil cache) {
+        this.userService = userService;
+        this.mailService = mailService;
+        this.cache = cache;
+    }
 
     /**
      * 用户注册
@@ -249,7 +255,16 @@ public class UserController {
 
     @ApiOperation(value="重置密码", notes="重置密码")
     @PostMapping("/resetPassword")
-    public BaseResult<Boolean> resetPassword(@RequestBody UserBaseInfoDO userBaseInfoDO) {
+    public BaseResult<Boolean> resetPassword(@RequestBody UserBaseInfoDO userBaseInfoDO, HttpServletRequest request) {
+        if (userBaseInfoDO.getEmail() == null) {
+            LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+            if (loginInfoDTO != null) {
+                userBaseInfoDO.setEmail(loginInfoDTO.getEmail());
+            } else {
+                return BaseResult.errorReturn(StatusCodeEnum.TOKEN_EXPIRE.getCode(), "TOKEN_EXPIRE");
+            }
+        }
+
         // 参数校验
         if (!checkParam(userBaseInfoDO)) {
             log.warn("user resetPassword param user error");
@@ -267,11 +282,20 @@ public class UserController {
 
     @ApiOperation(value="修改用户信息", notes="修改用户信息")
     @PostMapping("/updateUserInfo")
-    public BaseResult<Boolean> updateUserInfo(@RequestBody UserBaseInfoDO userBaseInfoDO) {
+    public BaseResult<Boolean> updateUserInfo(@RequestBody UserBaseInfoDO userBaseInfoDO, HttpServletRequest request) {
         // 参数校验
-        if (userBaseInfoDO == null || userBaseInfoDO.getId() == null) {
+        if (userBaseInfoDO == null) {
             log.warn("user updateUserInfo param user error");
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param user error");
+        }
+
+        if (userBaseInfoDO.getId() == null) {
+            LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+            if (loginInfoDTO != null) {
+                userBaseInfoDO.setId(loginInfoDTO.getUserId());
+            } else {
+                return BaseResult.errorReturn(StatusCodeEnum.TOKEN_EXPIRE.getCode(), "TOKEN_EXPIRE");
+            }
         }
 
         // 前端使用MD5加密，后端使用SHA1加密
@@ -311,11 +335,19 @@ public class UserController {
 
     @ApiOperation(value="修改邮箱", notes="修改邮箱")
     @GetMapping("/resetEmail")
-    public BaseResult<Boolean> resetEmail(@Param("userId") Integer userId, @Param("email") String email) {
+    public BaseResult<Boolean> resetEmail(@Param("userId") Integer userId,
+                                          @Param("email") String email,
+                                          HttpServletRequest request) {
         // 参数校验
         if (userId == null || StringUtils.isEmpty(email)) {
-            log.warn("user resetEmail param empty");
-            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param empty");
+            LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+            if (loginInfoDTO != null) {
+                userId = loginInfoDTO.getUserId();
+                email = loginInfoDTO.getEmail();
+
+            } else {
+                return BaseResult.errorReturn(StatusCodeEnum.TOKEN_EXPIRE.getCode(), "TOKEN_EXPIRE");
+            }
         }
 
         UserBaseInfoDO userBaseInfoDO = new UserBaseInfoDO();

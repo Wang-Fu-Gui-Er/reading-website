@@ -9,6 +9,7 @@ import com.reading.website.api.service.ChapterService;
 import com.reading.website.api.service.UserReadingService;
 import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.api.vo.ReadingHistoryVO;
+import com.reading.website.biz.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,27 +39,37 @@ import java.util.stream.Collectors;
 @RequestMapping("/reading")
 public class UserReadingController {
 
-    @Autowired
-    private UserReadingService readingService;
+    private final UserReadingService readingService;
+
+    private final BookService bookService;
+
+    private final ChapterService chapterService;
+
+    private final BookGradeInfoService gradeInfoService;
 
     @Autowired
-    private BookService bookService;
-
-    @Autowired
-    private ChapterService chapterService;
-
-    @Autowired
-    private BookGradeInfoService gradeInfoService;
+    public UserReadingController(UserReadingService readingService, BookService bookService, ChapterService chapterService, BookGradeInfoService gradeInfoService) {
+        this.readingService = readingService;
+        this.bookService = bookService;
+        this.chapterService = chapterService;
+        this.gradeInfoService = gradeInfoService;
+    }
 
     @ApiOperation(value="查询阅读历史", notes="查询阅读历史")
     @GetMapping(value = "/history")
     public BaseResult<List<ReadingHistoryVO>> queryReadingHistory(@RequestParam("userId") Integer userId,
                                                                   @RequestParam("pageNum") Integer pageNum,
                                                                   @RequestParam("pageSize") Integer pageSize,
-                                                                  @RequestParam(value = "isOnShelf", required = false) Boolean isOnShelf) {
+                                                                  @RequestParam(value = "isOnShelf", required = false) Boolean isOnShelf,
+                                                                  HttpServletRequest request) {
         if (userId == null) {
-            log.warn("queryReadingHistory param userId is null");
-            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param userId is null");
+            LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+            if (loginInfoDTO != null) {
+                userId = loginInfoDTO.getUserId();
+
+            } else {
+                return BaseResult.errorReturn(StatusCodeEnum.TOKEN_EXPIRE.getCode(), "TOKEN_EXPIRE");
+            }
         }
 
         //1. 查询阅读记录
@@ -171,10 +183,22 @@ public class UserReadingController {
     @ApiOperation(value="查询图书是否在用户书架中", notes="查询图书是否在用户书架中")
     @GetMapping(value = "/checkOnShelf")
     public BaseResult<Boolean> checkOnShelf(@RequestParam("userId") Integer userId,
-                                            @RequestParam("bookId") Integer bookId) {
-        if (userId == null || bookId == null) {
+                                            @RequestParam("bookId") Integer bookId,
+                                            HttpServletRequest request) {
+        if (bookId == null) {
             return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "参数为空");
         }
+
+        if (userId == null) {
+            LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+            if (loginInfoDTO != null) {
+                userId = loginInfoDTO.getUserId();
+
+            } else {
+                return BaseResult.errorReturn(StatusCodeEnum.TOKEN_EXPIRE.getCode(), "TOKEN_EXPIRE");
+            }
+        }
+
         UserReadingInfoQuery query = new UserReadingInfoQuery();
         query.setUserId(userId);
         query.setBookId(bookId);
