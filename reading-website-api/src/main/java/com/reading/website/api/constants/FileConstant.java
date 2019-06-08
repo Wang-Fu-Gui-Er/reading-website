@@ -23,13 +23,13 @@ public class FileConstant {
 //    public static final String UPLOAD_PATH = "/Users/xyang010/Documents/IdeaProject/reading-website/reading-website-biz/src/main/resources/upload";
 
     // 图片子路径
-    public static final String PICTURE_SUB_PATH = "/picture";
+    public static final String PICTURE_SUB_PATH = File.separator + "picture";
 
     // 整本书子路径
-    public static final String BOOK_SUB_PATH = "/books";
+    public static final String BOOK_SUB_PATH = File.separator + "books";
 
     // 章节子路径
-    public static final String CHAPTER_SUB_PATH = "/chapters";
+    public static final String CHAPTER_SUB_PATH = File.separator + "chapters";
 
     // 图片类型
     public static final String FILE_TYPE_JPG = "jpg";

@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,18 @@ public class ChapterController {
     @ApiOperation(value="获取图书目录", notes="获取图书目录")
     @GetMapping(value = "/getAllChapter")
     public BaseResult<List<ChapterDO>> getAllChapter(@RequestParam("bookId") Integer bookId, String sort) {
-        return chapterService.selectByBookId(bookId, sort);
+        BaseResult<List<ChapterDO>> chapterRes = chapterService.selectByBookId(bookId, sort);
+        List<ChapterDO> dbChapterList = chapterRes.getData();
+        for (ChapterDO chapterDO : dbChapterList) {
+            String filePath = chapterDO.getContentPath();
+            if (!StringUtils.isEmpty(filePath)) {
+                filePath = filePath.replaceAll("\\\\", "%5C%5C");
+                filePath = filePath.replaceAll(":", "%3A");
+                chapterDO.setContentPath(filePath);
+            }
+        }
+
+        return chapterRes;
     }
 
     @ApiOperation(value="获取章节信息", notes="获取章节信息")
