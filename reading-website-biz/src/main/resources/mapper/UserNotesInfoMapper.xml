@@ -116,7 +116,7 @@
     select
     <include refid="Base_Column_List" />
     from UserNotesInfo
-    where userId = #{userId,jdbcType=INTEGER}
+    where userId = #{userId,jdbcType=INTEGER} and isDeleted = 0
     group by bookId
     order by id
     limit #{offset}, #{pageSize}
