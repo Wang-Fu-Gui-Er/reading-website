@@ -80,34 +80,6 @@ public class ChapterController {
             return BaseResult.rightReturn(chapterLogic.assemblyContent(chapterRes.getData()));
         }
 
-        // 查询是否存在阅读记录
-        // 登陆用户,记录阅读信息
-        LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
-        if (loginInfoDTO != null) {
-            UserReadingInfoQuery query = new UserReadingInfoQuery();
-            query.setBookId(chapterDO.getBookId());
-            query.setUserId(loginInfoDTO.getUserId());
-            BaseResult<List<UserReadingInfoDO>> queryReadingRes = readingService.pageQuery(query);
-            if (queryReadingRes.getSuccess()) {
-                List<UserReadingInfoDO> readingInfoDOList = queryReadingRes.getData();
-                // 无阅读记录，增加阅读记录;有阅读记录，更新阅读记录
-                Integer readindId = null;
-                if (!CollectionUtils.isEmpty(readingInfoDOList)) {
-                    UserReadingInfoDO readingInfoDO = readingInfoDOList.get(0);
-                    readindId = readingInfoDO.getId();
-                }
-                UserReadingInfoDO readingInfoDO = new UserReadingInfoDO();
-                readingInfoDO.setId(readindId);
-                readingInfoDO.setBookId(chapterDO.getBookId());
-                readingInfoDO.setChapId(chapterId);
-                readingInfoDO.setUserId(loginInfoDTO.getUserId());
-                BaseResult<Integer> saveReadingInfoRes = readingService.insertOrUpdate(readingInfoDO);
-                if (!saveReadingInfoRes.getSuccess()) {
-                    log.warn("记录用户阅读信息失败 saveReadingInfoRes {}", saveReadingInfoRes);
-                }
-            }
-        }
-
         return BaseResult.rightReturn(chapterLogic.assemblyContent(chapterRes.getData()));
     }
 

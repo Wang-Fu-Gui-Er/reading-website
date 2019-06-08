@@ -42,6 +42,13 @@ public interface ChapterService {
     BaseResult<List<ChapterDO>> selectByBookId(Integer bookId, String sort);
 
     /**
+     * 根据路径查询
+     * @param contentPath
+     * @return
+     */
+    BaseResult<ChapterDO> selectByContentPath(String contentPath);
+
+    /**
      * 根据章节id查询
      * @param chapterId 章节id
      * @return

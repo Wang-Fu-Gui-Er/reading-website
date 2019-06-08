@@ -3,8 +3,13 @@ package com.reading.website.biz.controller.reading;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.constants.FileConstant;
+import com.reading.website.api.domain.ChapterDO;
+import com.reading.website.api.domain.LoginInfoDTO;
+import com.reading.website.api.service.ChapterService;
 import com.reading.website.biz.logic.ChapterLogic;
+import com.reading.website.biz.logic.ReadingLogic;
 import com.reading.website.biz.utils.Base64Util;
+import com.reading.website.biz.utils.UserUtil;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
@@ -29,8 +35,18 @@ import java.util.Map;
 @RequestMapping("/transport")
 public class TransportController {
 
+    private final ChapterLogic chapterLogic;
+
+    private final ReadingLogic readingLogic;
+
+    private final ChapterService chapterService;
+
     @Autowired
-    private ChapterLogic chapterLogic;
+    public TransportController(ChapterLogic chapterLogic, ReadingLogic readingLogic, ChapterService chapterService) {
+        this.chapterLogic = chapterLogic;
+        this.readingLogic = readingLogic;
+        this.chapterService = chapterService;
+    }
 
     /**
      * 上传文件接口
@@ -166,7 +182,8 @@ public class TransportController {
      * @return
      */
     @GetMapping("/getChapterContent")
-    public BaseResult<String> getChapterContent(@RequestParam("contentPath") String contentPath) {
+    public BaseResult<String> getChapterContent(@RequestParam("contentPath") String contentPath,
+                                                HttpServletRequest request) {
         if (StringUtils.isEmpty(contentPath)) {
             log.warn("文件路径为空");
             return BaseResult.errorReturn(StatusCodeEnum.FILE_PATH_NOT_EXIST.getCode(), "文件路径为空");
@@ -176,6 +193,16 @@ public class TransportController {
             log.warn("文件不存在");
             return BaseResult.errorReturn(StatusCodeEnum.NOT_FOUND.getCode(), "文件不存在");
 
+        }
+
+        // 若用户已登陆，则更新阅读历史
+        LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+        if (loginInfoDTO != null) {
+            BaseResult<ChapterDO> chapterRes = chapterService.selectByContentPath(contentPath);
+            if (chapterRes.getSuccess() && chapterRes.getData() != null) {
+                ChapterDO chapterDO = chapterRes.getData();
+                readingLogic.saveReadingInfo(loginInfoDTO.getUserId(), chapterDO.getBookId(), chapterDO.getId());
+            }
         }
 
         return BaseResult.rightReturn(chapterLogic.convertFile2Text(contentPath));

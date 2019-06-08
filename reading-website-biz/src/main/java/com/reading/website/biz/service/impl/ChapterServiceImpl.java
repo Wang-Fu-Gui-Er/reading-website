@@ -95,8 +95,8 @@ public class ChapterServiceImpl implements ChapterService {
     @Override
     public BaseResult<List<ChapterDO>> selectByBookId(Integer bookId, String sort) {
         if (bookId == null) {
-            log.warn("ChapterServiceImpl selectByBookId param selectByBookId is null");
-            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param selectByBookId is null");
+            log.warn("ChapterServiceImpl selectByBookId param bookId is null");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param bookId is null");
         }
 
         try {
@@ -106,6 +106,21 @@ public class ChapterServiceImpl implements ChapterService {
             return BaseResult.rightReturn(chapterMapper.selectByBookId(bookId, sort));
         } catch (Exception e) {
             log.error("ChapterServiceImpl selectByBookId error, bookId {}, error{}", bookId, e);
+            return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
+        }
+    }
+
+    @Override
+    public BaseResult<ChapterDO> selectByContentPath(String contentPath) {
+        if (StringUtils.isEmpty(contentPath)) {
+            log.warn("ChapterServiceImpl selectByContentPath param contentPath is null");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param contentPath is null");
+        }
+
+        try {
+            return BaseResult.rightReturn(chapterMapper.selectByContentPath(contentPath));
+        } catch (Exception e) {
+            log.error("ChapterServiceImpl selectByContentPath error, contentPath {}, error", contentPath);
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }

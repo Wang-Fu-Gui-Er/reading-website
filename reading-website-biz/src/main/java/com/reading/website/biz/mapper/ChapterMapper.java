@@ -44,6 +44,13 @@ public interface ChapterMapper {
     List<ChapterDO> selectByBookId(@Param(value = "bookId") Integer bookId, @Param("sort") String sort);
 
     /**
+     * 根据章节路径查询
+     * @param contentPath
+     * @return
+     */
+    ChapterDO selectByContentPath(@Param(value = "contentPath") String contentPath);
+
+    /**
      * 根据主键查询
      * @param id 主键，章节id
      * @return

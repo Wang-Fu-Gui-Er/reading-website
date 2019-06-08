@@ -76,6 +76,13 @@
     </choose>
   </select>
 
+  <select id="selectByContentPath" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from Chapter
+    where isDeleted = 0 and contentPath = #{contentPath,jdbcType=VARCHAR}
+  </select>
+
 
   <!-- 根据主键查询 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
