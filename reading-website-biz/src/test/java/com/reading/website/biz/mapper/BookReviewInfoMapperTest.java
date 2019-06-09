@@ -41,4 +41,10 @@ public class BookReviewInfoMapperTest extends BaseTest {
         Assert.assertNotNull(list);
         Assert.assertTrue(count > 0);
     }
+
+    @Test
+    public void testUpdateLikeNum() {
+        int res = mapper.updateLikeNum(1, true);
+        System.out.println(res);
+    }
 }

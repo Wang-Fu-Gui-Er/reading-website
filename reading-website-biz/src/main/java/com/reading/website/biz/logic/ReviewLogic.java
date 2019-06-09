@@ -5,6 +5,7 @@ import com.reading.website.api.base.Page;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.*;
 import com.reading.website.api.service.BookReviewInfoService;
+import com.reading.website.api.service.ReviewLikeInfoService;
 import com.reading.website.api.service.UserBaseInfoService;
 import com.reading.website.api.service.UserGradeInfoService;
 import com.reading.website.api.vo.BookReviewVO;
@@ -29,13 +30,15 @@ public class ReviewLogic {
     private final BookReviewInfoService reviewInfoService;
     private final UserBaseInfoService userBaseInfoService;
     private final UserGradeInfoService userGradeInfoService;
+    private final ReviewLikeInfoService reviewLikeInfoService;
 
 
     @Autowired
-    public ReviewLogic(BookReviewInfoService reviewInfoService, UserBaseInfoService userBaseInfoService, UserGradeInfoService userGradeInfoService) {
+    public ReviewLogic(BookReviewInfoService reviewInfoService, UserBaseInfoService userBaseInfoService, UserGradeInfoService userGradeInfoService, ReviewLikeInfoService reviewLikeInfoService) {
         this.reviewInfoService = reviewInfoService;
         this.userBaseInfoService = userBaseInfoService;
         this.userGradeInfoService = userGradeInfoService;
+        this.reviewLikeInfoService = reviewLikeInfoService;
     }
 
     /**
@@ -43,7 +46,7 @@ public class ReviewLogic {
      * @param query
      * @return
      */
-    public BaseResult<List<BookReviewVO>> queryReview(BookReviewInfoQuery query) {
+    public BaseResult<List<BookReviewVO>> queryReview(BookReviewInfoQuery query, Integer loginUserId) {
         // 1.查询评论信息
         BaseResult<List<BookReviewInfoDO>> reviewRes = reviewInfoService.pageQuery(query);
         if (!reviewRes.getSuccess()) {
@@ -87,6 +90,7 @@ public class ReviewLogic {
             vo.setNickName(userMap.get(reviewInfoDO.getUserId()).getNickName());
             vo.setHeadPicPath(userMap.get(reviewInfoDO.getUserId()).getHeadPicPath());
 
+            // 5.1 拼装用户评分
             Integer bookId = query.getBookId();
             if (bookId != null) {
                 BaseResult<UserGradeInfoDO> userGradeRes = userGradeInfoService.selectByUserIdAndBookId(reviewInfoDO.getUserId(), bookId);
@@ -95,6 +99,15 @@ public class ReviewLogic {
                 }
             }
 
+            // 5.2 拼装是否点赞
+            BaseResult<ReviewLikeInfoDO> likeRes = reviewLikeInfoService.selectByUserIdAndReviewId(loginUserId, reviewInfoDO.getId());
+            if (likeRes.getSuccess()) {
+                 if (likeRes.getData() != null) {
+                     vo.setIsLike(Boolean.TRUE);
+                 } else {
+                     vo.setIsLike(Boolean.FALSE);
+                 }
+            }
             reviewVOList.add(vo);
         }
 

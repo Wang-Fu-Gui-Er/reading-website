@@ -27,4 +27,11 @@ public interface BookReviewInfoService {
      */
     BaseResult<List<BookReviewInfoDO>> pageQuery(BookReviewInfoQuery query);
 
+    /**
+     * 更新点赞数
+     * @param reviewId
+     * @return
+     */
+    BaseResult<Integer> updateLikeNum(Integer reviewId, Boolean isAdd);
+
 }

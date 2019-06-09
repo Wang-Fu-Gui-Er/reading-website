@@ -57,8 +57,13 @@ public class BookReviewController {
 
     @ApiOperation(value="查询图书评论", notes="查询图书评论")
     @PostMapping(value = "/query")
-    public BaseResult<List<BookReviewVO>> query(@RequestBody BookReviewInfoQuery query) {
-        return reviewLogic.queryReview(query);
+    public BaseResult<List<BookReviewVO>> query(@RequestBody BookReviewInfoQuery query, HttpServletRequest request) {
+        Integer loginUserId = null;
+        LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
+        if (loginInfoDTO != null) {
+            loginUserId = loginInfoDTO.getUserId();
+        }
+        return reviewLogic.queryReview(query, loginUserId);
     }
 
     @ApiOperation(value="删除图书评论", notes="删除图书评论")

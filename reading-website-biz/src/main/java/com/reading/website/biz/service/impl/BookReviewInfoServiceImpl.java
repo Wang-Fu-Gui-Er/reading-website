@@ -22,8 +22,12 @@ import java.util.List;
 @Slf4j
 public class BookReviewInfoServiceImpl implements BookReviewInfoService {
 
+    private final BookReviewInfoMapper reviewInfoMapper;
+
     @Autowired
-    private BookReviewInfoMapper reviewInfoMapper;
+    public BookReviewInfoServiceImpl(BookReviewInfoMapper reviewInfoMapper) {
+        this.reviewInfoMapper = reviewInfoMapper;
+    }
 
     /**
      * 新增或更新
@@ -69,6 +73,21 @@ public class BookReviewInfoServiceImpl implements BookReviewInfoService {
 
         } catch (Exception e) {
             log.error("BookReviewInfoServiceImpl pageQuery error, param query {}, error {}", query, e);
+            return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
+        }
+    }
+
+    @Override
+    public BaseResult<Integer> updateLikeNum(Integer reviewId, Boolean isAdd) {
+        if (reviewId == null || isAdd == null) {
+            log.warn("BookReviewInfoServiceImpl updateLikeNum param error, reviewId is null");
+            return BaseResult.errorReturn(StatusCodeEnum.PARAM_ERROR.getCode(), "param reviewId is null");
+        }
+
+        try {
+            return BaseResult.rightReturn(reviewInfoMapper.updateLikeNum(reviewId, isAdd));
+        } catch (Exception e) {
+            log.error("BookReviewInfoServiceImpl updateLikeNum error, param reviewId {}, isAdd {} error {}", reviewId, isAdd, e);
             return BaseResult.errorReturn(StatusCodeEnum.MAPPER_ERROR.getCode(), "mapper error");
         }
     }

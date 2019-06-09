@@ -15,6 +15,22 @@
     id, created, updated, isDeleted, bookId, userId, comment, likeNum
   </sql>
 
+  <update id="updateLikeNum" parameterType="java.util.Map">
+    update BookReviewInfo
+    <choose>
+      <when test="isAdd == true ">
+        set likeNum = likeNum + 1
+      </when>
+      <when test="isAdd == false">
+        set likeNum = likeNum - 1
+      </when>
+      <otherwise>
+        set likeNum = likeNum
+      </otherwise>
+    </choose>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
   <!-- 新增或更新 -->
   <insert id="insertOrUpdate" useGeneratedKeys="true" keyProperty="id"
           parameterType="com.reading.website.api.domain.BookReviewInfoDO">
