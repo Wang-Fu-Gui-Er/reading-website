@@ -1,21 +1,17 @@
 package com.reading.website.biz.logic;
 
 import com.reading.website.api.base.BaseResult;
-import com.reading.website.api.domain.LoginInfoDTO;
 import com.reading.website.api.domain.UserReadingInfoDO;
 import com.reading.website.api.domain.UserReadingInfoQuery;
 import com.reading.website.api.service.UserReadingService;
-import com.reading.website.biz.utils.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * class comment
+ * 阅读逻辑类
  *
  * @xyang010 2019/6/8
  */

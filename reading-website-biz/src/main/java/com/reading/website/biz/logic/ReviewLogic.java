@@ -3,12 +3,10 @@ package com.reading.website.biz.logic;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.Page;
 import com.reading.website.api.base.StatusCodeEnum;
-import com.reading.website.api.domain.BookReviewInfoDO;
-import com.reading.website.api.domain.BookReviewInfoQuery;
-import com.reading.website.api.domain.UserBaseInfoDO;
-import com.reading.website.api.domain.UserBaseInfoQuery;
+import com.reading.website.api.domain.*;
 import com.reading.website.api.service.BookReviewInfoService;
 import com.reading.website.api.service.UserBaseInfoService;
+import com.reading.website.api.service.UserGradeInfoService;
 import com.reading.website.api.vo.BookReviewVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -27,15 +25,17 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 public class ReviewLogic {
-    private final BookReviewInfoService reviewInfoService;
 
+    private final BookReviewInfoService reviewInfoService;
     private final UserBaseInfoService userBaseInfoService;
+    private final UserGradeInfoService userGradeInfoService;
 
 
     @Autowired
-    public ReviewLogic(BookReviewInfoService reviewInfoService, UserBaseInfoService userBaseInfoService) {
+    public ReviewLogic(BookReviewInfoService reviewInfoService, UserBaseInfoService userBaseInfoService, UserGradeInfoService userGradeInfoService) {
         this.reviewInfoService = reviewInfoService;
         this.userBaseInfoService = userBaseInfoService;
+        this.userGradeInfoService = userGradeInfoService;
     }
 
     /**
@@ -71,8 +71,8 @@ public class ReviewLogic {
         BaseResult<List<UserBaseInfoDO>> userRes = userBaseInfoService.selectSelective(userQuery);
         Map<Integer, UserBaseInfoDO> userMap = new HashMap<>();
 
+        // 4. 获得用户信息Map
         if (userRes.getSuccess()) {
-            // 4. 获得用户信息Map
             List<UserBaseInfoDO> userBaseInfoDOS = userRes.getData();
             userMap = userBaseInfoDOS
                     .stream()
@@ -86,6 +86,15 @@ public class ReviewLogic {
             BeanUtils.copyProperties(reviewInfoDO, vo);
             vo.setNickName(userMap.get(reviewInfoDO.getUserId()).getNickName());
             vo.setHeadPicPath(userMap.get(reviewInfoDO.getUserId()).getHeadPicPath());
+
+            Integer bookId = query.getBookId();
+            if (bookId != null) {
+                BaseResult<UserGradeInfoDO> userGradeRes = userGradeInfoService.selectByUserIdAndBookId(reviewInfoDO.getUserId(), bookId);
+                if (userGradeRes.getSuccess() && userGradeRes.getData() != null) {
+                    vo.setGrade(userGradeRes.getData().getGrade());
+                }
+            }
+
             reviewVOList.add(vo);
         }
 

@@ -35,4 +35,7 @@ public class BookReviewVO implements Serializable {
 
     // 点赞数
     private Integer likeNum;
+
+    // 用户评分
+    private Integer grade = 0;
 }
