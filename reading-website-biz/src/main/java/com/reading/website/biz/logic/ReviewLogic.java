@@ -4,10 +4,8 @@ import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.Page;
 import com.reading.website.api.base.StatusCodeEnum;
 import com.reading.website.api.domain.*;
-import com.reading.website.api.service.BookReviewInfoService;
-import com.reading.website.api.service.ReviewLikeInfoService;
-import com.reading.website.api.service.UserBaseInfoService;
-import com.reading.website.api.service.UserGradeInfoService;
+import com.reading.website.api.service.*;
+import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.api.vo.BookReviewVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -31,14 +29,16 @@ public class ReviewLogic {
     private final UserBaseInfoService userBaseInfoService;
     private final UserGradeInfoService userGradeInfoService;
     private final ReviewLikeInfoService reviewLikeInfoService;
+    private final BookService bookService;
 
 
     @Autowired
-    public ReviewLogic(BookReviewInfoService reviewInfoService, UserBaseInfoService userBaseInfoService, UserGradeInfoService userGradeInfoService, ReviewLikeInfoService reviewLikeInfoService) {
+    public ReviewLogic(BookReviewInfoService reviewInfoService, UserBaseInfoService userBaseInfoService, UserGradeInfoService userGradeInfoService, ReviewLikeInfoService reviewLikeInfoService, BookService bookService) {
         this.reviewInfoService = reviewInfoService;
         this.userBaseInfoService = userBaseInfoService;
         this.userGradeInfoService = userGradeInfoService;
         this.reviewLikeInfoService = reviewLikeInfoService;
+        this.bookService = bookService;
     }
 
     /**
@@ -108,6 +108,16 @@ public class ReviewLogic {
                      vo.setIsLike(Boolean.FALSE);
                  }
             }
+
+            // 5.3 拼装图书封面
+            BaseResult<BookInfoVO> bookRes = bookService.selectByBookId(reviewInfoDO.getBookId());
+            if (!bookRes.getSuccess()) {
+                log.warn("ReviewLogic queryReview 查询图书信息失败 bookId {}", reviewInfoDO.getBookId());
+            } else {
+                BookInfoVO bookInfoVO = bookRes.getData();
+                vo.setBookPic(bookInfoVO.getBookPic());
+            }
+
             reviewVOList.add(vo);
         }
 

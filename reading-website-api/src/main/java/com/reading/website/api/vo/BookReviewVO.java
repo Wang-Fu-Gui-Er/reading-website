@@ -21,6 +21,9 @@ public class BookReviewVO implements Serializable {
     // 图书id
     private Integer bookId;
 
+    // 图书封面
+    private String bookPic;
+
     // 用户id
     private Integer userId;
 

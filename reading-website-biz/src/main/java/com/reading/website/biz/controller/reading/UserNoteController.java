@@ -7,6 +7,8 @@ import com.reading.website.api.domain.UserBaseInfoDO;
 import com.reading.website.api.domain.UserNotesInfoDO;
 import com.reading.website.api.domain.UserNotesInfoQuery;
 import com.reading.website.api.service.UserNotesInfoService;
+import com.reading.website.api.vo.UserNotesInfoVO;
+import com.reading.website.biz.logic.NoteLogic;
 import com.reading.website.biz.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,8 +30,14 @@ import java.util.List;
 @RequestMapping("/notes")
 public class UserNoteController {
 
+    private final UserNotesInfoService notesInfoService;
+    private final NoteLogic noteLogic;
+
     @Autowired
-    private UserNotesInfoService notesInfoService;
+    public UserNoteController(UserNotesInfoService notesInfoService, NoteLogic noteLogic) {
+        this.notesInfoService = notesInfoService;
+        this.noteLogic = noteLogic;
+    }
 
     @ApiOperation(value="新增阅读笔记", notes="新增阅读笔记")
     @PostMapping(value = "/add")
@@ -55,14 +63,26 @@ public class UserNoteController {
 
     @ApiOperation(value="查询用户阅读笔记", notes="查询用户阅读笔记")
     @PostMapping(value = "/queryByUserId")
-    public BaseResult<List<UserNotesInfoDO>> queryByUserId(@RequestBody UserNotesInfoQuery query) {
-        return notesInfoService.selectNoteByUserId(query);
+    public BaseResult<List<UserNotesInfoVO>> queryByUserId(@RequestBody UserNotesInfoQuery query) {
+        BaseResult<List<UserNotesInfoDO>> queryRes = notesInfoService.selectNoteByUserId(query);
+        if (!queryRes.getSuccess()) {
+            return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "查询用户阅读笔记失败");
+        }
+
+        List<UserNotesInfoVO> voList = noteLogic.convertDOsToVOs(queryRes.getData());
+        return BaseResult.rightReturn(voList, queryRes.getPage());
     }
 
     @ApiOperation(value="查询用户单本书阅读笔记", notes="查询用户单本书阅读笔记")
     @PostMapping(value = "/queryByUserIdAndBookId")
-    public BaseResult<List<UserNotesInfoDO>> queryByUserIdAndBookId(@RequestBody UserNotesInfoQuery query) {
-        return notesInfoService.selectNoteByUserIdAndBookId(query);
+    public BaseResult<List<UserNotesInfoVO>> queryByUserIdAndBookId(@RequestBody UserNotesInfoQuery query) {
+        BaseResult<List<UserNotesInfoDO>> queryRes = notesInfoService.selectNoteByUserIdAndBookId(query);
+        if (!queryRes.getSuccess()) {
+            return BaseResult.errorReturn(StatusCodeEnum.SERVICE_ERROR.getCode(), "查询用户单本书阅读笔记");
+        }
+
+        List<UserNotesInfoVO> voList = noteLogic.convertDOsToVOs(queryRes.getData());
+        return BaseResult.rightReturn(voList, queryRes.getPage());
     }
 
 

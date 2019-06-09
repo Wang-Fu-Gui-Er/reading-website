@@ -22,6 +22,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -62,8 +64,9 @@ public class BookController {
         if (!queryBookRes.getSuccess()) {
             return queryBookRes;
         }
-
-        return BaseResult.rightReturn(bookLogic.assemblyCategory(queryBookRes.getData()));
+        BookInfoVO bookInfoVO = queryBookRes.getData();
+        List<BookInfoVO> bookInfoVOList = bookLogic.assemblyGrade(Collections.singletonList(bookInfoVO));
+        return BaseResult.rightReturn(bookLogic.assemblyCategory(bookInfoVOList.get(0)));
     }
 
     @ApiOperation(value="新增或修改图书信息", notes="新增或修改图书信息")
