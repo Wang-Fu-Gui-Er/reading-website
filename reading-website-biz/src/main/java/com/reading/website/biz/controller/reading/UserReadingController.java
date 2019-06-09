@@ -167,7 +167,7 @@ public class UserReadingController {
             ReadingHistoryVO vo = new ReadingHistoryVO();
             BeanUtils.copyProperties(chapterDO, vo);
             BeanUtils.copyProperties(bookInfoVO, vo);
-            vo.setProgress(bookInfoVO.getChapNum() == 0 ? 0 : (int)Math.ceil(chapterDO.getSequence() / bookInfoVO.getChapNum()) * 100);
+            vo.setProgress(bookInfoVO.getChapNum() == 0 ? 0 : (int)Math.floor((Double.valueOf(chapterDO.getSequence()) / Double.valueOf(bookInfoVO.getChapNum())) * 100));
             readingHistoryList.add(vo);
         }
 
