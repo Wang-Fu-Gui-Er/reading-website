@@ -2,10 +2,7 @@ package com.reading.website.biz.controller.reading;
 
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
-import com.reading.website.api.domain.BookSaveDTO;
-import com.reading.website.api.domain.ChapterDO;
-import com.reading.website.api.domain.LoginInfoDTO;
-import com.reading.website.api.domain.UserReadingInfoDO;
+import com.reading.website.api.domain.*;
 import com.reading.website.api.service.BookService;
 import com.reading.website.api.service.ChapterService;
 import com.reading.website.api.service.UserReadingService;
@@ -143,6 +140,18 @@ public class BookController {
                 userReadingInfoDO.setChapId(chapterDOList.get(0).getId());
             }
         }
+
+        UserReadingInfoQuery query = new UserReadingInfoQuery();
+        query.setUserId(userId);
+        query.setBookId(bookId);
+        query.setPageNum(1);
+        query.setPageSize(1);
+        BaseResult<List<UserReadingInfoDO>> hisReadingRes = readingService.pageQuery(query);
+        if (hisReadingRes.getSuccess() && !CollectionUtils.isEmpty(hisReadingRes.getData())) {
+            UserReadingInfoDO hisReading = hisReadingRes.getData().get(0);
+            userReadingInfoDO.setChapId(hisReading.getChapId());
+        }
+
         return readingService.insertOrUpdate(userReadingInfoDO);
     }
 }

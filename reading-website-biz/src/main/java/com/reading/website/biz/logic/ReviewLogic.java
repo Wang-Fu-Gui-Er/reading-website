@@ -7,6 +7,7 @@ import com.reading.website.api.domain.*;
 import com.reading.website.api.service.*;
 import com.reading.website.api.vo.BookInfoVO;
 import com.reading.website.api.vo.BookReviewVO;
+import com.reading.website.biz.utils.Base64Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,7 @@ public class ReviewLogic {
             BookReviewVO vo = new BookReviewVO();
             BeanUtils.copyProperties(reviewInfoDO, vo);
             vo.setNickName(userMap.get(reviewInfoDO.getUserId()).getNickName());
-            vo.setHeadPicPath(userMap.get(reviewInfoDO.getUserId()).getHeadPicPath());
+            vo.setHeadPicPath(Base64Util.fileToBase64ByLocal(userMap.get(reviewInfoDO.getUserId()).getHeadPicPath()));
 
             // 5.1 拼装用户评分
             Integer bookId = query.getBookId();
@@ -102,7 +103,8 @@ public class ReviewLogic {
             // 5.2 拼装是否点赞
             BaseResult<ReviewLikeInfoDO> likeRes = reviewLikeInfoService.selectByUserIdAndReviewId(loginUserId, reviewInfoDO.getId());
             if (likeRes.getSuccess()) {
-                 if (likeRes.getData() != null) {
+                ReviewLikeInfoDO reviewLikeInfoDO = likeRes.getData();
+                 if (reviewLikeInfoDO != null && !reviewLikeInfoDO.getIsDeleted()) {
                      vo.setIsLike(Boolean.TRUE);
                  } else {
                      vo.setIsLike(Boolean.FALSE);

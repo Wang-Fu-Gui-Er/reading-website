@@ -17,8 +17,7 @@
     select 
     <include refid="Base_Column_List" />
     from ReviewLikeInfo
-    where isDeleted = 0
-    and userId = #{userId,jdbcType=INTEGER}
+    where userId = #{userId,jdbcType=INTEGER}
     and reviewId = #{reviewId,jdbcType=INTEGER}
   </select>
 
