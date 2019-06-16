@@ -101,12 +101,21 @@ public class ChapterController {
             }
         });
 
-        boolean insertRes = chapterLogic.batchInsertChapter(insertChapterDOList);
-        if (!insertRes) {
-            return BaseResult.errorReturn(null, StatusCodeEnum.LOGIC_ERROR.getCode(), "保存章节信息失败");
+        if (!CollectionUtils.isEmpty(insertChapterDOList)) {
+            boolean insertRes = chapterLogic.batchInsertChapter(insertChapterDOList);
+            if (!insertRes) {
+                return BaseResult.errorReturn(null, StatusCodeEnum.LOGIC_ERROR.getCode(), "保存章节信息失败");
+            }
         }
 
-        return chapterService.batchUpdate(updateChapterDOList);
+        if (!CollectionUtils.isEmpty(updateChapterDOList)) {
+            BaseResult<Integer> updateRes = chapterService.batchUpdate(updateChapterDOList);
+            if (!updateRes.getSuccess()) {
+                return BaseResult.errorReturn(null, StatusCodeEnum.LOGIC_ERROR.getCode(), "更新章节信息失败");
+            }
+        }
+
+        return BaseResult.rightReturn(null);
     }
 
     @ApiOperation(value="自动生成章节", notes="自动生成章节")

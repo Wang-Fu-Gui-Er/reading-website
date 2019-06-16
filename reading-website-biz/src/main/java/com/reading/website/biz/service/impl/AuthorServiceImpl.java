@@ -3,6 +3,7 @@ package com.reading.website.biz.service.impl;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.StatusCodeEnum;
+import com.reading.website.api.constants.FileConstant;
 import com.reading.website.api.domain.AuthorDO;
 import com.reading.website.api.service.AuthorService;
 import com.reading.website.api.service.BookService;
@@ -41,6 +42,10 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         try {
+            String authorPic = authorDO.getAuthorPic();
+            if (!StringUtils.isEmpty(authorPic) && !authorPic.contains(FileConstant.UPLOAD_PATH)) {
+                authorDO.setAuthorPic(null);
+            }
             return BaseResult.rightReturn(authorMapper.insertOrUpdate(authorDO));
         } catch (Exception e) {
             log.error("AuthorServiceImpl insertOrUpdate failed, authorDO {}, error {},", authorDO, e);

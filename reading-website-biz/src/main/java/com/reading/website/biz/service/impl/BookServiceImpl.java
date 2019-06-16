@@ -3,6 +3,7 @@ package com.reading.website.biz.service.impl;
 import com.reading.website.api.base.BaseResult;
 import com.reading.website.api.base.Page;
 import com.reading.website.api.base.StatusCodeEnum;
+import com.reading.website.api.constants.FileConstant;
 import com.reading.website.api.domain.BookDO;
 import com.reading.website.api.domain.BookInfoQuery;
 import com.reading.website.api.service.BookService;
@@ -84,6 +85,12 @@ public class BookServiceImpl implements BookService {
                     }
                 }
             }
+
+            String bookPic = bookDO.getBookPic();
+            if (!StringUtils.isEmpty(bookPic) && !bookPic.contains(FileConstant.UPLOAD_PATH)) {
+                bookDO.setBookPic(null);
+            }
+
             bookMapper.insertOrUpdate(bookDO);
             return BaseResult.rightReturn(bookDO.getId());
         } catch (Exception e) {
