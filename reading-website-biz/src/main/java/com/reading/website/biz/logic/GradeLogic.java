@@ -31,6 +31,15 @@ public class GradeLogic {
 
     public BaseResult<Integer> updateGrade(UserGradeInfoDO userGradeInfoDO) {
 
+        //0. 查询用户历史评分
+        BaseResult<UserGradeInfoDO> userGradeRes = userGradeInfoService.selectByUserIdAndBookId(userGradeInfoDO.getUserId(),
+                userGradeInfoDO.getBookId());
+        UserGradeInfoDO hisUserGrade = userGradeRes.getData();
+        Integer hisGrade = 0;
+        if (userGradeRes.getSuccess() && hisUserGrade != null) {
+            hisGrade = hisUserGrade.getGrade();
+        }
+
         //1. 保存用户评分
         BaseResult<Integer> insertUserGradeRes = userGradeInfoService.insertOrUpdate(userGradeInfoDO);
         if (!insertUserGradeRes.getSuccess()) {
@@ -56,6 +65,7 @@ public class GradeLogic {
             bookGradeInfoDO.setFiveNum(0);
         }
 
+        // 记录当前用户此次评分
         if (grade == 1) {
             bookGradeInfoDO.setOneNum(bookGradeInfoDO.getOneNum() + 1);
         } else if (grade == 2) {
@@ -66,6 +76,19 @@ public class GradeLogic {
             bookGradeInfoDO.setFourNum(bookGradeInfoDO.getFourNum() + 1);
         } else if (grade == 5) {
             bookGradeInfoDO.setFiveNum(bookGradeInfoDO.getFiveNum() + 1);
+        }
+
+        // 更新当前用户历史评分
+        if (hisGrade == 1) {
+            bookGradeInfoDO.setOneNum(bookGradeInfoDO.getOneNum() - 1);
+        } else if (hisGrade == 2) {
+            bookGradeInfoDO.setTwoNum(bookGradeInfoDO.getTwoNum() - 1);
+        } else if (hisGrade == 3) {
+            bookGradeInfoDO.setThreeNum(bookGradeInfoDO.getThreeNum() - 1);
+        } else if (hisGrade == 4) {
+            bookGradeInfoDO.setFourNum(bookGradeInfoDO.getFourNum() - 1);
+        } else if (hisGrade == 5) {
+            bookGradeInfoDO.setFiveNum(bookGradeInfoDO.getFiveNum() - 1);
         }
 
         return bookGradeInfoService.insertOrUpdate(bookGradeInfoDO);

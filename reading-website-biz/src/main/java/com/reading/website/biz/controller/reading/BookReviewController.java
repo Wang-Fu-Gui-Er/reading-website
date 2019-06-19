@@ -7,7 +7,9 @@ import com.reading.website.api.domain.BookReviewInfoQuery;
 import com.reading.website.api.domain.LoginInfoDTO;
 import com.reading.website.api.service.BookReviewInfoService;
 import com.reading.website.api.vo.BookReviewVO;
+import com.reading.website.biz.enums.MatchType;
 import com.reading.website.biz.logic.ReviewLogic;
+import com.reading.website.biz.utils.SensitiveWordFilterUtil;
 import com.reading.website.biz.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,16 +35,20 @@ public class BookReviewController {
 
     private final ReviewLogic reviewLogic;
 
+    private final SensitiveWordFilterUtil sensitiveWordFilterUtil;
+
     @Autowired
-    public BookReviewController(BookReviewInfoService reviewInfoService, ReviewLogic reviewLogic) {
+    public BookReviewController(BookReviewInfoService reviewInfoService, ReviewLogic reviewLogic, SensitiveWordFilterUtil sensitiveWordFilterUtil) {
         this.reviewInfoService = reviewInfoService;
         this.reviewLogic = reviewLogic;
+        this.sensitiveWordFilterUtil = sensitiveWordFilterUtil;
     }
 
 
     @ApiOperation(value="新增或修改图书评论", notes="新增或修改图书评论")
     @PostMapping(value = "/addOrUpdate")
     public BaseResult<Integer> addOrUpdate(@RequestBody BookReviewInfoDO reviewInfoDO, HttpServletRequest request) {
+        //1. 判断用户是否登陆
         if (reviewInfoDO.getUserId() == null) {
             LoginInfoDTO loginInfoDTO = UserUtil.getUserLoginInfo(request);
             if (loginInfoDTO != null) {
@@ -52,6 +58,14 @@ public class BookReviewController {
             }
         }
 
+
+        //2. 敏感词过滤
+        String comment = reviewInfoDO.getComment();
+        int length = sensitiveWordFilterUtil.checkSensitiveWord(comment, 0, MatchType.MIN_MATCH);
+        if (length > 0) {
+            return BaseResult.errorReturn(StatusCodeEnum.REVIEW_VIOLATIONS.getCode(),
+                    "评论包含敏感词，请重新填写");
+        }
         return reviewInfoService.insertOrUpdate(reviewInfoDO);
     }
 

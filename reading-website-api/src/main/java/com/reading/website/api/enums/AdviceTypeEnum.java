@@ -1,5 +1,7 @@
 package com.reading.website.api.enums;
 
+import java.util.Arrays;
+
 /**
  * 反馈类型枚举类
  *
@@ -32,5 +34,15 @@ public enum AdviceTypeEnum {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public static AdviceTypeEnum getAdviceType(Integer code) {
+        for (AdviceTypeEnum adviceTypeEnum : AdviceTypeEnum.values()) {
+            if (adviceTypeEnum.getCode().equals(code)) {
+                return adviceTypeEnum;
+            }
+        }
+
+        return null;
     }
 }

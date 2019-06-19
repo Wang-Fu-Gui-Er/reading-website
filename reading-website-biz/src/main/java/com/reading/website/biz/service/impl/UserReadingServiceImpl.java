@@ -21,8 +21,12 @@ import java.util.List;
 @Service
 @Slf4j
 public class UserReadingServiceImpl implements UserReadingService {
+    private final UserReadingInfoMapper userReadingInfoMapper;
+
     @Autowired
-    private UserReadingInfoMapper userReadingInfoMapper;
+    public UserReadingServiceImpl(UserReadingInfoMapper userReadingInfoMapper) {
+        this.userReadingInfoMapper = userReadingInfoMapper;
+    }
 
     /**
      * 增加或更新

@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
 @Slf4j
 public class FileConstant {
     // 上传统一路径
-    public static final String UPLOAD_PATH = "C:\\Users\\Administrator\\IdeaProjects\\reading-website\\reading-website-biz\\src\\main\\resources\\upload";
-//    public static final String UPLOAD_PATH = "/Users/xyang010/Documents/IdeaProject/reading-website/reading-website-biz/src/main/resources/upload";
+//    public static final String UPLOAD_PATH = "C:\\Users\\Administrator\\IdeaProjects\\reading-website\\reading-website-biz\\src\\main\\resources\\upload";
+    public static final String UPLOAD_PATH = "/Users/xyang010/Documents/IdeaProject/reading-website/reading-website-biz/src/main/resources/upload";
 
     // 图片子路径
     public static final String PICTURE_SUB_PATH = File.separator + "picture";

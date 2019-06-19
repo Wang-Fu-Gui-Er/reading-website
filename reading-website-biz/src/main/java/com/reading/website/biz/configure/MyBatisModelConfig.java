@@ -24,8 +24,12 @@ import javax.sql.DataSource;
 @EnableTransactionManagement //允许使用事务管理器
 public class MyBatisModelConfig implements TransactionManagementConfigurer {
 
+    private final DataSource dataSource;
+
     @Autowired
-    private DataSource dataSource;
+    public MyBatisModelConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean(name = "sqlSessionFactory")
     public SqlSessionFactory getSqlSessionFactory(){

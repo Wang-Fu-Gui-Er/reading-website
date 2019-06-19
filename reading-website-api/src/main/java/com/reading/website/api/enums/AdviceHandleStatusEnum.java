@@ -35,4 +35,14 @@ public enum AdviceHandleStatusEnum {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
+    public static AdviceHandleStatusEnum getAdviceStatus(Integer code) {
+        for (AdviceHandleStatusEnum handleStatusEnum : AdviceHandleStatusEnum.values()) {
+            if (handleStatusEnum.getCode().equals(code)) {
+                return handleStatusEnum;
+            }
+        }
+
+        return null;
+    }
 }
