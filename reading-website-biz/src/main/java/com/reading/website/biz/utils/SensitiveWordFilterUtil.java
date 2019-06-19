@@ -61,7 +61,11 @@ public class SensitiveWordFilterUtil {
         }
     }
 
-    public int checkSensitiveWord(String txt,int beginIndex, MatchType matchType){
+    public int checkSensitiveWord(String txt, int beginIndex, MatchType matchType){
+        txt = txt.replaceAll(" ", "");
+        txt = txt.replaceAll("\\*", "");
+        txt = txt.replaceAll("#", "");
+        txt = txt.replaceAll("@", "");
         boolean  flag = false;    //敏感词结束标识位：用于敏感词只有1位的情况
         int matchFlag = 0;     //匹配标识数默认为0
         char word = 0;
