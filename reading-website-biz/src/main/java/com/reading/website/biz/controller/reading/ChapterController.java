@@ -109,8 +109,8 @@ public class ChapterController {
         }
 
         if (!CollectionUtils.isEmpty(updateChapterDOList)) {
-            BaseResult<Integer> updateRes = chapterService.batchUpdate(updateChapterDOList);
-            if (!updateRes.getSuccess()) {
+            Boolean updateRes = chapterLogic.batchUpdateChapter(updateChapterDOList);
+            if (!updateRes) {
                 return BaseResult.errorReturn(null, StatusCodeEnum.LOGIC_ERROR.getCode(), "更新章节信息失败");
             }
         }

@@ -32,7 +32,7 @@
     isOver, smallCateId, bookPath, buyPath, postedTime, bookDesc, chapNum, ext
     from Book as b
     where b.isDeleted = 0
-    order by b.created desc
+    order by b.postedTime desc
     limit #{offset},#{pageSize}
   </select>
 
@@ -58,7 +58,7 @@
     left outer join BookGradeInfo as g
     on b.id = g.bookId
     where b.isDeleted = 0
-    order by b.created asc, (g.fiveNum * 5 + g.fourNum * 4 + g.threeNum * 3 + g.twoNum * 2 + g.oneNum) desc
+    order by b.postedTime asc, (g.fiveNum * 5 + g.fourNum * 4 + g.threeNum * 3 + g.twoNum * 2 + g.oneNum) desc
     limit #{offset},#{pageSize}
   </select>
 

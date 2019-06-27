@@ -75,11 +75,48 @@ public class ChapterLogic {
         return true;
     }
 
-    /**
-     * 补充章节内容
-     * @param chapterDO
-     * @return
-     */
+    public boolean batchUpdateChapter(List<ChapterDO> chapterDOList) {
+        if (CollectionUtils.isEmpty(chapterDOList)) {
+            return Boolean.TRUE;
+        }
+        Integer bookId = chapterDOList.get(0).getBookId();
+        BaseResult<BookInfoVO> bookRes = bookService.selectByBookId(bookId);
+        if (!bookRes.getSuccess()) {
+            log.warn("查询图书信息失败, bookId {}, bookRes {}", bookId, bookRes);
+            return false;
+        }
+
+        if (bookRes.getData() == null) {
+            log.warn("图书不存在, bookId {}, bookRes {}", bookId, bookRes);
+            return false;
+        }
+
+        BaseResult<Integer> updateRes = chapterService.batchUpdate(chapterDOList);
+        if (!updateRes.getSuccess()) {
+            log.warn("批量更新章节信息失败 updateRes {}", updateRes);
+            return false;
+        }
+
+        Long delChapNum = chapterDOList.stream().filter(chapterDO -> chapterDO.getIsDeleted().equals(Boolean.TRUE)).count();
+        if (delChapNum != 0) {
+            BookDO bookDO = new BookDO();
+            bookDO.setId(bookId);
+            bookDO.setChapNum(bookRes.getData().getChapNum() - delChapNum.intValue());
+            BaseResult<Integer> updateBookRes = bookService.insertOrUpdateBook(bookDO);
+            if (!updateBookRes.getSuccess()) {
+                log.warn("更新图书章节数量失败, bookId {}, beforeChapNum {}, afterChapNum {}", bookId, bookRes.getData().getChapNum(), bookDO.getChapNum());
+            }
+        }
+
+        return true;
+    }
+
+
+        /**
+         * 补充章节内容
+         * @param chapterDO
+         * @return
+         */
     public ChapterVO assemblyContent(ChapterDO chapterDO) {
         if (chapterDO == null) {
             return null;

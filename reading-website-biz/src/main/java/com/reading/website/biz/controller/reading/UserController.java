@@ -71,7 +71,9 @@ public class UserController {
         userBaseInfoDO.setStatus(UserStatusConstant.INACTIVE);
 
         //设置默认用户昵称
-        userBaseInfoDO.setNickName(userBaseInfoDO.getEmail());
+        String nickName = userBaseInfoDO.getNickName();
+        nickName = StringUtils.isEmpty(nickName) ? userBaseInfoDO.getEmail() : nickName;
+        userBaseInfoDO.setNickName(nickName);
 
         // 前端使用MD5加密，后端使用SHA1加密
         userBaseInfoDO.setPassword(EncryptUtil.getInstance().SHA1(userBaseInfoDO.getPassword()));

@@ -150,24 +150,26 @@ public class UserReadingController {
 
         Map<Integer, ChapterDO> chapterMap = chapList
                 .stream()
-                .collect(Collectors.toMap(ChapterDO::getId, chapterDO -> chapterDO, (v1, v2) -> v2));
+                .collect(Collectors.toMap(ChapterDO::getBookId, chapterDO -> chapterDO, (v1, v2) -> v2));
 
 
         //4. 拼装阅读历史信息
-        for (Integer chapId : chapIds) {
-            ChapterDO chapterDO = chapterMap.get(chapId);
-            if (chapterDO == null) {
-                continue;
-            }
-
-            BookInfoVO bookInfoVO = bookMap.get(chapterDO.getBookId());
+        for (Integer bookId : bookIds) {
+            BookInfoVO bookInfoVO = bookMap.get(bookId);
             if (bookInfoVO == null) {
                 continue;
             }
+
             ReadingHistoryVO vo = new ReadingHistoryVO();
-            BeanUtils.copyProperties(chapterDO, vo);
+            ChapterDO chapterDO = chapterMap.get(bookId);
+            if (chapterDO != null) {
+                BeanUtils.copyProperties(chapterDO, vo);
+                vo.setProgress(bookInfoVO.getChapNum() == 0 ? 0 : (int)Math.floor((Double.valueOf(chapterDO.getSequence()) / Double.valueOf(bookInfoVO.getChapNum())) * 100));
+            } else {
+                vo.setProgress(null);
+            }
+
             BeanUtils.copyProperties(bookInfoVO, vo);
-            vo.setProgress(bookInfoVO.getChapNum() == 0 ? 0 : (int)Math.floor((Double.valueOf(chapterDO.getSequence()) / Double.valueOf(bookInfoVO.getChapNum())) * 100));
             readingHistoryList.add(vo);
         }
 

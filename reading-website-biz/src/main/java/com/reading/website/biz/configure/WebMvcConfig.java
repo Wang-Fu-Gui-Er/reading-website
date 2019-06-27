@@ -35,6 +35,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/book/list/onShelf")
                 .addPathPatterns("/review/addOrUpdate")
                 .addPathPatterns("/review/del")
+                .addPathPatterns("/user/gradeInfo/save")
                 .addPathPatterns("/book/addOrRemoveToShelf")
                 .addPathPatterns("/book/addOrUpdateBook")
                 .addPathPatterns("/book/del")
